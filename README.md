@@ -23,7 +23,7 @@ We respect [agent-sh/agnix](https://github.com/agent-sh/agnix)
 Run it on any manifesto file, no installation required:
 
 ```bash
-npx @yegor256/dogent CLAUDE.md
+npx @yegor256/dogent@0.0.0 CLAUDE.md
 ```
 
 Lint several files at once:

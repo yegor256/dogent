@@ -18,8 +18,9 @@ const Snippet = require('./fragments/snippet');
  * the context of the moment (inside a fence, inside a list), and emits
  * a Document of fragments. This is a line scanner, not a grammar.
  *
- * @todo #1 Attach wrapped continuation lines to the bullet they belong
- *  to, instead of dropping their indentation context on the floor.
+ * @todo #1:45min Attach wrapped continuation lines to the bullet they
+ *  belong to, instead of silently dropping their nested indentation
+ *  context on the floor.
  */
 class Markdown {
   constructor(uri, content) {

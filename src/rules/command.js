@@ -15,7 +15,7 @@ const Region = require('../region');
  * checker can only guess: it flags lines that open with a pronoun or
  * end with a question mark, both signs of description, not order.
  *
- * @todo #1 Replace this heuristic with a real imperative-mood check
+ * @todo #1:90min Replace this heuristic with a real imperative-mood check
  *  driven by an AI oracle when a token is present in the environment.
  */
 class Command {

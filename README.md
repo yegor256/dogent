@@ -117,7 +117,7 @@ Reference `dogent` as a remote hook in `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/yegor256/dogent
-    rev: master
+    rev: 0.0.0
     hooks:
       - id: dogent
 ```

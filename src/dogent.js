@@ -9,17 +9,18 @@
 const fs = require('fs');
 const Markdown = require('./markdown');
 const Report = require('./report');
+const Sources = require('./sources');
 const rules = require('./rules');
 
 const argv = process.argv.slice(2);
 const sarif = argv.indexOf('--sarif') !== -1;
-const files = argv.filter((arg) => arg !== '--sarif');
-if (files.length === 0) {
-  process.stderr.write('Usage: dogent [--sarif] <file.md>...\n');
+const paths = argv.filter((arg) => arg !== '--sarif');
+if (paths.length === 0) {
+  process.stderr.write('Usage: dogent [--sarif] <file.md|dir>...\n');
   process.exit(2);
 }
 const found = [];
-files.forEach((file) => {
+new Sources(paths).files().forEach((file) => {
   const document = new Markdown(file, fs.readFileSync(file, 'utf8')).document();
   rules().forEach((rule) => {
     rule.violations(document).forEach((violation) => found.push(violation));

@@ -112,7 +112,18 @@ npx @yegor256/dogent CLAUDE.md SKILL.md AGENTS.md
 ```
 
 Prefer the [pre-commit](https://pre-commit.com) framework?
-Add `dogent` as a local hook in `.pre-commit-config.yaml`:
+Reference `dogent` as a remote hook in `.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/yegor256/dogent
+    rev: master
+    hooks:
+      - id: dogent
+```
+
+Pin `rev` to a released tag for reproducible runs.
+Alternatively, wire `dogent` as a local hook:
 
 ```yaml
 repos:

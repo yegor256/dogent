@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Yegor Bugayenko
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+- id: dogent
+  name: dogent
+  description: Lint agentic manifesto files like CLAUDE.md, SKILL.md, AGENTS.md
+  entry: dogent
+  language: node
+  files: '(CLAUDE|SKILL|AGENTS)\.md$'

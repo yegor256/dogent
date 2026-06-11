@@ -1,6 +1,9 @@
 # Dogmatic Linter for Agent Skills and Manifestos
 
 [![dogent](https://github.com/yegor256/dogent/actions/workflows/dogent.yml/badge.svg)](https://github.com/yegor256/dogent/actions/workflows/dogent.yml)
+[![PDD status](https://www.0pdd.com/svg?name=yegor256/dogent)](https://www.0pdd.com/p?name=yegor256/dogent)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/dogent/blob/master/LICENSE.txt)
+[![NPM version](https://badge.fury.io/js/dogent.svg)](https://badge.fury.io/js/dogent)
 
 A strict, opinionated linter for agentic manifesto files
   such as `SKILL.md`, `CLAUDE.md`, and `AGENTS.md`.

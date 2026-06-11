@@ -31,7 +31,10 @@
   ],
   "license": "MIT",
   "main": "src/dogent.js",
-  "name": "dogent",
+  "name": "@yegor256/dogent",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": "yegor256/dogent",
   "scripts": {
     "lint": "eslint .",

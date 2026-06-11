@@ -3,7 +3,7 @@
 [![dogent](https://github.com/yegor256/dogent/actions/workflows/dogent.yml/badge.svg)](https://github.com/yegor256/dogent/actions/workflows/dogent.yml)
 [![PDD status](https://www.0pdd.com/svg?name=yegor256/dogent)](https://www.0pdd.com/p?name=yegor256/dogent)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/dogent/blob/master/LICENSE.txt)
-[![NPM version](https://badge.fury.io/js/dogent.svg)](https://badge.fury.io/js/dogent)
+[![NPM version](https://badge.fury.io/js/@yegor256%2Fdogent.svg)](https://badge.fury.io/js/@yegor256%2Fdogent)
 
 A strict, opinionated linter for agentic manifesto files
   such as `SKILL.md`, `CLAUDE.md`, and `AGENTS.md`.
@@ -23,13 +23,13 @@ We respect [agent-sh/agnix](https://github.com/agent-sh/agnix)
 Run it on any manifesto file, no installation required:
 
 ```bash
-npx dogent CLAUDE.md
+npx @yegor256/dogent CLAUDE.md
 ```
 
 Lint several files at once:
 
 ```bash
-npx dogent SKILL.md CLAUDE.md AGENTS.md
+npx @yegor256/dogent SKILL.md CLAUDE.md AGENTS.md
 ```
 
 Sample output:
@@ -69,7 +69,7 @@ When `OPENAI_API_KEY` or `CLAUDE_TOKEN` is present in the environment,
 
 ```bash
 export CLAUDE_TOKEN=...
-npx dogent CLAUDE.md
+npx @yegor256/dogent CLAUDE.md
 ```
 
 ## GitHub Actions
@@ -88,7 +88,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npx dogent CLAUDE.md SKILL.md
+      - run: npx @yegor256/dogent CLAUDE.md SKILL.md
 ```
 
 The job fails when `dogent` finds problems,
@@ -96,7 +96,7 @@ The job fails when `dogent` finds problems,
 To enable AI verification in CI, expose a token as a secret:
 
 ```yaml
-      - run: npx dogent CLAUDE.md
+      - run: npx @yegor256/dogent CLAUDE.md
         env:
           CLAUDE_TOKEN: ${{ secrets.CLAUDE_TOKEN }}
 ```
@@ -108,7 +108,7 @@ Drop this into `.git/hooks/pre-commit` and make it executable:
 
 ```bash
 #!/bin/sh
-npx dogent CLAUDE.md SKILL.md AGENTS.md
+npx @yegor256/dogent CLAUDE.md SKILL.md AGENTS.md
 ```
 
 Prefer the [pre-commit](https://pre-commit.com) framework?
@@ -120,7 +120,7 @@ repos:
     hooks:
       - id: dogent
         name: dogent
-        entry: npx dogent
+        entry: npx @yegor256/dogent
         language: system
         files: '(CLAUDE|SKILL|AGENTS)\.md$'
 ```

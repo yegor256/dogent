@@ -35,4 +35,17 @@ describe('dogent', () => {
     );
     assert.ok(/0 problems found/u.test(out), 'a clean manifesto must report zero problems');
   });
+  it('lints default manifestos when handed a directory', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));
+    fs.writeFileSync(path.join(dir, 'CLAUDE.md'), '# This Section Name Is Far Too Long\nShut');
+    let code = 0;
+    try {
+      execFileSync(
+        'node', [path.join(__dirname, '../src/dogent.js'), dir], {encoding: 'utf8'}
+      );
+    } catch (error) {
+      code = error.status;
+    }
+    assert.strictEqual(code, 1, 'a directory holding a broken manifesto must exit with code one');
+  });
 });

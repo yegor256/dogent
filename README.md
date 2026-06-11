@@ -1,4 +1,6 @@
-# dogent
+# Dogmatic Linter for Agent Skills and Manifestos
+
+[![dogent](https://github.com/yegor256/dogent/actions/workflows/dogent.yml/badge.svg)](https://github.com/yegor256/dogent/actions/workflows/dogent.yml)
 
 A strict, opinionated linter for agentic manifesto files
   such as `SKILL.md`, `CLAUDE.md`, and `AGENTS.md`.

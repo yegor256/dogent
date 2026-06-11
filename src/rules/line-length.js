@@ -25,7 +25,8 @@ class LineLength {
       header: (text, line) => this.over(text, line, uri),
       prose: (text, line) => this.over(text, line, uri),
       snippet: () => [],
-      bullets: () => []
+      bullets: () => [],
+      frontmatter: () => []
     });
   }
   over(text, line, uri) {

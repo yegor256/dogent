@@ -24,7 +24,8 @@ class ShortSections {
       header: (text, line) => this.named(text, line, uri),
       prose: () => [],
       snippet: () => [],
-      bullets: () => []
+      bullets: () => [],
+      frontmatter: () => []
     });
   }
   named(text, line, uri) {

@@ -24,7 +24,8 @@ class Grouped {
       header: (text, line) => [{header: true, line}],
       prose: (text, line) => [{header: false, line}],
       snippet: () => [],
-      bullets: () => []
+      bullets: () => [],
+      frontmatter: () => []
     });
     let first = Infinity;
     marks.forEach((mark) => {

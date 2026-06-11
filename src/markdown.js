@@ -10,6 +10,8 @@ const Header = require('./fragments/header');
 const Prose = require('./fragments/prose');
 const Bullets = require('./fragments/bullets');
 const Snippet = require('./fragments/snippet');
+const Frontmatter = require('./fragments/frontmatter');
+const Yaml = require('./yaml');
 
 /**
  * Markdown.
@@ -40,7 +42,21 @@ class Markdown {
         items = [];
       }
     };
-    this.content.split('\n').forEach((line, index) => {
+    const lines = this.content.split('\n');
+    let skip = 0;
+    if (lines[0].trim() === '---') {
+      const rest = lines.slice(1);
+      const close = rest.findIndex((line) => line.trim() === '---');
+      if (close !== -1) {
+        const front = rest.slice(0, close).join('\n');
+        pieces.push(new Frontmatter(new Yaml(front, 2).pairs(), 1));
+        skip = close + 2;
+      }
+    }
+    lines.forEach((line, index) => {
+      if (index < skip) {
+        return;
+      }
       const row = index + 1;
       const mark = line.match(/^\s*(?<fence>```|~~~)/u);
       if (fence !== '') {

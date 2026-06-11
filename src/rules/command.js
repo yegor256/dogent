@@ -28,7 +28,8 @@ class Command {
       header: () => [],
       prose: (text, line) => this.judge(text, line, uri),
       snippet: () => [],
-      bullets: () => []
+      bullets: () => [],
+      frontmatter: () => []
     });
   }
   judge(text, line, uri) {

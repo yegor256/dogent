@@ -24,7 +24,8 @@ class NoArticles {
       header: () => [],
       prose: (text, line) => this.scan(text, line, uri),
       snippet: () => [],
-      bullets: () => []
+      bullets: () => [],
+      frontmatter: () => []
     });
   }
   scan(text, line, uri) {

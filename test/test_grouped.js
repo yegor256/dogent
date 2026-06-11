@@ -26,4 +26,12 @@ describe('Grouped', () => {
       'an instruction under a section must pass'
     );
   });
+  it('never counts a frontmatter key as loose instruction', () => {
+    const doc = new Markdown('SKILL.md', '---\nname: shut-gate\n---\n# Doors\nShut gate').document();
+    assert.strictEqual(
+      new Grouped().violations(doc).length,
+      0,
+      'frontmatter above the first section must not be flagged as loose'
+    );
+  });
 });

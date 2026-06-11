@@ -1,0 +1,41 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ */
+
+const Violation = require('../violation');
+const Region = require('../region');
+
+/**
+ * LineLength.
+ *
+ * Demands that every instruction and every heading stay within a
+ * maximum width. Code snippets are exempt, since code is not prose.
+ */
+class LineLength {
+  constructor(max) {
+    this.max = max;
+  }
+  violations(document) {
+    const uri = document.uri();
+    return document.walk({
+      header: (text, line) => this.over(text, line, uri),
+      prose: (text, line) => this.over(text, line, uri),
+      snippet: () => [],
+      bullets: () => []
+    });
+  }
+  over(text, line, uri) {
+    if (text.length <= this.max) {
+      return [];
+    }
+    return [new Violation(
+      'line-length',
+      'error',
+      `line exceeds ${this.max} symbols, has ${text.length}`,
+      new Region(uri, line, this.max + 1)
+    )];
+  }
+}
+
+module.exports = LineLength;

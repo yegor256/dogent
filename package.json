@@ -1,0 +1,39 @@
+{
+  "name": "dogent",
+  "version": "0.0.0",
+  "description": "A strict, opinionated linter for agentic manifesto files (SKILL.md, CLAUDE.md, AGENTS.md)",
+  "keywords": [
+    "linter",
+    "lint",
+    "markdown",
+    "claude",
+    "agents",
+    "skill",
+    "manifesto",
+    "cli"
+  ],
+  "homepage": "https://github.com/yegor256/dogent",
+  "repository": "yegor256/dogent",
+  "bugs": "https://github.com/yegor256/dogent/issues",
+  "author": "Yegor Bugayenko <yegor256@gmail.com> (https://www.yegor256.com/)",
+  "license": "MIT",
+  "bin": {
+    "dogent": "./src/dogent.js"
+  },
+  "main": "src/dogent.js",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "mocha 'test/**/*.js' --timeout 60000",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "mocha": "^11.5.0"
+  }
+}

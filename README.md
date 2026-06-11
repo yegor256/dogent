@@ -58,6 +58,8 @@ The command exits with a non-zero status when problems are found,
 - Every line must sound like a command.
 - No articles, no noise, no bloated text.
 - Simple grammar, no ambiguity.
+- `SKILL.md` must open with valid frontmatter.
+- Frontmatter must declare only allowed keys.
 
 ## AI verification
 

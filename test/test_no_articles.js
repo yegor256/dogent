@@ -26,4 +26,12 @@ describe('NoArticles', () => {
       'a line without articles must pass'
     );
   });
+  it('ignores an article inside a frontmatter slug', () => {
+    const doc = new Markdown('SKILL.md', '---\nname: submit-an-issue\n---\n# H').document();
+    assert.strictEqual(
+      new NoArticles().violations(doc).length,
+      0,
+      'an article inside frontmatter must escape the prose rule'
+    );
+  });
 });

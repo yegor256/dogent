@@ -18,7 +18,7 @@ release:
     npm test --no-color
     git commit -am "set version to ${tag}"
     chmod 600 ../npmrc
-    npm publish --no-color --userconfig=../npmrc
+    npm publish --access=public --no-color --userconfig=../npmrc
 merge:
   script: |-
     npm test --no-color

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const LineLength = require('./line-length');
 const ShortSections = require('./short-sections');
 const Grouped = require('./grouped');

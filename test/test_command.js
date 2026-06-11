@@ -3,22 +3,26 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const assert = require('assert');
 const Markdown = require('../src/markdown');
 const Command = require('../src/rules/command');
 
-describe('Command', function () {
-  it('flags a line that opens with a pronoun', function () {
+describe('Command', () => {
+  it('flags a line that opens with a pronoun', () => {
     const doc = new Markdown('x.md', '# Doors\nYou should shut gate').document();
     assert.strictEqual(
-      new Command().violations(doc).length, 1,
+      new Command().violations(doc).length,
+      1,
       'a line opening with a pronoun must be flagged'
     );
   });
-  it('accepts an imperative line', function () {
+  it('accepts an imperative line', () => {
     const doc = new Markdown('x.md', '# Doors\nShut gate').document();
     assert.strictEqual(
-      new Command().violations(doc).length, 0,
+      new Command().violations(doc).length,
+      0,
       'an imperative line must pass'
     );
   });

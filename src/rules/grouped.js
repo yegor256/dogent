@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const Violation = require('../violation');
 const Region = require('../region');
 
@@ -13,6 +15,9 @@ const Region = require('../region');
  * appears before the first heading is loose and therefore a violation.
  */
 class Grouped {
+  constructor() {
+    this.id = 'grouped';
+  }
   violations(document) {
     const uri = document.uri();
     const marks = document.walk({
@@ -30,7 +35,7 @@ class Grouped {
     return marks
       .filter((mark) => !mark.header && mark.line < first)
       .map((mark) => new Violation(
-        'grouped',
+        this.id,
         'error',
         'instruction not grouped under a section',
         new Region(uri, mark.line, 1)

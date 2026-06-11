@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const Violation = require('../violation');
 const Region = require('../region');
 
@@ -14,6 +16,7 @@ const Region = require('../region');
  */
 class LineLength {
   constructor(max) {
+    this.id = 'line-length';
     this.max = max;
   }
   violations(document) {
@@ -30,7 +33,7 @@ class LineLength {
       return [];
     }
     return [new Violation(
-      'line-length',
+      this.id,
       'error',
       `line exceeds ${this.max} symbols, has ${text.length}`,
       new Region(uri, line, this.max + 1)

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const Violation = require('../violation');
 const Region = require('../region');
 
@@ -13,6 +15,9 @@ const Region = require('../region');
  * words, so the manifesto reads as a map and not as prose.
  */
 class ShortSections {
+  constructor() {
+    this.id = 'short-sections';
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({
@@ -23,12 +28,16 @@ class ShortSections {
     });
   }
   named(text, line, uri) {
-    const words = text.replace(/^#{1,6}\s+/, '').trim().split(/\s+/).filter((word) => word !== '');
+    const words = text
+      .replace(/^#{1,6}\s+/u, '')
+      .trim()
+      .split(/\s+/u)
+      .filter((word) => word !== '');
     if (words.length >= 1 && words.length <= 3) {
       return [];
     }
     return [new Violation(
-      'short-sections',
+      this.id,
       'error',
       `section name must be 1-3 words, has ${words.length}`,
       new Region(uri, line, 1)

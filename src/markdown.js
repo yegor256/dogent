@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const Document = require('./document');
 const Header = require('./fragments/header');
 const Prose = require('./fragments/prose');
@@ -39,7 +41,7 @@ class Markdown {
     };
     this.content.split('\n').forEach((line, index) => {
       const row = index + 1;
-      const mark = line.match(/^\s*(```|~~~)/);
+      const mark = line.match(/^\s*(?<fence>```|~~~)/u);
       if (fence !== '') {
         block.push(line);
         if (mark && line.trim().indexOf(fence) === 0) {
@@ -51,24 +53,24 @@ class Markdown {
       }
       if (mark) {
         flush();
-        fence = mark[1];
+        ({fence} = mark.groups);
         block = [line];
         opened = row;
         return;
       }
-      if (/^#{1,6}\s+/.test(line)) {
+      if (/^#{1,6}\s+/u.test(line)) {
         flush();
-        pieces.push(new Header(line, row, line.match(/^#+/)[0].length));
+        pieces.push(new Header(line, row, line.match(/^#+/u)[0].length));
         return;
       }
-      if (/^\s*([-*+]|\d+\.)\s+/.test(line)) {
+      if (/^\s*(?:[-*+]|\d+\.)\s+/u.test(line)) {
         if (items.length === 0) {
           started = row;
         }
         items.push(new Prose(line, row));
         return;
       }
-      if (/^\s*$/.test(line)) {
+      if (/^\s*$/u.test(line)) {
         flush();
         return;
       }

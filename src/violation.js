@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 /**
  * Violation.
  *
@@ -19,7 +21,9 @@ class Violation {
   text() {
     return [
       `${this.spot.uri()}:${this.spot.line()}:${this.spot.column()}`,
-      this.level, this.rule, this.message
+      this.level,
+      this.rule,
+      this.message
     ].join(' ');
   }
   sarif() {

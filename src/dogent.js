@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const fs = require('fs');
 const Markdown = require('./markdown');
 const Report = require('./report');

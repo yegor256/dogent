@@ -3,14 +3,16 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const {execFileSync} = require('child_process');
 
-describe('dogent', function () {
-  it('exits non-zero when a manifesto breaks a rule', function () {
+describe('dogent', () => {
+  it('exits non-zero when a manifesto breaks a rule', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
     fs.writeFileSync(file, '# This Section Name Is Far Too Long\nShut the gate');
     let code = 0;
@@ -25,12 +27,12 @@ describe('dogent', function () {
       code, 1, 'a manifesto that breaks rules must make dogent exit with code one'
     );
   });
-  it('reports zero problems for a clean manifesto', function () {
+  it('reports zero problems for a clean manifesto', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
     fs.writeFileSync(file, '# Kitchen\nSharpen knife');
     const out = execFileSync(
       'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8'}
     );
-    assert.ok(/0 problems found/.test(out), 'a clean manifesto must report zero problems');
+    assert.ok(/0 problems found/u.test(out), 'a clean manifesto must report zero problems');
   });
 });

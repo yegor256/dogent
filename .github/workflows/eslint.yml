@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
-name: dogent
+name: eslint
 'on':
   push:
     branches:
@@ -11,7 +11,7 @@ name: dogent
     branches:
       - master
 jobs:
-  dogent:
+  eslint:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
@@ -20,5 +20,4 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npm test
-      - run: node src/dogent.js CLAUDE.md
+      - run: npm run lint

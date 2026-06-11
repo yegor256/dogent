@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const Violation = require('../violation');
 const Region = require('../region');
 
@@ -17,6 +19,9 @@ const Region = require('../region');
  *  driven by an AI oracle when a token is present in the environment.
  */
 class Command {
+  constructor() {
+    this.id = 'command';
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({
@@ -27,17 +32,20 @@ class Command {
     });
   }
   judge(text, line, uri) {
-    const clean = text.replace(/^\s*([-*+]|\d+\.)\s+/, '').trim();
-    const first = clean.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
-    const weak = [
-      'i', 'you', 'we', 'they', 'he', 'she', 'it',
-      'this', 'that', 'these', 'those', 'there', 'here'
-    ];
-    if (clean === '' || (weak.indexOf(first) === -1 && clean.slice(-1) !== '?')) {
+    const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trim();
+    if (clean === '') {
+      return [];
+    }
+    const first = clean
+      .split(/\s+/u)[0]
+      .toLowerCase()
+      .replace(/[^a-z]/gu, '');
+    const weak = /^(?:i|you|we|they|he|she|it|this|that|these|those|there|here)$/u;
+    if (!weak.test(first) && clean.slice(-1) !== '?') {
       return [];
     }
     return [new Violation(
-      'command',
+      this.id,
       'warning',
       'line must sound like a command',
       new Region(uri, line, 1)

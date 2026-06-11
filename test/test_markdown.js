@@ -3,29 +3,35 @@
  * SPDX-License-Identifier: MIT
  */
 
+'use strict';
+
 const assert = require('assert');
 const Markdown = require('../src/markdown');
 
-describe('Markdown', function () {
-  it('parses a lone header into one header piece', function () {
+describe('Markdown', () => {
+  it('parses a lone header into one header piece', () => {
     const pieces = new Markdown('x.md', '# Tools').document().walk({
-      header: () => ['header'], prose: () => ['prose'],
-      snippet: () => ['snippet'], bullets: () => []
+      header: () => ['header'],
+      prose: () => ['prose'],
+      snippet: () => ['snippet'],
+      bullets: () => []
     });
     assert.deepStrictEqual(
       pieces, ['header'], 'a single header line must produce one header piece'
     );
   });
-  it('parses a fenced block into one snippet piece', function () {
+  it('parses a fenced block into one snippet piece', () => {
     const pieces = new Markdown('x.md', '```bash\nls -la\npwd\n```').document().walk({
-      header: () => ['header'], prose: () => ['prose'],
-      snippet: () => ['snippet'], bullets: () => []
+      header: () => ['header'],
+      prose: () => ['prose'],
+      snippet: () => ['snippet'],
+      bullets: () => []
     });
     assert.deepStrictEqual(
       pieces, ['snippet'], 'a fenced block must collapse into one snippet piece'
     );
   });
-  it('collapses consecutive bullets into one bullets piece', function () {
+  it('collapses consecutive bullets into one bullets piece', () => {
     const pieces = new Markdown('x.md', '- alpha\n- beta\n- gamma').document().walk({
       header: () => [], prose: () => [], snippet: () => [], bullets: () => ['bullets']
     });
@@ -33,19 +39,19 @@ describe('Markdown', function () {
       pieces, ['bullets'], 'three dashes in a row must produce one bullets piece'
     );
   });
-  it('keeps each bullet as its own inner prose piece', function () {
+  it('keeps each bullet as its own inner prose piece', () => {
     const items = new Markdown('x.md', '- alpha\n- beta\n- gamma').document().walk({
       header: () => [], prose: () => ['item'], snippet: () => [], bullets: () => []
     });
     assert.strictEqual(items.length, 3, 'each bullet line must become its own inner prose piece');
   });
-  it('keeps two prose lines as two pieces', function () {
+  it('keeps two prose lines as two pieces', () => {
     const pieces = new Markdown('x.md', 'Close door\nLock gate').document().walk({
       header: () => [], prose: () => ['prose'], snippet: () => [], bullets: () => []
     });
     assert.strictEqual(pieces.length, 2, 'two prose lines must produce two prose pieces');
   });
-  it('tracks the line number of a header', function () {
+  it('tracks the line number of a header', () => {
     const rows = new Markdown('x.md', '\n\n# Late').document().walk({
       header: (text, line) => [line], prose: () => [], snippet: () => [], bullets: () => []
     });

@@ -22,7 +22,7 @@ class Violation {
     return [
       `${this.spot.uri()}:${this.spot.line()}:${this.spot.column()}`,
       this.level,
-      this.rule,
+      `[${this.rule}]:`,
       this.message
     ].join(' ');
   }

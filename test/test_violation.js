@@ -20,7 +20,7 @@ describe('Violation', () => {
     const text = new Violation('grouped', 'error', 'loose line', new Region('a.md', 7, 1)).text();
     assert.strictEqual(
       text,
-      'a.md:7:1 error grouped loose line',
+      'a.md:7:1 error [grouped]: loose line',
       'the human line must place the location before the message'
     );
   });

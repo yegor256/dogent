@@ -10,6 +10,7 @@ const ShortSections = require('./short-sections');
 const Grouped = require('./grouped');
 const NoArticles = require('./no-articles');
 const Command = require('./command');
+const Punctuation = require('./punctuation');
 const Frontmatter = require('./frontmatter');
 
 module.exports = () => [
@@ -18,6 +19,7 @@ module.exports = () => [
   new LineLength(80),
   new NoArticles(),
   new Command(),
+  new Punctuation(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

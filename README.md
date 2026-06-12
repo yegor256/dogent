@@ -63,6 +63,7 @@ The command exits with a non-zero status when problems are found,
 - Section names must be short, 1-3 words.
 - Every line must be no longer than 80 symbols.
 - Every line must sound like a command.
+- Every sentence must start with a capital and end with a period.
 - No articles, no noise, no bloated text.
 - Simple grammar, no ambiguity.
 - `SKILL.md` must open with valid frontmatter.

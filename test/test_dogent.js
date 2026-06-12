@@ -29,7 +29,7 @@ describe('dogent', () => {
   });
   it('reports zero problems for a clean manifesto', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
-    fs.writeFileSync(file, '# Kitchen\nSharpen knife');
+    fs.writeFileSync(file, '# Kitchen\nSharpen knife.');
     const out = execFileSync(
       'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8'}
     );

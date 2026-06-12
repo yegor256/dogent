@@ -6,6 +6,7 @@
 'use strict';
 
 const LineLength = require('./line-length');
+const TokenCount = require('./token-count');
 const ShortSections = require('./short-sections');
 const Grouped = require('./grouped');
 const NoArticles = require('./no-articles');
@@ -17,6 +18,7 @@ module.exports = () => [
   new Grouped(),
   new ShortSections(),
   new LineLength(80),
+  new TokenCount(4000),
   new NoArticles(),
   new Command(),
   new Punctuation(),

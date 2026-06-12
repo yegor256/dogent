@@ -62,6 +62,7 @@ The command exits with a non-zero status when problems are found,
 - Instructions must be grouped in sections.
 - Section names must be short, 1-3 words.
 - Every line must be no longer than 80 symbols.
+- The whole file must stay under 4000 tokens.
 - Every line must sound like a command.
 - Every sentence must start with a capital and end with a period.
 - No articles, no noise, no bloated text.

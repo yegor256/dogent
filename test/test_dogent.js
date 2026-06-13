@@ -9,7 +9,7 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const {execFileSync} = require('child_process');
+const {execFileSync, spawnSync} = require('child_process');
 
 describe('dogent', () => {
   it('exits non-zero when a manifesto breaks a rule', () => {
@@ -47,5 +47,15 @@ describe('dogent', () => {
       code = error.status;
     }
     assert.strictEqual(code, 1, 'a directory holding a broken manifesto must exit with code one');
+  });
+  it('prints each scanned manifesto path', () => {
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
+    fs.writeFileSync(file, '# Kitchen\nSharpen knife.');
+    const run = spawnSync(
+      'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8'}
+    );
+    assert.ok(
+      run.stderr.includes(`Scanning ${file}`), 'dogent must announce every file it scans'
+    );
   });
 });

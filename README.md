@@ -33,7 +33,10 @@ npx @yegor256/dogent SKILL.md CLAUDE.md AGENTS.md
 ```
 
 Point it at a directory to lint the default manifestos it holds
-  (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, `SKILLS.md`):
+  (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, `SKILLS.md`).
+The directory is scanned recursively through every subfolder
+  (skipping `node_modules` and `.git`),
+  and each scanned file is announced on the standard error stream:
 
 ```bash
 npx @yegor256/dogent .

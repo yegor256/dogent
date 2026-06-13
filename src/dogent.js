@@ -19,8 +19,11 @@ if (paths.length === 0) {
   process.stderr.write('Usage: dogent [--sarif] <file.md|dir>...\n');
   process.exit(2);
 }
+const scanned = new Sources(paths).files();
+scanned.forEach((file) => process.stderr.write(`Scanning ${file}\n`));
+process.stderr.write(`${scanned.length} files scanned\n`);
 const found = [];
-new Sources(paths).files().forEach((file) => {
+scanned.forEach((file) => {
   const document = new Markdown(file, fs.readFileSync(file, 'utf8')).document();
   rules().forEach((rule) => {
     rule.violations(document).forEach((violation) => found.push(violation));

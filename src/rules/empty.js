@@ -20,6 +20,9 @@ class Empty {
   constructor() {
     this.id = 'empty';
   }
+  prompt() {
+    return `${this.id}: flag any section heading that carries no instructions beneath it`;
+  }
   violations(document) {
     const uri = document.uri();
     const marks = document.walk({

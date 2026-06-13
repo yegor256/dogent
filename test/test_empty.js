@@ -88,6 +88,15 @@ describe('Empty edge', () => {
   });
 });
 
+describe('Empty prompt', () => {
+  it('offers a fragment for the oracle', () => {
+    assert.ok(
+      new Empty().prompt().startsWith('empty:'),
+      'the fragment must name the empty rule for the oracle'
+    );
+  });
+});
+
 describe('Empty companion to Grouped', () => {
   it('together cover the section-instruction relationship', () => {
     const doc = new Markdown('x.md', '## A\nDo x.\n## B\n## C\nFix y.').document();

@@ -23,7 +23,7 @@ We respect [agent-sh/agnix](https://github.com/agent-sh/agnix)
 Run it on any manifesto file, no installation required:
 
 ```bash
-npx @yegor256/dogent@0.3.0 CLAUDE.md
+npx @yegor256/dogent@0.4.0 CLAUDE.md
 ```
 
 Lint several files at once:
@@ -131,7 +131,7 @@ Reference `dogent` as a remote hook in `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/yegor256/dogent
-    rev: 0.3.0
+    rev: 0.4.0
     hooks:
       - id: dogent
 ```

@@ -14,9 +14,15 @@ Vague, bloated, or ambiguous instructions make agents behave unpredictably.
   so every line earns its place.
 
 We respect [agent-sh/agnix](https://github.com/agent-sh/agnix)
-  as a prototype of this idea.
-`dogent` goes further: it is stricter, more opinionated,
-  and aims for extreme quality with no compromise.
+  as a prototype of this idea, but the two lint different layers.
+`agnix` validates the harness around a prompt — frontmatter schema,
+  hook JSON, MCP config, tool wiring — asking whether the configuration
+  is well-formed and correctly wired.
+`dogent` lints the prose of the instructions themselves,
+  asking whether every line is a tight, unambiguous command.
+In short: `agnix` lints the harness, `dogent` lints the prompt.
+`dogent` is the stricter, more opinionated of the two,
+  aiming for extreme quality with no compromise.
 
 ## Usage
 

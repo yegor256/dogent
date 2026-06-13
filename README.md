@@ -96,6 +96,15 @@ export OPENAI_API_KEY=...
 npx @yegor256/dogent CLAUDE.md
 ```
 
+Pass `--offline` to keep `dogent` away from the LLM,
+  even when `OPENAI_API_KEY` is present in the environment:
+
+```bash
+npx @yegor256/dogent --offline CLAUDE.md
+```
+
+Pass `--sarif` to print the report as SARIF instead of plain text.
+
 ## GitHub Actions
 
 Because `dogent` runs through `npx`, no extra action is needed.

@@ -19,6 +19,9 @@ class Punctuation {
   constructor() {
     this.id = 'punctuation';
   }
+  prompt() {
+    return `${this.id}: flag any instruction that is not one complete, grammatical sentence`;
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

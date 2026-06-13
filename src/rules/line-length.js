@@ -19,6 +19,9 @@ class LineLength {
     this.id = 'line-length';
     this.max = max;
   }
+  prompt() {
+    return `${this.id}: flag any instruction too wordy to grasp in a single read`;
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

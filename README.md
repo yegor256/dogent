@@ -83,12 +83,16 @@ The command exits with a non-zero status when problems are found,
 
 `dogent` works standalone by default,
   using fast deterministic checks with no network access.
-When `OPENAI_API_KEY` or `CLAUDE_TOKEN` is present in the environment,
-  it additionally uses AI to verify the text for ambiguity,
-  weak phrasing, and instructions that only pretend to be commands:
+When `OPENAI_API_KEY` is present in the environment,
+  and only after the standalone rules find nothing,
+  `dogent` asks OpenAI for a second, deeper opinion.
+It sends the manifesto together with one instruction per rule,
+  then prints any violation the model reports for ambiguity,
+  weak phrasing, and instructions that only pretend to be commands.
+The model defaults to `gpt-4o-mini`; override it with `OPENAI_MODEL`.
 
 ```bash
-export CLAUDE_TOKEN=...
+export OPENAI_API_KEY=...
 npx @yegor256/dogent CLAUDE.md
 ```
 
@@ -118,7 +122,7 @@ To enable AI verification in CI, expose a token as a secret:
 ```yaml
       - run: npx @yegor256/dogent CLAUDE.md
         env:
-          CLAUDE_TOKEN: ${{ secrets.CLAUDE_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
 ## Pre-commit hook

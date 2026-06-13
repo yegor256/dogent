@@ -18,6 +18,9 @@ class Grouped {
   constructor() {
     this.id = 'grouped';
   }
+  prompt() {
+    return `${this.id}: flag any instruction that sits under a section where it does not belong`;
+  }
   violations(document) {
     const uri = document.uri();
     const marks = document.walk({

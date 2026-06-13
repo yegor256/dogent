@@ -21,6 +21,9 @@ class TokenCount {
     this.id = 'token-count';
     this.cap = cap;
   }
+  prompt() {
+    return `${this.id}: flag bloated wording that wastes the context budget`;
+  }
   violations(document) {
     const count = (document.walk({
       header: (text) => [text],

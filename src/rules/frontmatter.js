@@ -22,6 +22,9 @@ class Frontmatter {
     this.required = required;
     this.allowed = allowed;
   }
+  prompt() {
+    return `${this.id}: in a ${this.name} file, flag any required key whose value is empty, vague, or a leftover placeholder`;
+  }
   violations(document) {
     const uri = document.uri();
     if (uri.replace(/^.*\//u, '') !== this.name) {

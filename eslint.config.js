@@ -22,6 +22,9 @@
  * Two more (max-statements, max-lines-per-function) are switched off
  * only for src/markdown.js, whose one cohesive scanning loop they
  * cannot usefully measure; everywhere else they stay on.
+ *
+ * One more (camelcase) is switched off only for src/openai.js, whose
+ * request body carries OpenAI's snake_case field "response_format".
  */
 
 'use strict';
@@ -71,6 +74,12 @@ module.exports = [
     rules: {
       'max-statements': 'off',
       'max-lines-per-function': 'off'
+    }
+  },
+  {
+    files: ['src/openai.js'],
+    rules: {
+      camelcase: 'off'
     }
   },
   {

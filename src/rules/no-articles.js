@@ -18,6 +18,9 @@ class NoArticles {
   constructor() {
     this.id = 'no-articles';
   }
+  prompt() {
+    return `${this.id}: flag filler or noise words that add nothing to an instruction`;
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

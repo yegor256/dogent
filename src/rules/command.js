@@ -13,14 +13,15 @@ const Region = require('../region');
  *
  * Demands that every instruction sound like a command. A standalone
  * checker can only guess: it flags lines that open with a pronoun or
- * end with a question mark, both signs of description, not order.
- *
- * @todo #1:90min Replace this heuristic with a real imperative-mood check
- *  driven by an AI oracle when a token is present in the environment.
+ * end with a question mark, both signs of description, not order. Its
+ * prompt hands the subtler imperative-mood judgement to the AI oracle.
  */
 class Command {
   constructor() {
     this.id = 'command';
+  }
+  prompt() {
+    return `${this.id}: flag any line that reads as a description, a question, or a plain statement rather than a direct order`;
   }
   violations(document) {
     const uri = document.uri();

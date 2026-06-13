@@ -98,7 +98,7 @@ class Markdown {
     if (fence !== '') {
       pieces.push(new Snippet(block.join('\n'), opened));
     }
-    return new Document(this.address, pieces);
+    return new Document(this.address, pieces, this.content);
   }
 }
 

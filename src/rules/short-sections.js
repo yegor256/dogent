@@ -18,6 +18,9 @@ class ShortSections {
   constructor() {
     this.id = 'short-sections';
   }
+  prompt() {
+    return `${this.id}: flag any section heading that is not a short, noun-style label`;
+  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

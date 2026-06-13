@@ -31,7 +31,7 @@ describe('dogent', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
     fs.writeFileSync(file, '# Kitchen\nSharpen knife.');
     const out = execFileSync(
-      'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8'}
+      'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8', env: {...process.env, OPENAI_API_KEY: ''}}
     );
     assert.ok(/0 problems found/u.test(out), 'a clean manifesto must report zero problems');
   });
@@ -52,7 +52,7 @@ describe('dogent', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
     fs.writeFileSync(file, '# Kitchen\nSharpen knife.');
     const run = spawnSync(
-      'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8'}
+      'node', [path.join(__dirname, '../src/dogent.js'), file], {encoding: 'utf8', env: {...process.env, OPENAI_API_KEY: ''}}
     );
     assert.ok(
       run.stderr.includes(`Scanning ${file}`), 'dogent must announce every file it scans'

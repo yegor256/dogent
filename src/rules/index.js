@@ -9,6 +9,7 @@ const LineLength = require('./line-length');
 const TokenCount = require('./token-count');
 const ShortSections = require('./short-sections');
 const Grouped = require('./grouped');
+const Empty = require('./empty');
 const NoArticles = require('./no-articles');
 const Command = require('./command');
 const Punctuation = require('./punctuation');
@@ -16,6 +17,7 @@ const Frontmatter = require('./frontmatter');
 
 module.exports = () => [
   new Grouped(),
+  new Empty(),
   new ShortSections(),
   new LineLength(80),
   new TokenCount(4000),

@@ -38,6 +38,9 @@ class DeadImport {
   constructor() {
     this.id = 'dead-import';
   }
+  prompt() {
+    return `${this.id}: flag any @path/to/file import that points to no file on disk`;
+  }
   violations(document) {
     return document.walk({
       header: () => [],

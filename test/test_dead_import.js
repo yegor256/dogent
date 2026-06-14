@@ -20,6 +20,12 @@ const document = (dir, body) => {
 };
 
 describe('DeadImport', () => {
+  it('offers a prompt fragment for the oracle', () => {
+    assert.equal(
+      new DeadImport().prompt(),
+      'dead-import: flag any @path/to/file import that points to no file on disk'
+    );
+  });
   it('flags a missing import target', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));
     const doc = document(dir, '# Gates\nLoad @parts/missing.md.');

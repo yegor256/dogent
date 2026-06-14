@@ -13,6 +13,9 @@ const Region = require('../region');
  *
  * Demands that every instruction and every heading stay within a
  * maximum width. Code snippets are exempt, since code is not prose.
+ *
+ * The check is standalone and deterministic, so prompt() returns an
+ * empty string and the AI oracle never re-checks this rule.
  */
 class LineLength {
   constructor(max) {
@@ -20,7 +23,7 @@ class LineLength {
     this.max = max;
   }
   prompt() {
-    return `${this.id}: flag any instruction too wordy to grasp in a single read`;
+    return '';
   }
   violations(document) {
     const uri = document.uri();

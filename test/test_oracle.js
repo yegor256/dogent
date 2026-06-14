@@ -8,6 +8,7 @@
 const assert = require('assert');
 const Markdown = require('../src/markdown');
 const Oracle = require('../src/oracle');
+const Usage = require('../src/usage');
 
 /**
  * FakeChat.
@@ -16,11 +17,11 @@ const Oracle = require('../src/oracle');
  * with one canned reply so the oracle can be tested without a network.
  */
 class FakeChat {
-  constructor(reply) {
-    this.reply = reply;
+  constructor(content) {
+    this.content = content;
   }
   answer() {
-    return Promise.resolve(this.reply);
+    return Promise.resolve({content: this.content, usage: new Usage('m', 9, 4)});
   }
 }
 
@@ -45,9 +46,17 @@ describe('Oracle', () => {
     });
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
     assert.strictEqual(
-      (await new Oracle([], new FakeChat(reply)).violations(doc))[0].text(),
+      (await new Oracle([], new FakeChat(reply)).violations(doc)).found[0].text(),
       'x.md:2:1 warning [command]: sounds like a question',
       'the oracle must turn the AI reply into violations'
+    );
+  });
+  it('surfaces the token usage the chat reported', async () => {
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    assert.strictEqual(
+      (await new Oracle([], new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
+      9,
+      'the oracle must surface the token usage from the chat'
     );
   });
 });

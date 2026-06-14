@@ -13,6 +13,7 @@ const Report = require('./report');
 const Sources = require('./sources');
 const Openai = require('./openai');
 const Oracle = require('./oracle');
+const Usage = require('./usage');
 const rules = require('./rules');
 
 const args = new Args(process.argv.slice(2));
@@ -41,27 +42,43 @@ documents.forEach((document) => {
   });
 });
 const key = process.env.OPENAI_API_KEY;
+const audit = async (docs) => {
+  const oracle = new Oracle(
+    rules(),
+    new Openai(
+      key,
+      process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      (url, options) => globalThis.fetch(url, options)
+    )
+  );
+  const replies = await Promise.all(docs.map((doc) => oracle.violations(doc)));
+  return replies.reduce(
+    (acc, reply) => ({
+      extra: acc.extra.concat(reply.found),
+      usage: acc.usage.plus(reply.usage)
+    }),
+    {extra: [], usage: new Usage('', 0, 0)}
+  );
+};
+const finish = (usage) => {
+  const report = new Report('dogent', found);
+  process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
+  if (usage !== null) {
+    process.stderr.write(`${usage.text()}\n`);
+  }
+  process.exit(report.count() > 0 ? 1 : 0);
+};
 (async () => {
+  let usage = null;
   if (found.length === 0 && key && !args.offline()) {
     try {
-      const oracle = new Oracle(
-        rules(),
-        new Openai(
-          key,
-          process.env.OPENAI_MODEL || 'gpt-4o-mini',
-          (url, options) => globalThis.fetch(url, options)
-        )
-      );
-      const extra = await Promise.all(
-        documents.map((document) => oracle.violations(document))
-      );
-      extra.forEach((bag) => bag.forEach((violation) => found.push(violation)));
+      const result = await audit(documents);
+      result.extra.forEach((violation) => found.push(violation));
+      ({usage} = result);
     } catch (error) {
       process.stderr.write(`AI verification failed: ${error.message}\n`);
       process.exit(2);
     }
   }
-  const report = new Report('dogent', found);
-  process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
-  process.exit(report.count() > 0 ? 1 : 0);
+  finish(usage);
 })();

@@ -23,8 +23,9 @@
  * only for src/markdown.js, whose one cohesive scanning loop they
  * cannot usefully measure; everywhere else they stay on.
  *
- * One more (camelcase) is switched off only for src/openai.js, whose
- * request body carries OpenAI's snake_case field "response_format".
+ * One more (camelcase) is switched off only for src/openai.js and its
+ * test, which carry OpenAI's snake_case fields "response_format",
+ * "prompt_tokens", and "completion_tokens".
  *
  * One more (class-methods-use-this) is switched off only for
  * src/rules/empty.js, whose prompt() returns a constant empty string to
@@ -81,7 +82,7 @@ module.exports = [
     }
   },
   {
-    files: ['src/openai.js'],
+    files: ['src/openai.js', 'test/test_openai.js'],
     rules: {
       camelcase: 'off'
     }

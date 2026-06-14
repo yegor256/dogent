@@ -37,6 +37,20 @@ describe('Args paths', () => {
       'recognized flags must never count as unknown'
     );
   });
+  it('treats a dashed token after the separator as a path', () => {
+    assert.deepStrictEqual(
+      new Args(['--', '-weird.md']).paths(),
+      ['-weird.md'],
+      'tokens past the -- separator must stay paths even with a dash'
+    );
+  });
+  it('reports nothing unknown for a token past the separator', () => {
+    assert.deepStrictEqual(
+      new Args(['--', '-weird.md']).unknown(),
+      [],
+      'tokens past the -- separator must never count as unknown'
+    );
+  });
 });
 
 describe('Args flags', () => {
@@ -66,6 +80,13 @@ describe('Args flags', () => {
       new Args(['CLAUDE.md']).offline(),
       false,
       'a missing --offline flag must allow the LLM'
+    );
+  });
+  it('reads the sarif flag from the equals syntax', () => {
+    assert.strictEqual(
+      new Args(['--sarif=false', 'CLAUDE.md']).sarif(),
+      false,
+      'the --flag=value syntax must drive the sarif option'
     );
   });
 });

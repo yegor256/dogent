@@ -31,7 +31,8 @@ const imports = (line) => {
  * Flags `@path/to/file` imports that point to no file on disk.
  *
  * @todo #18:45min Detect circular import chains and depth above five
- *  levels, as requested in issue #18.
+ *  levels so deeply nested manifesto imports fail with a clear violation,
+ *  as requested in issue #18.
  */
 class DeadImport {
   constructor() {

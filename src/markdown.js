@@ -42,7 +42,8 @@ class Markdown {
         items = [];
       }
     };
-    const lines = this.content.split('\n');
+    const body = this.content.replace(/\r\n?/gu, '\n');
+    const lines = body.split('\n');
     let skip = 0;
     if (lines[0].trim() === '---') {
       const rest = lines.slice(1);
@@ -98,7 +99,7 @@ class Markdown {
     if (fence !== '') {
       pieces.push(new Snippet(block.join('\n'), opened));
     }
-    return new Document(this.address, pieces, this.content);
+    return new Document(this.address, pieces, body);
   }
 }
 

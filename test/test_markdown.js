@@ -58,3 +58,12 @@ describe('Markdown', () => {
     assert.deepStrictEqual(rows, [3], 'a header on the third line must report line three');
   });
 });
+
+describe('Markdown line endings', () => {
+  it('strips trailing carriage returns from CRLF prose', () => {
+    const texts = new Markdown('x.md', 'Close door\r\nLock gate\r\n').document().walk({
+      header: () => [], prose: (text) => [text], snippet: () => [], bullets: () => []
+    });
+    assert.ok(texts.every((text) => !text.includes('\r')), 'CRLF must not leave a carriage return');
+  });
+});

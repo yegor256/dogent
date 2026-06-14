@@ -27,9 +27,10 @@ const fixtures = (kind) => {
 (process.env.OPENAI_API_KEY ? describe : describe.skip)('fixtures', () => {
   fixtures('positive').forEach((file) => {
     it(`stays silent through the model for ${path.basename(file)}`, () => {
+      const report = run(file).stdout;
       assert.ok(
-        /0 problems found/u.test(run(file).stdout),
-        'a clean manifesto must survive the oracle with zero problems'
+        /0 problems found/u.test(report),
+        `a clean manifesto must survive the oracle with zero problems, got:\n${report}`
       );
     });
   });

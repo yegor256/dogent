@@ -89,10 +89,11 @@ describe('Empty edge', () => {
 });
 
 describe('Empty prompt', () => {
-  it('offers a fragment for the oracle', () => {
-    assert.ok(
-      new Empty().prompt().startsWith('empty:'),
-      'the fragment must name the empty rule for the oracle'
+  it('offers no fragment so the oracle never re-checks it', () => {
+    assert.strictEqual(
+      new Empty().prompt(),
+      '',
+      'the empty rule stays deterministic and out of the oracle'
     );
   });
 });

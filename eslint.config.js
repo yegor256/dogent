@@ -25,6 +25,10 @@
  *
  * One more (camelcase) is switched off only for src/openai.js, whose
  * request body carries OpenAI's snake_case field "response_format".
+ *
+ * One more (class-methods-use-this) is switched off only for
+ * src/rules/empty.js, whose prompt() returns a constant empty string to
+ * keep the deterministic-only rule out of the AI oracle.
  */
 
 'use strict';
@@ -80,6 +84,12 @@ module.exports = [
     files: ['src/openai.js'],
     rules: {
       camelcase: 'off'
+    }
+  },
+  {
+    files: ['src/rules/empty.js'],
+    rules: {
+      'class-methods-use-this': 'off'
     }
   },
   {

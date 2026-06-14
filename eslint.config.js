@@ -27,8 +27,9 @@
  * request body carries OpenAI's snake_case field "response_format".
  *
  * One more (class-methods-use-this) is switched off only for
- * src/rules/empty.js, whose prompt() returns a constant empty string to
- * keep the deterministic-only rule out of the AI oracle.
+ * src/rules/empty.js and src/rules/line-length.js, whose prompt()
+ * returns a constant empty string to keep the deterministic-only rule
+ * out of the AI oracle.
  */
 
 'use strict';
@@ -87,7 +88,7 @@ module.exports = [
     }
   },
   {
-    files: ['src/rules/empty.js'],
+    files: ['src/rules/empty.js', 'src/rules/line-length.js'],
     rules: {
       'class-methods-use-this': 'off'
     }

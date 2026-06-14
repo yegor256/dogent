@@ -3,7 +3,7 @@
 Sharpen knife.
 Boil water.
 
-# Cleanup
+## Cleanup
 
 Wash dishes.
 Dry plates.

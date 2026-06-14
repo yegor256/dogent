@@ -3,7 +3,7 @@
 Plant seeds.
 Water soil.
 
-# Harvest
+## Harvest
 
 Pick ripe fruit.
 Store grain.

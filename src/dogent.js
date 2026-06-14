@@ -7,6 +7,7 @@
 'use strict';
 
 const fs = require('fs');
+const Args = require('./args');
 const Markdown = require('./markdown');
 const Report = require('./report');
 const Sources = require('./sources');
@@ -14,11 +15,17 @@ const Openai = require('./openai');
 const Oracle = require('./oracle');
 const rules = require('./rules');
 
-const argv = process.argv.slice(2);
-const sarif = argv.indexOf('--sarif') !== -1;
-const paths = argv.filter((arg) => arg !== '--sarif');
+const args = new Args(process.argv.slice(2));
+const sarif = args.sarif();
+const unknown = args.unknown();
+if (unknown.length > 0) {
+  process.stderr.write(`Unknown option: ${unknown[0]}\n`);
+  process.stderr.write('Usage: dogent [--sarif] [--offline] <file.md|dir>...\n');
+  process.exit(2);
+}
+const paths = args.paths();
 if (paths.length === 0) {
-  process.stderr.write('Usage: dogent [--sarif] <file.md|dir>...\n');
+  process.stderr.write('Usage: dogent [--sarif] [--offline] <file.md|dir>...\n');
   process.exit(2);
 }
 const scanned = new Sources(paths).files();
@@ -35,7 +42,7 @@ documents.forEach((document) => {
 });
 const key = process.env.OPENAI_API_KEY;
 (async () => {
-  if (found.length === 0 && key) {
+  if (found.length === 0 && key && !args.offline()) {
     try {
       const oracle = new Oracle(
         rules(),

@@ -40,7 +40,7 @@
     "lint": "eslint .",
     "test": "mocha 'test/**/*.js' --timeout 60000"
   },
-  "version": "0.0.0",
+  "version": "0.6.2",
   "dependencies": {
     "minimist": "^1.2.8"
   }

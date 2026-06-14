@@ -5,11 +5,14 @@
 
 'use strict';
 
+const Usage = require('./usage');
+
 /**
  * Openai.
  *
  * A thin adapter over the OpenAI chat-completions endpoint. Sends one
- * prompt, demands a JSON object back, and returns the assistant text.
+ * prompt, demands a JSON object back, and returns the assistant text
+ * paired with a Usage tally of the model and the tokens it consumed.
  * The transport is injected so the class runs in tests without a socket.
  */
 class Openai {
@@ -38,7 +41,16 @@ class Openai {
     if (!response.ok) {
       throw new Error(`OpenAI request rejected with status ${response.status}`);
     }
-    return (await response.json()).choices[0].message.content;
+    const body = await response.json();
+    const usage = body.usage || {};
+    return {
+      content: body.choices[0].message.content,
+      usage: new Usage(
+        this.model,
+        usage.prompt_tokens || 0,
+        usage.completion_tokens || 0
+      )
+    };
   }
 }
 

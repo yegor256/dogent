@@ -90,6 +90,9 @@ It sends the manifesto together with one instruction per rule,
   then prints any violation the model reports for ambiguity,
   weak phrasing, and instructions that only pretend to be commands.
 The model defaults to `gpt-4o-mini`; override it with `OPENAI_MODEL`.
+After the report, `dogent` prints a one-line usage summary to standard error,
+  naming the model, the tokens sent and received, and an estimated cost,
+  for example `OpenAI: gpt-4o-mini, 1234 sent, 567 received, ~$0.0005`.
 
 ```bash
 export OPENAI_API_KEY=...

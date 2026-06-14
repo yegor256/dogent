@@ -8,16 +8,30 @@
 const assert = require('assert');
 const Openai = require('../src/openai');
 
+const reply = (content, usage) => () => Promise.resolve({
+  ok: true,
+  json: () => Promise.resolve({choices: [{message: {content}}], usage})
+});
+
 describe('Openai', () => {
   it('returns the assistant message content from the reply', async () => {
-    const chat = new Openai('secret-key', 'gpt-4o-mini', () => Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve({choices: [{message: {content: 'pong'}}]})
-    }));
+    const chat = new Openai('secret-key', 'gpt-4o-mini', reply('pong', {}));
     assert.strictEqual(
-      await chat.answer('ping'),
+      (await chat.answer('ping')).content,
       'pong',
-      'the answer must be the assistant message content'
+      'the answer must carry the assistant message content'
+    );
+  });
+  it('reports the token usage the reply carries', async () => {
+    const chat = new Openai(
+      'secret-key',
+      'gpt-4o-mini',
+      reply('pong', {prompt_tokens: 12, completion_tokens: 3})
+    );
+    assert.strictEqual(
+      (await chat.answer('ping')).usage.sent,
+      12,
+      'the answer must carry the count of tokens sent'
     );
   });
   it('fails fast when the endpoint rejects the request', async () => {

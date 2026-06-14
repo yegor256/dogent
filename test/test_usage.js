@@ -40,7 +40,7 @@ describe('Usage', () => {
   it('renders a one-line summary of the exchange', () => {
     assert.strictEqual(
       new Usage('gpt-4o-mini', 1234, 567).text(),
-      'OpenAI: gpt-4o-mini, 1234 sent, 567 received, ~$0.0005',
+      'OpenAI: gpt-4o-mini, 1234 sent, 567 received, ~0.05¢',
       'the summary must name the model, the tokens, and the cost'
     );
   });

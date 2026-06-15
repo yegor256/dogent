@@ -18,6 +18,7 @@ const NameFormat = require('./name-format');
 const DeadImport = require('./dead-import');
 const Redundant = require('./redundant');
 const NameMatchesDir = require('./name-matches-dir');
+const Polite = require('./polite');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 
@@ -35,6 +36,7 @@ module.exports = () => [
   new Consistent(),
   new Simple(),
   new NameMatchesDir(),
+  new Polite(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

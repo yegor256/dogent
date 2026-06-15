@@ -78,6 +78,7 @@ The command exits with a non-zero status when problems are found,
 - Simple grammar, no ambiguity.
 - No tangled, multi-clause instructions.
 - A `SKILL.md` `name` must equal its parent directory.
+- No courtesy or scaffolding words.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
 - A `SKILL.md` `name` must be kebab-case.

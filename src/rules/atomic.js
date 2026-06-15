@@ -15,19 +15,15 @@ const Region = require('../region');
  * checker only spots the loud signs: a sentence terminator sitting
  * mid-line with more text after it, or two verb phrases welded together
  * with a semicolon, an " and ", or a " then ". The prompt hands the
- * subtler clause-counting to the AI oracle.
- *
- * @todo #21:45min Upgrade to a real clause-count check through an AI
- *  oracle so that subtle multi-instruction lines, which the conservative
- *  heuristic cannot see today, are reliably caught, as requested in
- *  issue #21.
+ * subtler clause-counting to the AI oracle, which catches the
+ * multi-instruction lines that carry no such welding token.
  */
 class Atomic {
   constructor() {
     this.id = 'atomic';
   }
   prompt() {
-    return `${this.id}: flag any line that carries more than one instruction`;
+    return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses even when no semicolon, "and", or "then" welds them together`;
   }
   violations(document) {
     const uri = document.uri();

@@ -1,5 +1,5 @@
 # Commits
 
-Write one imperative sentence per subject.
-Reference issue number inside body.
+Limit subject to fifty characters.
+Explain reasoning inside body.
 Squash fixup commits before review.

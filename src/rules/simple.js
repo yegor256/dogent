@@ -37,7 +37,7 @@ class Simple {
     const commas = text.match(/,/gu);
     const commaCount = commas === null ? 0 : commas.length;
     const hasConjunction = /\b(?:if|when|unless|because|although|while)\b/iu.test(text);
-    const tangled = hasConjunction && commaCount >= 2 || commaCount >= 3;
+    const tangled = hasConjunction && commaCount >= 2;
     if (!tangled) {
       return [];
     }

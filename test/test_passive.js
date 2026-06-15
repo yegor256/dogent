@@ -34,6 +34,17 @@ describe('Passive', () => {
       'an active imperative line must pass'
     );
   });
+  it('accepts an attributive participle before a noun', () => {
+    const doc = new Markdown(
+      'x.md',
+      '# H\nWhen owner is authenticated account, file issue and stop.'
+    ).document();
+    assert.strictEqual(
+      new Passive().violations(doc).length,
+      0,
+      'a participle modifying a following noun is not passive voice'
+    );
+  });
   it('exposes its id through the prompt', () => {
     assert.ok(
       new Passive().prompt().includes('passive'),

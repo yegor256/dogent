@@ -58,4 +58,10 @@ describe('Prompt', () => {
       'the prompt must mandate reporting duplicate or contradictory lines'
     );
   });
+  it('omits the phantom line a trailing newline would add', () => {
+    assert.ok(
+      !text('# Doors\nShut gate\n').includes('3: '),
+      'a trailing newline must not be numbered as a non-existent line'
+    );
+  });
 });

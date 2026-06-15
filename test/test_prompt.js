@@ -25,4 +25,18 @@ describe('Prompt', () => {
       'the prompt must include the command rule fragment'
     );
   });
+  it('teaches the oracle the terse imperative house style', () => {
+    const doc = new Markdown('x.md', '# Doors\nShut gate').document();
+    assert.ok(
+      new Prompt([new Command()], doc).text().includes('imperative verb'),
+      'the prompt must explain that each line is a compressed imperative command'
+    );
+  });
+  it('teaches the oracle how sections own their lines', () => {
+    const doc = new Markdown('x.md', '# Doors\nShut gate').document();
+    assert.ok(
+      new Prompt([new Command()], doc).text().includes('belongs to that section'),
+      'the prompt must explain that a line belongs to the heading above it'
+    );
+  });
 });

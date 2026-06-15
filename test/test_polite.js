@@ -37,6 +37,14 @@ describe('Polite accepts', () => {
       'a bare command must pass'
     );
   });
+  it('ignores courtesy words quoted inside inline code', () => {
+    const doc = new Markdown('x.md', '# H\nForbid `please` and `kindly` words.').document();
+    assert.strictEqual(
+      new Polite().violations(doc).length,
+      0,
+      'inline-code literals must be skipped like fenced snippets'
+    );
+  });
 });
 
 describe('Polite prompt', () => {

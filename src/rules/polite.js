@@ -38,8 +38,9 @@ class Polite {
   }
   scan(text, line, uri) {
     const found = [];
+    const masked = this.mask(text);
     const regex = /\b(?:please|kindly|feel free to|make sure to|be sure to|don't forget to|remember to|note that|it is important to)\b/giu;
-    let hit = regex.exec(text);
+    let hit = regex.exec(masked);
     while (hit !== null) {
       found.push(new Violation(
         this.id,
@@ -47,9 +48,12 @@ class Polite {
         `courtesy phrase "${hit[0]}" must be removed`,
         new Region(uri, line, hit.index + 1)
       ));
-      hit = regex.exec(text);
+      hit = regex.exec(masked);
     }
     return found;
+  }
+  mask(text) {
+    return text.replace(/`[^`]*`/gu, (span) => ' '.repeat(span.length));
   }
 }
 

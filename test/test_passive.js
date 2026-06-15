@@ -40,4 +40,10 @@ describe('Passive', () => {
       'the prompt must mention the rule id'
     );
   });
+  it('directs the oracle to judge true grammatical voice', () => {
+    assert.ok(
+      new Passive().prompt().includes('grammatical voice'),
+      'the prompt must hand true grammatical-voice judgement to the oracle'
+    );
+  });
 });

@@ -20,9 +20,9 @@ const Yaml = require('./yaml');
  * the context of the moment (inside a fence, inside a list), and emits
  * a Document of fragments. This is a line scanner, not a grammar.
  *
- * @todo #1:45min Attach wrapped continuation lines to the bullet they
- *  belong to, instead of silently dropping their nested indentation
- *  context on the floor.
+ * A wrapped continuation line, indented under an open bullet and
+ * carrying no marker of its own, folds into the bullet it belongs to
+ * rather than breaking the list and floating off as a stray paragraph.
  */
 class Markdown {
   constructor(uri, content) {
@@ -90,6 +90,11 @@ class Markdown {
       }
       if (/^\s*$/u.test(line)) {
         flush();
+        return;
+      }
+      if (items.length > 0 && /^\s+\S/u.test(line)) {
+        const last = items[items.length - 1];
+        items[items.length - 1] = new Prose(`${last.content} ${line.trim()}`, last.row);
         return;
       }
       flush();

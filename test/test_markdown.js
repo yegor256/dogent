@@ -59,6 +59,40 @@ describe('Markdown', () => {
   });
 });
 
+describe('Markdown bullet continuations', () => {
+  it('keeps the list open across a wrapped continuation line', () => {
+    const pieces = new Markdown(
+      'x.md', '- alpha that wraps\n  onto a second line\n- beta'
+    ).document().walk({
+      header: () => [], prose: () => [], snippet: () => [], bullets: () => ['bullets']
+    });
+    assert.deepStrictEqual(
+      pieces, ['bullets'], 'a wrapped continuation must not break the bullet list'
+    );
+  });
+  it('folds a continuation into the bullet it belongs to', () => {
+    const items = new Markdown(
+      'x.md', '- alpha that wraps\n  onto a second line\n- beta'
+    ).document().walk({
+      header: () => [], prose: (text) => [text], snippet: () => [], bullets: () => []
+    });
+    assert.strictEqual(
+      items.length, 2, 'a continuation must fold into its bullet, not add a piece'
+    );
+  });
+  it('joins the continuation text to its bullet', () => {
+    const texts = new Markdown(
+      'x.md', '- alpha that wraps\n  onto a second line\n- beta'
+    ).document().walk({
+      header: () => [], prose: (text) => [text], snippet: () => [], bullets: () => []
+    });
+    assert.ok(
+      texts[0].includes('onto a second line'),
+      'the wrapped line must attach to the bullet it belongs to'
+    );
+  });
+});
+
 describe('Markdown line endings', () => {
   it('strips trailing carriage returns from CRLF prose', () => {
     const texts = new Markdown('x.md', 'Close door\r\nLock gate\r\n').document().walk({

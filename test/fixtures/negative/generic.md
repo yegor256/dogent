@@ -1,4 +1,4 @@
 # Conduct
 
-Stay polite and helpful with everyone always.
-Review merge requests daily.
+Always be helpful, honest, and harmless.
+Always answer in friendly, professional tone.

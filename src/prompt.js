@@ -64,9 +64,11 @@ class Prompt {
       .join('\n');
   }
   body() {
-    return this.doc
-      .text()
-      .split('\n')
+    const lines = this.doc.text().split('\n');
+    if (lines.length > 0 && lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+    return lines
       .map((line, index) => `${index + 1}: ${line}`)
       .join('\n');
   }

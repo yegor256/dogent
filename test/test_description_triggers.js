@@ -46,4 +46,10 @@ describe('DescriptionTriggers prompt', () => {
       'the prompt must carry the rule id'
     );
   });
+  it('directs the oracle to weigh activation situations', () => {
+    assert.ok(
+      new DescriptionTriggers().prompt().includes('situations'),
+      'the prompt must hand activation judgement to the oracle'
+    );
+  });
 });

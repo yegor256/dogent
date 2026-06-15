@@ -14,11 +14,8 @@ const Region = require('../region');
  * Demands that a SKILL.md description say when to use the skill. A
  * standalone checker can only approximate: it flags a value that is too
  * short or that never names a trigger with the word "when". Its prompt
- * hands the deeper judgement to the AI oracle.
- *
- * @todo #19:30min Upgrade the trigger check to an AI oracle that judges
- *  whether the description truly names the situations and user phrases
- *  that should activate the skill, as requested in issue #19.
+ * hands the deeper judgement to the AI oracle, which weighs whether the
+ * description truly names the situations and phrases that activate it.
  */
 class DescriptionTriggers {
   constructor() {
@@ -26,7 +23,7 @@ class DescriptionTriggers {
     this.minimum = 20;
   }
   prompt() {
-    return `${this.id}: in a SKILL.md, flag a description that is too short or never says when to use the skill`;
+    return `${this.id}: in a SKILL.md, flag a description that is too short or fails to name the concrete situations and user phrases that should activate the skill, even when it contains the word "when"`;
   }
   violations(document) {
     const uri = document.uri();

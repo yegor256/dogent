@@ -13,19 +13,16 @@ const Region = require('../region');
  *
  * Flags soft, non-committal, or hedging wording that weakens an order.
  * Catches words like "should", "just", "usually", and phrases like
- * "try to" or "if possible", each a sign of timid instruction.
- *
- * @todo #22:30min Upgrade to an AI oracle that catches subtler hedging,
- *  such as conditional escape hatches and vague scope, which the fixed
- *  blacklist of hedge words cannot detect today, as requested in
- *  issue #22.
+ * "try to" or "if possible", each a sign of timid instruction. Its
+ * prompt hands subtler hedging to the AI oracle, which catches the
+ * conditional escape hatches and vague scope no fixed list can.
  */
 class Hedging {
   constructor() {
     this.id = 'hedging';
   }
   prompt() {
-    return `${this.id}: flag soft, non-committal, or hedging wording`;
+    return `${this.id}: flag soft, non-committal, or hedging wording, including conditional escape hatches and vague scope that carry no fixed hedge word`;
   }
   violations(document) {
     const uri = document.uri();

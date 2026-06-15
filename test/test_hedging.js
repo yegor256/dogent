@@ -41,4 +41,10 @@ describe('Hedging', () => {
       'the prompt must name the rule id'
     );
   });
+  it('directs the oracle to catch conditional escape hatches', () => {
+    assert.ok(
+      new Hedging().prompt().includes('escape hatches'),
+      'the prompt must hand subtler hedging to the oracle'
+    );
+  });
 });

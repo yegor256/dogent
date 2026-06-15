@@ -14,6 +14,7 @@ const NoArticles = require('./no-articles');
 const Command = require('./command');
 const Punctuation = require('./punctuation');
 const Frontmatter = require('./frontmatter');
+const NameFormat = require('./name-format');
 const DeadImport = require('./dead-import');
 const Redundant = require('./redundant');
 const Consistent = require('./consistent');
@@ -36,5 +37,6 @@ module.exports = () => [
     'SKILL.md',
     ['name', 'description'],
     ['name', 'description', 'license', 'allowed-tools']
-  )
+  ),
+  new NameFormat()
 ];

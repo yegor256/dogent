@@ -13,19 +13,15 @@ const Region = require('../region');
  *
  * Demands simple grammar over ambiguity. A standalone checker can only
  * guess: it counts commas and conjunctions to flag lines that pile up
- * clauses. Its prompt hands the subtler tangle judgement to the oracle.
- *
- * @todo #29:45min Upgrade to true clause-depth analysis through an AI
- *  oracle so that subtle tangled instructions, which the comma and
- *  conjunction heuristic cannot measure today, are reliably caught, as
- *  requested in issue #29.
+ * clauses. Its prompt hands the subtler tangle judgement to the oracle,
+ * which weighs true clause depth rather than counting punctuation.
  */
 class Simple {
   constructor() {
     this.id = 'simple';
   }
   prompt() {
-    return `${this.id}: flag any grammatically tangled, multi-clause instruction`;
+    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions`;
   }
   violations(document) {
     const uri = document.uri();

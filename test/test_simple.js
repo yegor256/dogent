@@ -46,4 +46,10 @@ describe('Simple', () => {
       'the prompt must mention the rule id'
     );
   });
+  it('directs the oracle to weigh clause depth', () => {
+    assert.ok(
+      new Simple().prompt().includes('clause depth'),
+      'the prompt must hand true clause-depth analysis to the oracle'
+    );
+  });
 });

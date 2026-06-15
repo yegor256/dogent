@@ -46,4 +46,11 @@ describe('Prompt', () => {
       'the prompt must ask the oracle to report a confidence per warning'
     );
   });
+  it('grants the oracle permission to report nothing', () => {
+    const doc = new Markdown('x.md', '# Doors\nShut gate').document();
+    assert.ok(
+      new Prompt([new Command()], doc).text().includes('report nothing'),
+      'the prompt must tell the oracle an empty reply is the expected outcome'
+    );
+  });
 });

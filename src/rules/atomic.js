@@ -39,6 +39,7 @@ class Atomic {
     const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();
     const weld = /(?<!,)\s(?:and|then)\s+(?<verb>[a-z]+)\s+\S/u.exec(clean);
     const welded = weld !== null &&
+      !/^(?:the|a|an)$/u.test(weld.groups.verb) &&
       !/(?:ly|al|ial|ous|ive|less|ic|ary|ory|able|ible|ate)$/u.test(weld.groups.verb);
     if (!/[.!?]\s+\S/u.test(clean) && !/;/u.test(clean) && !welded) {
       return [];

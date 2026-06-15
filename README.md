@@ -29,13 +29,7 @@ In short: `agnix` lints the harness, `dogent` lints the prompt.
 Run it on any manifesto file, no installation required:
 
 ```bash
-npx @yegor256/dogent@0.7.2 CLAUDE.md
-```
-
-Lint several files at once:
-
-```bash
-npx @yegor256/dogent SKILL.md CLAUDE.md AGENTS.md
+npx @yegor256/dogent@0.7.2 SKILL.md
 ```
 
 Point it at a directory to lint the default manifestos it holds
@@ -135,7 +129,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npx @yegor256/dogent CLAUDE.md SKILL.md
+      - run: npx @yegor256/dogent .
 ```
 
 The job fails when `dogent` finds problems,

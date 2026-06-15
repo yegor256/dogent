@@ -10,6 +10,7 @@ const path = require('path');
 
 const Violation = require('../violation');
 const Region = require('../region');
+const Markdown = require('../markdown');
 
 const imports = (line) => {
   const found = [];
@@ -25,41 +26,96 @@ const imports = (line) => {
   return found;
 };
 
+const targets = (file) => {
+  const base = path.dirname(file);
+  try {
+    return new Markdown(file, fs.readFileSync(file, 'utf8'))
+      .document()
+      .walk({
+        header: () => [],
+        snippet: () => [],
+        bullets: () => [],
+        frontmatter: () => [],
+        prose: (line) => imports(line).map((item) => path.resolve(base, item.file))
+      })
+      .filter((target) => fs.existsSync(target));
+  } catch {
+    return [];
+  }
+};
+
 /**
  * DeadImport.
  *
- * Flags `@path/to/file` imports that point to no file on disk.
- *
- * @todo #18:45min Detect circular import chains and depth above five
- *  levels so deeply nested manifesto imports fail with a clear violation,
- *  as requested in issue #18.
+ * Flags `@path/to/file` imports that point to no file on disk, and
+ * walks the chain of imports that do resolve: a chain that loops back
+ * on itself, or that nests deeper than five levels, fails with a clear
+ * violation rather than looping or loading forever in the host tool.
  */
 class DeadImport {
   constructor() {
     this.id = 'dead-import';
+    this.depth = 5;
   }
   prompt() {
     return `${this.id}: flag any @path/to/file import that points to no file on disk`;
   }
   violations(document) {
-    return document.walk({
+    const uri = document.uri();
+    const base = path.dirname(uri);
+    const links = document.walk({
       header: () => [],
       snippet: () => [],
       bullets: () => [],
       frontmatter: () => [],
-      prose: (line, row) => this.missing(document.uri(), line, row)
+      prose: (line, row) => imports(line).map(
+        (item) => ({...item, target: path.resolve(base, item.file), row})
+      )
     });
+    return this.missing(uri, links).concat(this.chains(uri, links));
   }
-  missing(uri, line, row) {
-    const base = path.dirname(uri);
-    return imports(line)
-      .filter((item) => !fs.existsSync(path.resolve(base, item.file)))
-      .map((item) => new Violation(
+  missing(uri, links) {
+    return links
+      .filter((link) => !fs.existsSync(link.target))
+      .map((link) => new Violation(
         this.id,
         'error',
-        `@-import target not found: ${item.file}`,
-        new Region(uri, row, item.column)
+        `@-import target not found: ${link.file}`,
+        new Region(uri, link.row, link.column)
       ));
+  }
+  chains(uri, links) {
+    const root = path.resolve(uri);
+    const found = [];
+    links
+      .filter((link) => fs.existsSync(link.target))
+      .forEach((link) => {
+        const flags = {cycle: false, deep: false};
+        this.explore([root, link.target], 1, flags);
+        if (flags.cycle) {
+          found.push(this.flag(uri, link, `@-import chain is circular via ${link.file}`));
+        }
+        if (flags.deep) {
+          found.push(this.flag(uri, link, `@-import chain nests deeper than ${this.depth} levels via ${link.file}`));
+        }
+      });
+    return found;
+  }
+  explore(stack, depth, flags) {
+    if (depth > this.depth) {
+      flags.deep = true;
+      return;
+    }
+    targets(stack[stack.length - 1]).forEach((target) => {
+      if (stack.includes(target)) {
+        flags.cycle = true;
+        return;
+      }
+      this.explore(stack.concat(target), depth + 1, flags);
+    });
+  }
+  flag(uri, link, message) {
+    return new Violation(this.id, 'error', message, new Region(uri, link.row, link.column));
   }
 }
 

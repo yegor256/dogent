@@ -19,6 +19,10 @@ const document = (dir, body) => {
   return new Markdown(file, fs.readFileSync(file, 'utf8')).document();
 };
 
+const temp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));
+
+const write = (dir, name, body) => fs.writeFileSync(path.join(dir, name), body);
+
 describe('DeadImport', () => {
   it('offers a prompt fragment for the oracle', () => {
     assert.equal(
@@ -57,5 +61,35 @@ describe('DeadImport', () => {
     assert.strictEqual(
       violations.length, 0, 'the import path must be relative to the manifesto file'
     );
+  });
+});
+
+describe('DeadImport chains', () => {
+  it('flags an import chain that loops back', () => {
+    const dir = temp();
+    write(dir, 'a.md', 'Load @CLAUDE.md.');
+    const doc = document(dir, '# Gates\nLoad @a.md.');
+    assert.ok(
+      new DeadImport().violations(doc).some((bad) => bad.message.includes('circular')),
+      'a chain looping back to the manifesto must be flagged'
+    );
+  });
+  it('flags a chain nested deeper than five levels', () => {
+    const dir = temp();
+    [1, 2, 3, 4, 5].forEach((level) => write(dir, `l${level}.md`, `Load @l${level + 1}.md.`));
+    write(dir, 'l6.md', 'Sharpen knife.');
+    const doc = document(dir, '# Gates\nLoad @l1.md.');
+    assert.ok(
+      new DeadImport().violations(doc).some((bad) => bad.message.includes('deeper')),
+      'an import chain nesting past five levels must be flagged'
+    );
+  });
+  it('accepts a chain nested exactly five levels', () => {
+    const dir = temp();
+    [1, 2, 3, 4].forEach((level) => write(dir, `l${level}.md`, `Load @l${level + 1}.md.`));
+    write(dir, 'l5.md', 'Sharpen knife.');
+    const doc = document(dir, '# Gates\nLoad @l1.md.');
+    const count = new DeadImport().violations(doc).length;
+    assert.strictEqual(count, 0, 'a chain within five levels must pass');
   });
 });

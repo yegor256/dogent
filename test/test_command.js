@@ -27,3 +27,12 @@ describe('Command', () => {
     );
   });
 });
+
+describe('Command prompt', () => {
+  it('tells the oracle a base-form imperative is a direct order', () => {
+    assert.ok(
+      new Command().prompt().includes('base-form imperative'),
+      'the prompt must stop the oracle inverting bare imperatives into descriptions'
+    );
+  });
+});

@@ -13,13 +13,16 @@ const Region = require('../region');
  *
  * Demands that every section name be a short label of one to three
  * words, so the manifesto reads as a map and not as prose.
+ *
+ * The check is standalone and deterministic, so prompt() returns an
+ * empty string and the AI oracle never re-checks this rule.
  */
 class ShortSections {
   constructor() {
     this.id = 'short-sections';
   }
   prompt() {
-    return `${this.id}: flag any section heading that is not a short, noun-style label`;
+    return '';
   }
   violations(document) {
     const uri = document.uri();

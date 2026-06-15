@@ -36,10 +36,11 @@ const fixtures = (kind) => {
   });
   fixtures('negative').forEach((file) => {
     it(`lets the oracle catch the flaw in ${path.basename(file)}`, () => {
+      const out = run(file);
       assert.notStrictEqual(
-        run(file).status,
+        out.status,
         0,
-        'a manifesto the rules miss must still make the oracle exit non-zero'
+        `a manifesto the rules miss must still make the oracle exit non-zero, got:\n${out.stdout}`
       );
     });
   });

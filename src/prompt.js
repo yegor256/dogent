@@ -39,7 +39,7 @@ class Prompt {
       'Report a violation only when you are certain it breaks a check.',
       'Give every result a "confidence" number from 0 to 1, your own',
       'probability that the violation is real, and omit any result you',
-      'score below 0.8. When unsure, lower the confidence, never guess.',
+      'score below 0.6. When unsure, lower the confidence, never guess.',
       'Reply with one JSON object and nothing else, shaped as',
       '{"results":[ ... ]}, where each item is a SARIF result with',
       'keys ruleId, level "warning", message.text, confidence, and',

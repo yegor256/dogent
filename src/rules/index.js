@@ -21,6 +21,7 @@ const NameMatchesDir = require('./name-matches-dir');
 const Polite = require('./polite');
 const Unfinished = require('./unfinished');
 const Crowded = require('./crowded');
+const DescriptionTriggers = require('./description-triggers');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 
@@ -41,6 +42,7 @@ module.exports = () => [
   new Polite(),
   new Unfinished(),
   new Crowded(10),
+  new DescriptionTriggers(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

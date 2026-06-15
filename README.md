@@ -81,6 +81,7 @@ The command exits with a non-zero status when problems are found,
 - No courtesy or scaffolding words.
 - No leftover markers or unfilled placeholders.
 - A section must hold at most ten instructions.
+- A `SKILL.md` `description` must say when to use the skill.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
 - A `SKILL.md` `name` must be kebab-case.

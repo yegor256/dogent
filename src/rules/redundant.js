@@ -44,14 +44,10 @@ const PHRASES = [
  * Flags a line that restates default model behavior, like
  * "Be helpful and accurate" or "Write clean code". Such filler
  * burns the context budget and drowns the project-specific
- * guidance the manifesto exists to carry.
- *
- * @todo #15:60min Promote the standalone heuristic into a
- *  proper AI-oracle check when `OPENAI_API_KEY` is present, so
- *  redundancy detection covers paraphrases beyond the curated
- *  blacklist below. The hybrid pattern from `src/rules/command.js`
- *  is the model: keep the deterministic check as the default,
- *  let the oracle catch the rest.
+ * guidance the manifesto exists to carry. Following the hybrid
+ * pattern of `command.js`, the curated blacklist below stays the
+ * deterministic default and the prompt hands paraphrases beyond
+ * that list to the AI oracle.
  */
 class Redundant {
   constructor(phrases = PHRASES) {
@@ -59,7 +55,7 @@ class Redundant {
     this.phrases = phrases;
   }
   prompt() {
-    return `${this.id}: flag any line that restates default agent behavior already known to the model, not a project-specific instruction`;
+    return `${this.id}: flag any line that restates default agent behavior already known to the model, not a project-specific instruction, including reworded paraphrases that match no fixed phrase list`;
   }
   violations(document) {
     const uri = document.uri();

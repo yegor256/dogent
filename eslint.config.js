@@ -27,8 +27,8 @@
  * test, which carry OpenAI's snake_case fields "response_format",
  * "prompt_tokens", and "completion_tokens".
  *
- * One more (class-methods-use-this) is switched off for nine rules
- * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js and src/rules/unfinished.js
+ * One more (class-methods-use-this) is switched off for ten rules
+ * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js and src/rules/crowded.js
  * return an empty prompt() to keep the deterministic-only rule out
  * of the AI oracle, and src/rules/consistent.js returns empty
  * violations() to leave its duplicate-and-conflict judgement
@@ -100,6 +100,7 @@ module.exports = [
       'src/rules/name-matches-dir.js',
       'src/rules/polite.js',
       'src/rules/unfinished.js',
+      'src/rules/crowded.js',
       'src/rules/consistent.js'
     ],
     rules: {

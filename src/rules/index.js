@@ -16,6 +16,7 @@ const Punctuation = require('./punctuation');
 const Frontmatter = require('./frontmatter');
 const DeadImport = require('./dead-import');
 const Redundant = require('./redundant');
+const Consistent = require('./consistent');
 
 module.exports = () => [
   new Grouped(),
@@ -28,6 +29,7 @@ module.exports = () => [
   new Punctuation(),
   new DeadImport(),
   new Redundant(),
+  new Consistent(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

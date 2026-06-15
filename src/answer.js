@@ -8,16 +8,22 @@
 const Violation = require('./violation');
 const Region = require('./region');
 
+const FLOOR = 0.6;
+
 /**
  * Answer.
  *
  * The oracle's raw reply, treated as untrusted input. Parses the JSON
  * object it carries and turns every well-formed SARIF result back into a
- * native violation, ignoring any result it cannot read.
+ * native violation, ignoring any result it cannot read. Drops a result
+ * whose self-reported confidence sits below the floor, so the model's
+ * own doubt filters out its guesses; a result without a confidence is
+ * trusted and kept.
  */
 class Answer {
-  constructor(raw) {
+  constructor(raw, floor = FLOOR) {
     this.raw = raw;
+    this.floor = floor;
   }
   violations() {
     return this.results().flatMap((result) => {
@@ -25,6 +31,9 @@ class Answer {
       const line = spot?.region?.startLine;
       const text = result?.message?.text;
       if (typeof line !== 'number' || typeof text !== 'string' || !spot.artifactLocation) {
+        return [];
+      }
+      if (typeof result.confidence === 'number' && result.confidence < this.floor) {
         return [];
       }
       return [new Violation(

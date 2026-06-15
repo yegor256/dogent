@@ -27,18 +27,20 @@ const fixtures = (kind) => {
 (process.env.OPENAI_API_KEY ? describe : describe.skip)('fixtures', () => {
   fixtures('positive').forEach((file) => {
     it(`stays silent through the model for ${path.basename(file)}`, () => {
+      const report = run(file).stdout;
       assert.ok(
-        /0 problems found/u.test(run(file).stdout),
-        'a clean manifesto must survive the oracle with zero problems'
+        /0 problems found/u.test(report),
+        `a clean manifesto must survive the oracle with zero problems, got:\n${report}`
       );
     });
   });
   fixtures('negative').forEach((file) => {
     it(`lets the oracle catch the flaw in ${path.basename(file)}`, () => {
+      const out = run(file);
       assert.notStrictEqual(
-        run(file).status,
+        out.status,
         0,
-        'a manifesto the rules miss must still make the oracle exit non-zero'
+        `a manifesto the rules miss must still make the oracle exit non-zero, got:\n${out.stdout}`
       );
     });
   });

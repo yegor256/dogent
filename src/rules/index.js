@@ -23,6 +23,7 @@ const Unfinished = require('./unfinished');
 const Crowded = require('./crowded');
 const DescriptionTriggers = require('./description-triggers');
 const Atomic = require('./atomic');
+const Hedging = require('./hedging');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 
@@ -45,6 +46,7 @@ module.exports = () => [
   new Crowded(10),
   new DescriptionTriggers(),
   new Atomic(),
+  new Hedging(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

@@ -25,6 +25,7 @@ const DescriptionTriggers = require('./description-triggers');
 const Atomic = require('./atomic');
 const Hedging = require('./hedging');
 const Passive = require('./passive');
+const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 
@@ -49,6 +50,7 @@ module.exports = () => [
   new Atomic(),
   new Hedging(),
   new Passive(),
+  new Unique(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

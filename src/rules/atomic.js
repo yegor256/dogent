@@ -37,8 +37,10 @@ class Atomic {
   }
   judge(text, line, uri) {
     const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();
-    const welded = /;|\s(?:and|then)\s+[a-z]+\s+\S/u;
-    if (!/[.!?]\s+\S/u.test(clean) && !welded.test(clean)) {
+    const weld = /(?<!,)\s(?:and|then)\s+(?<verb>[a-z]+)\s+\S/u.exec(clean);
+    const welded = weld !== null &&
+      !/(?:ly|al|ial|ous|ive|less|ic|ary|ory|able|ible)$/u.test(weld.groups.verb);
+    if (!/[.!?]\s+\S/u.test(clean) && !/;/u.test(clean) && !welded) {
       return [];
     }
     return [new Violation(

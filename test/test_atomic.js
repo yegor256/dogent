@@ -34,6 +34,14 @@ describe('Atomic', () => {
       'a line with one instruction must pass'
     );
   });
+  it('accepts one verb with coordinated objects', () => {
+    const doc = new Markdown('x.md', '# H\nStrip emotions and rhetorical flourish.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'a single verb coordinating two objects must pass');
+  });
+  it('accepts an Oxford-comma list closed by and', () => {
+    const doc = new Markdown('x.md', '# H\nAvoid AI cadence, boilerplate openings, and buzzword strings.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'a list closed by an Oxford comma must pass');
+  });
   it('exposes the id through the prompt', () => {
     assert.ok(
       new Atomic().prompt().includes('atomic'),

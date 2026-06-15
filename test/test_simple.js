@@ -40,6 +40,10 @@ describe('Simple', () => {
       'one conjunction with one comma must stay below threshold'
     );
   });
+  it('accepts a comma-separated list carrying no conjunction', () => {
+    const doc = new Markdown('x.md', '# H\nDo not run build, tests, linters, or static analysis.').document();
+    assert.strictEqual(new Simple().violations(doc).length, 0, 'a plain list must not count as multi-clause');
+  });
   it('exposes its id in the prompt', () => {
     assert.ok(
       new Simple().prompt().includes('simple'),

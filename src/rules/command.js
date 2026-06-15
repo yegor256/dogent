@@ -21,7 +21,7 @@ class Command {
     this.id = 'command';
   }
   prompt() {
-    return `${this.id}: flag any line that reads as a description, a question, or a plain statement rather than a direct order`;
+    return `${this.id}: flag any line that reads as a description, a question, or a plain statement rather than a direct order; a line opening with a base-form imperative verb, such as "Write", "Strip", "Drop", or "Keep", is itself a direct order and must never be flagged`;
   }
   violations(document) {
     const uri = document.uri();

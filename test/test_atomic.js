@@ -42,6 +42,10 @@ describe('Atomic', () => {
     const doc = new Markdown('x.md', '# H\nAvoid AI cadence, boilerplate openings, and buzzword strings.').document();
     assert.strictEqual(new Atomic().violations(doc).length, 0, 'a list closed by an Oxford comma must pass');
   });
+  it('accepts an -ate adjective after and as a coordinated object', () => {
+    const doc = new Markdown('x.md', '# H\nInclude file path and approximate line number.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'an -ate adjective after and must not weld');
+  });
   it('exposes the id through the prompt', () => {
     assert.ok(
       new Atomic().prompt().includes('atomic'),

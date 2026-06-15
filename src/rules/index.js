@@ -24,6 +24,7 @@ const Crowded = require('./crowded');
 const DescriptionTriggers = require('./description-triggers');
 const Atomic = require('./atomic');
 const Hedging = require('./hedging');
+const Passive = require('./passive');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 
@@ -47,6 +48,7 @@ module.exports = () => [
   new DescriptionTriggers(),
   new Atomic(),
   new Hedging(),
+  new Passive(),
   new Frontmatter(
     'SKILL.md',
     ['name', 'description'],

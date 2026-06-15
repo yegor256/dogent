@@ -80,6 +80,7 @@ The command exits with a non-zero status when problems are found,
 - A `SKILL.md` `name` must equal its parent directory.
 - No courtesy or scaffolding words.
 - No leftover markers or unfilled placeholders.
+- A section must hold at most ten instructions.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
 - A `SKILL.md` `name` must be kebab-case.

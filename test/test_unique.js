@@ -32,4 +32,10 @@ describe('Unique', () => {
       'the prompt must mention the rule id'
     );
   });
+  it('directs the oracle to catch same-meaning pairs', () => {
+    assert.ok(
+      new Unique().prompt().includes('same meaning'),
+      'the prompt must hand semantic near-duplicates to the oracle'
+    );
+  });
 });

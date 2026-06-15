@@ -79,6 +79,7 @@ The command exits with a non-zero status when problems are found,
 - No tangled, multi-clause instructions.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
+- A `SKILL.md` `name` must be kebab-case.
 
 ## AI verification
 

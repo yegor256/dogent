@@ -50,4 +50,10 @@ describe('Redundant', () => {
       'the rule must expose its prompt fragment for the oracle'
     );
   });
+  it('directs the oracle to catch reworded paraphrases', () => {
+    assert.ok(
+      new Redundant().prompt().includes('paraphrases'),
+      'the prompt must hand paraphrases beyond the blacklist to the oracle'
+    );
+  });
 });

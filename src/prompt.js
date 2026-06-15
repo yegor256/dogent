@@ -36,13 +36,15 @@ class Prompt {
       'next heading, belongs to that section. Treat a deeper heading as',
       'a subsection of the one above, never as a misplaced instruction.',
       'Apply only the checks listed below this header.',
-      'Report a violation only when it is clear and certain.',
-      'When in doubt, stay silent and report nothing.',
+      'Report a violation only when you are certain it breaks a check.',
+      'Give every result a "confidence" number from 0 to 1, your own',
+      'probability that the violation is real, and omit any result you',
+      'score below 0.8. When unsure, lower the confidence, never guess.',
       'Reply with one JSON object and nothing else, shaped as',
       '{"results":[ ... ]}, where each item is a SARIF result with',
-      'keys ruleId, level "warning", message.text, and locations.',
-      'Set ruleId to the rule name and startLine to the printed',
-      'line number; locations[0].physicalLocation must carry',
+      'keys ruleId, level "warning", message.text, confidence, and',
+      'locations. Set ruleId to the rule name and startLine to the',
+      'printed line number; locations[0].physicalLocation must carry',
       `artifactLocation.uri "${uri}" and region.startColumn 1.`
     ].join('\n');
   }

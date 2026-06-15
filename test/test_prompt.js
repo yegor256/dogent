@@ -39,4 +39,11 @@ describe('Prompt', () => {
       'the prompt must explain that a line belongs to the heading above it'
     );
   });
+  it('asks the oracle to score each warning with a confidence', () => {
+    const doc = new Markdown('x.md', '# Doors\nShut gate').document();
+    assert.ok(
+      new Prompt([new Command()], doc).text().includes('confidence'),
+      'the prompt must ask the oracle to report a confidence per warning'
+    );
+  });
 });

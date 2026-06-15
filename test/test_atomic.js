@@ -40,4 +40,10 @@ describe('Atomic', () => {
       'the prompt must name the rule id'
     );
   });
+  it('directs the oracle to count clauses without welding tokens', () => {
+    assert.ok(
+      new Atomic().prompt().includes('clauses'),
+      'the prompt must hand subtle clause-counting to the oracle'
+    );
+  });
 });

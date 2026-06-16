@@ -14,11 +14,12 @@ const minimist = require('minimist');
  * the raw argv into recognized options and the manifesto paths that remain.
  * The `--sarif` flag switches the report to SARIF, while `--offline` forbids
  * any talk to the LLM even when a token sits in the environment. The `--help`
- * flag, also spelled `-h`, asks for the usage banner. Everything after a `--`
- * separator counts as a path, never as an option.
+ * flag, also spelled `-h`, asks for the usage banner. The `--version` flag
+ * asks for the release number. Everything after a `--` separator counts as a
+ * path, never as an option.
  */
 class Args {
-  constructor(argv, flags = ['sarif', 'offline', 'help']) {
+  constructor(argv, flags = ['sarif', 'offline', 'help', 'version']) {
     this.flags = flags;
     this.parsed = minimist(argv, {boolean: flags, alias: {help: 'h'}, '--': true});
   }
@@ -30,6 +31,9 @@ class Args {
   }
   help() {
     return this.parsed.help === true;
+  }
+  version() {
+    return this.parsed.version === true;
   }
   paths() {
     return this.parsed._.concat(this.parsed['--']).map(String);

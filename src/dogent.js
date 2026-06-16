@@ -18,15 +18,27 @@ const rules = require('./rules');
 
 const args = new Args(process.argv.slice(2));
 const sarif = args.sarif();
+const banner = 'Usage: dogent [--sarif] [--offline] <file.md|dir>...';
+if (args.help()) {
+  process.stdout.write(
+    `${banner}\n\n` +
+    'Lint agentic manifesto files like SKILL.md and CLAUDE.md.\n\n' +
+    'Options:\n' +
+    '  --sarif    render the report as SARIF JSON\n' +
+    '  --offline  never call the LLM, even when a token exists\n' +
+    '  --help     show this help and exit\n'
+  );
+  process.exit(0);
+}
 const unknown = args.unknown();
 if (unknown.length > 0) {
   process.stderr.write(`Unknown option: ${unknown[0]}\n`);
-  process.stderr.write('Usage: dogent [--sarif] [--offline] <file.md|dir>...\n');
+  process.stderr.write(`${banner}\n`);
   process.exit(2);
 }
 const paths = args.paths();
 if (paths.length === 0) {
-  process.stderr.write('Usage: dogent [--sarif] [--offline] <file.md|dir>...\n');
+  process.stderr.write(`${banner}\n`);
   process.exit(2);
 }
 const scanned = new Sources(paths).files();

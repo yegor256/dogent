@@ -39,7 +39,8 @@ class Atomic {
   }
   judge(text, line, uri) {
     const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();
-    if (!/[.!?]\s+\S/u.test(clean) && !/;/u.test(clean)) {
+    const masked = clean.replace(/\b(?:e\.g|i\.e|etc)\./giu, (match) => match.replace(/\./gu, ' '));
+    if (!/[.!?]\s+\S/u.test(masked) && !/;/u.test(masked)) {
       return [];
     }
     return [new Violation(

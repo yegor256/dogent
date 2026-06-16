@@ -71,3 +71,19 @@ describe('dogent', () => {
     );
   });
 });
+
+describe('dogent help', () => {
+  it('exits with success when asked for help', () => {
+    assert.strictEqual(
+      run(['--help'], {OPENAI_API_KEY: ''}).status,
+      0,
+      'the --help flag must make dogent exit with code zero'
+    );
+  });
+  it('prints the usage banner when asked for help', () => {
+    assert.ok(
+      run(['--help'], {OPENAI_API_KEY: ''}).stdout.includes('Usage: dogent'),
+      'the --help flag must print the usage banner on standard output'
+    );
+  });
+});

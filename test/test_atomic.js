@@ -55,3 +55,18 @@ describe('Atomic', () => {
     );
   });
 });
+
+describe('Atomic abbreviations', () => {
+  it('accepts an inline example introduced by e.g.', () => {
+    const doc = new Markdown('x.md', '# H\nOpen paragraph with salutation, e.g. `Boss,`.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'an e.g. abbreviation must not read as a terminator');
+  });
+  it('accepts an inline clarification introduced by i.e.', () => {
+    const doc = new Markdown('x.md', '# H\nName the rule, i.e. the lowercase id.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'an i.e. abbreviation must not read as a terminator');
+  });
+  it('accepts a trailing list closed by etc.', () => {
+    const doc = new Markdown('x.md', '# H\nStrip articles, noise, etc. from the line.').document();
+    assert.strictEqual(new Atomic().violations(doc).length, 0, 'an etc. abbreviation must not read as a terminator');
+  });
+});

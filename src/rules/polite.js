@@ -7,6 +7,7 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
 
 /**
  * Polite.
@@ -38,7 +39,7 @@ class Polite {
   }
   scan(text, line, uri) {
     const found = [];
-    const masked = this.mask(text);
+    const masked = mask(text);
     const regex = /\b(?:please|kindly|feel free to|make sure to|be sure to|don't forget to|remember to|note that|it is important to)\b/giu;
     let hit = regex.exec(masked);
     while (hit !== null) {
@@ -51,9 +52,6 @@ class Polite {
       hit = regex.exec(masked);
     }
     return found;
-  }
-  mask(text) {
-    return text.replace(/`[^`]*`/gu, (span) => ' '.repeat(span.length));
   }
 }
 

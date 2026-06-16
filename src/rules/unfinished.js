@@ -7,6 +7,7 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
 
 /**
  * Unfinished.
@@ -44,7 +45,8 @@ class Unfinished {
       /\.\.\.\s*$/u,
       /<[^>\n]*>/u
     ];
-    if (!markers.some((marker) => marker.test(text))) {
+    const masked = mask(text);
+    if (!markers.some((marker) => marker.test(masked))) {
       return [];
     }
     return [new Violation(

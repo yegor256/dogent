@@ -26,6 +26,16 @@ describe('NoArticles', () => {
       'a line without articles must pass'
     );
   });
+  it('ignores an article quoted inside inline code', () => {
+    const doc = new Markdown(
+      'x.md', '# H\nReplace `the reasons are structural` with specifics.'
+    ).document();
+    assert.strictEqual(
+      new NoArticles().violations(doc).length,
+      0,
+      'an article inside inline code must be skipped like a fenced snippet'
+    );
+  });
   it('ignores an article inside a frontmatter slug', () => {
     const doc = new Markdown('SKILL.md', '---\nname: submit-an-issue\n---\n# H').document();
     assert.strictEqual(

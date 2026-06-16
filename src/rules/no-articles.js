@@ -7,6 +7,7 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
 
 /**
  * NoArticles.
@@ -33,8 +34,9 @@ class NoArticles {
   }
   scan(text, line, uri) {
     const found = [];
+    const masked = mask(text);
     const regex = /\b(?:a|an|the)\b/giu;
-    let hit = regex.exec(text);
+    let hit = regex.exec(masked);
     while (hit !== null) {
       found.push(new Violation(
         this.id,
@@ -42,7 +44,7 @@ class NoArticles {
         `article "${hit[0]}" must be removed`,
         new Region(uri, line, hit.index + 1)
       ));
-      hit = regex.exec(text);
+      hit = regex.exec(masked);
     }
     return found;
   }

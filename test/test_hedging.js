@@ -35,6 +35,16 @@ describe('Hedging', () => {
       'the word "every" must not trip the "very" hedge'
     );
   });
+  it('ignores hedge words quoted inside inline code', () => {
+    const doc = new Markdown(
+      'x.md', '# H\nCut filler words like `very`, `really`, and `just`.'
+    ).document();
+    assert.strictEqual(
+      new Hedging().violations(doc).length,
+      0,
+      'hedge words inside inline code must be skipped like fenced snippets'
+    );
+  });
   it('names the rule id in its prompt', () => {
     assert.ok(
       new Hedging().prompt().includes('hedging'),

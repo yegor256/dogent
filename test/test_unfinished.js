@@ -45,6 +45,16 @@ describe('Unfinished accepts', () => {
       'a finished line must pass'
     );
   });
+  it('ignores an angle-bracket placeholder inside inline code', () => {
+    const doc = new Markdown(
+      'x.md', '# H\nWrite output to `<basename>-corrected.srt`.'
+    ).document();
+    assert.strictEqual(
+      new Unfinished().violations(doc).length,
+      0,
+      'a placeholder inside inline code must be skipped like a fenced snippet'
+    );
+  });
 });
 
 describe('Unfinished prompt', () => {

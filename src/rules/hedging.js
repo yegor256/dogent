@@ -7,6 +7,7 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
 
 /**
  * Hedging.
@@ -41,7 +42,8 @@ class Hedging {
       'when necessary|usually|generally|etc|just|simply|very)\\b',
       'giu'
     );
-    let hit = regex.exec(text);
+    const masked = mask(text);
+    let hit = regex.exec(masked);
     while (hit !== null) {
       found.push(new Violation(
         this.id,
@@ -49,7 +51,7 @@ class Hedging {
         `hedge word "${hit[0]}" must be removed`,
         new Region(uri, line, hit.index + 1)
       ));
-      hit = regex.exec(text);
+      hit = regex.exec(masked);
     }
     return found;
   }

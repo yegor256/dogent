@@ -64,6 +64,7 @@ The command exits with a non-zero status when problems are found,
 - Every line must be an instruction.
 - Instructions must be grouped in sections.
 - Section names must be short, 1-3 words.
+- Every section must be a level-2 (`##`) heading, below the lone `#` title.
 - Every line must be no longer than 80 symbols.
 - The whole file must stay under 4000 tokens.
 - Every line must sound like a command.

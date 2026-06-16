@@ -28,11 +28,13 @@ const Passive = require('./passive');
 const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
+const SectionLevel = require('./section-level');
 
 module.exports = () => [
   new Grouped(),
   new Empty(),
   new ShortSections(),
+  new SectionLevel(),
   new LineLength(80),
   new TokenCount(4000),
   new NoArticles(),

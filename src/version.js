@@ -1,0 +1,16 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
+ */
+
+'use strict';
+
+/**
+ * Version.
+ *
+ * The current release of dogent, replaced on every release by rultor.
+ * The default `0.0.0` marks an unreleased build straight from source.
+ */
+const version = '0.0.0';
+
+module.exports = version;

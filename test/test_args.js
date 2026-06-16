@@ -128,3 +128,27 @@ describe('Args help', () => {
     );
   });
 });
+
+describe('Args version', () => {
+  it('detects the version flag', () => {
+    assert.strictEqual(
+      new Args(['--version']).version(),
+      true,
+      'the --version flag must ask dogent for its release'
+    );
+  });
+  it('reports no version flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).version(),
+      false,
+      'a missing version flag must let dogent lint as usual'
+    );
+  });
+  it('never counts the version flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--version']).unknown(),
+      [],
+      'the version flag must never count as an unrecognized option'
+    );
+  });
+});

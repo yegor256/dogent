@@ -87,3 +87,19 @@ describe('dogent help', () => {
     );
   });
 });
+
+describe('dogent version', () => {
+  it('exits with success when asked for the version', () => {
+    assert.strictEqual(
+      run(['--version'], {OPENAI_API_KEY: ''}).status,
+      0,
+      'the --version flag must make dogent exit with code zero'
+    );
+  });
+  it('prints a dotted number triple when asked for the version', () => {
+    assert.ok(
+      /[0-9]+\.[0-9]+\.[0-9]/u.test(run(['--version'], {OPENAI_API_KEY: ''}).stdout),
+      'the --version flag must print a semantic version on standard output'
+    );
+  });
+});

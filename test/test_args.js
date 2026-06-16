@@ -90,3 +90,65 @@ describe('Args flags', () => {
     );
   });
 });
+
+describe('Args help', () => {
+  it('detects the long help flag', () => {
+    assert.strictEqual(
+      new Args(['--help']).help(),
+      true,
+      'the --help flag must ask dogent for its usage'
+    );
+  });
+  it('detects the short help flag', () => {
+    assert.strictEqual(
+      new Args(['-h']).help(),
+      true,
+      'the -h flag must ask dogent for its usage'
+    );
+  });
+  it('reports no help flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).help(),
+      false,
+      'a missing help flag must let dogent lint as usual'
+    );
+  });
+  it('never counts the help flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--help']).unknown(),
+      [],
+      'the help flag must never count as an unrecognized option'
+    );
+  });
+  it('never counts the short help flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['-h']).unknown(),
+      [],
+      'the short help flag must never count as an unrecognized option'
+    );
+  });
+});
+
+describe('Args version', () => {
+  it('detects the version flag', () => {
+    assert.strictEqual(
+      new Args(['--version']).version(),
+      true,
+      'the --version flag must ask dogent for its release'
+    );
+  });
+  it('reports no version flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).version(),
+      false,
+      'a missing version flag must let dogent lint as usual'
+    );
+  });
+  it('never counts the version flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--version']).unknown(),
+      [],
+      'the version flag must never count as an unrecognized option'
+    );
+  });
+});

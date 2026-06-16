@@ -45,7 +45,7 @@ class Usage {
     return this.sent / 1e6 * price.input + this.received / 1e6 * price.output;
   }
   text() {
-    return `OpenAI: ${this.model}, ${this.sent}/${this.received} tokens, ~${(this.cost() * 100).toFixed(2)}¢`;
+    return `OpenAI: ${this.model}, ${this.sent}+${this.received} tokens, ${(this.cost() * 100).toFixed(2)}¢`;
   }
 }
 

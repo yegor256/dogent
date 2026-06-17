@@ -30,6 +30,9 @@ const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
 const Example = require('./example');
+const Referential = require('./referential');
+const Vague = require('./vague');
+const Positive = require('./positive');
 
 module.exports = () => [
   new Grouped(),
@@ -45,6 +48,7 @@ module.exports = () => [
   new Redundant(),
   new Consistent(),
   new Simple(),
+  new Referential(),
   new NameMatchesDir(),
   new Polite(),
   new Unfinished(),
@@ -53,7 +57,9 @@ module.exports = () => [
   new Example(),
   new Atomic(),
   new Hedging(),
+  new Vague(),
   new Passive(),
+  new Positive(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -51,7 +51,7 @@ const section = () => {
     'You are a senior reviewer.',
     'Do not skip a step.',
     'Please keep things clean.',
-    'TODO finish this part.',
+    'Fill the <placeholder> here.',
     'this drifts; it splits.',
     'fix it properly, and do good work, when you can, if needed',
     'Should you hover, just wait.',

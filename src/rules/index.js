@@ -55,6 +55,7 @@ const Default = require('./default');
 const MetaReference = require('./meta-reference');
 const AmbiguousOr = require('./ambiguous-or');
 const ExternalLink = require('./external-link');
+const Conditional = require('./conditional');
 
 module.exports = () => [
   new Grouped(),
@@ -104,6 +105,7 @@ module.exports = () => [
   new MetaReference(),
   new AmbiguousOr(),
   new ExternalLink(),
+  new Conditional(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

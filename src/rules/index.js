@@ -44,6 +44,7 @@ const Terms = require('./terms');
 const Jargon = require('./jargon');
 const PseudoHeading = require('./pseudo-heading');
 const Stale = require('./stale');
+const ToolClarity = require('./tool-clarity');
 
 module.exports = () => [
   new Grouped(),
@@ -72,6 +73,7 @@ module.exports = () => [
   new Ordered(),
   new Hedging(),
   new Vague(),
+  new ToolClarity(),
   new Passive(),
   new Untrusted(),
   new Emphasis(),

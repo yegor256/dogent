@@ -27,4 +27,18 @@ describe('Report', () => {
       'the text must summarise the number of problems found'
     );
   });
+  it('appends the analysis duration when handed one', () => {
+    const report = new Report('dogent', [], 340);
+    assert.ok(
+      /0 problems found in 340ms/u.test(report.text()),
+      'the text must close with a friendly elapsed time'
+    );
+  });
+  it('omits the duration when none is given', () => {
+    const report = new Report('dogent', []);
+    assert.ok(
+      !/ in /u.test(report.text()),
+      'a report with no timing must not invent an elapsed clause'
+    );
+  });
 });

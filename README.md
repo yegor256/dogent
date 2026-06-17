@@ -169,6 +169,20 @@ Pass `--suppress` to silence a rule by its id. Repeat the option or
 npx @yegor256/dogent --suppress=name-matches-dir,line-length CLAUDE.md
 ```
 
+Pass `--openai-http-header` to add one `Name: Value` header to every OpenAI
+  call, handy for a gateway that wants its own token beside the API key.
+Repeat the option to add several headers:
+
+```bash
+npx @yegor256/dogent \
+  --openai-http-header='X-Api-Key: secret' \
+  --openai-http-header='X-Tenant: acme' \
+  CLAUDE.md
+```
+
+A header value often holds a secret, so keep it out of your shell history
+  by listing the option in a `.dogent` file (see below) instead.
+
 ## Defaults file
 
 Tired of repeating the same flags on every run?

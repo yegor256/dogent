@@ -167,6 +167,54 @@ describe('Args suppress', () => {
   });
 });
 
+describe('Args headers', () => {
+  it('reads a single custom header', () => {
+    assert.deepStrictEqual(
+      new Args(['--openai-http-header=X-Api-Key: secret', 'CLAUDE.md']).headers(),
+      {'X-Api-Key': 'secret'},
+      'a lone --openai-http-header must yield one name and value'
+    );
+  });
+  it('merges repeated header options', () => {
+    assert.deepStrictEqual(
+      new Args([
+        '--openai-http-header=X-Api-Key: secret',
+        '--openai-http-header=X-Tenant: acme',
+        'CLAUDE.md'
+      ]).headers(),
+      {'X-Api-Key': 'secret', 'X-Tenant': 'acme'},
+      'repeated --openai-http-header options must all reach the request'
+    );
+  });
+  it('keeps a colon inside the header value', () => {
+    assert.deepStrictEqual(
+      new Args(['--openai-http-header=X-Url: https://corp.example', 'CLAUDE.md']).headers(),
+      {'X-Url': 'https://corp.example'},
+      'only the first colon must split a header, not the ones inside its value'
+    );
+  });
+  it('adds no header when the option is absent', () => {
+    assert.deepStrictEqual(
+      new Args(['CLAUDE.md']).headers(),
+      {},
+      'a missing --openai-http-header must add no header'
+    );
+  });
+  it('rejects a header that carries no colon', () => {
+    assert.throws(
+      () => new Args(['--openai-http-header=bogus', 'CLAUDE.md']).headers(),
+      'a header without a colon cannot split into a name and value'
+    );
+  });
+  it('never counts the header option as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--openai-http-header=X-Api-Key: secret', 'CLAUDE.md']).unknown(),
+      [],
+      'the header option must never count as unrecognized'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

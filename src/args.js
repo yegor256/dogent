@@ -16,14 +16,16 @@ const minimist = require('minimist');
  * any talk to the LLM even when a token sits in the environment. The `--help`
  * flag, also spelled `-h`, asks for the usage banner. The `--version` flag
  * asks for the release number. The `--suppress` option names a rule to
- * silence; repeat it or join names with commas to silence many at once.
- * Everything after a `--` separator counts as a path, never as an option.
+ * silence; repeat it or join names with commas to silence many at once. The
+ * `--openai-http-header` option adds one `Name: Value` header to every OpenAI
+ * call; repeat it to add many. Everything after a `--` separator counts as a
+ * path, never as an option.
  */
 class Args {
   constructor(
     argv,
     flags = ['sarif', 'offline', 'help', 'version'],
-    options = ['suppress']
+    options = ['suppress', 'openai-http-header']
   ) {
     this.flags = flags;
     this.options = options;
@@ -49,6 +51,19 @@ class Args {
       .flatMap((item) => String(item).split(','))
       .map((name) => name.trim())
       .filter((name) => name !== '');
+  }
+  headers() {
+    return [].concat(this.parsed['openai-http-header'] || [])
+      .map(String)
+      .map((line) => line.trim())
+      .filter((line) => line !== '')
+      .reduce((acc, line) => {
+        const at = line.indexOf(':');
+        if (at < 0) {
+          throw new Error(`Malformed header "${line}", expected "Name: Value"`);
+        }
+        return {...acc, [line.slice(0, at).trim()]: line.slice(at + 1).trim()};
+      }, {});
   }
   paths() {
     return this.parsed._.concat(this.parsed['--']).map(String);

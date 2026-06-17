@@ -10,20 +10,23 @@ const Usage = require('./usage');
 /**
  * Openai.
  *
- * A thin adapter over the OpenAI chat-completions endpoint. Sends one
- * prompt, demands a JSON object back, and returns the assistant text
- * paired with a Usage tally of the model and the tokens it consumed.
+ * A thin adapter over an OpenAI-compatible chat-completions endpoint.
+ * Sends one prompt, demands a JSON object back, and returns the assistant
+ * text paired with a Usage tally of the model and the tokens it consumed.
+ * The base URL is configurable, so the same adapter reaches OpenAI itself
+ * or any compatible server, such as vLLM, Ollama, or a private gateway.
  * The transport is injected so the class runs in tests without a socket.
  */
 class Openai {
-  constructor(key, model, transport) {
+  constructor(key, model, base, transport) {
     this.key = key;
     this.model = model;
+    this.base = base;
     this.transport = transport;
   }
   async answer(prompt) {
     const response = await this.transport(
-      'https://api.openai.com/v1/chat/completions',
+      `${this.base.replace(/\/+$/u, '')}/chat/completions`,
       {
         method: 'POST',
         headers: {

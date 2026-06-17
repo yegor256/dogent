@@ -130,12 +130,26 @@ It sends the manifesto together with one instruction per rule,
   then prints any violation the model reports for ambiguity,
   weak phrasing, and instructions that only pretend to be commands.
 The model defaults to `gpt-4o-mini`; override it with `OPENAI_MODEL`.
+Requests go to `https://api.openai.com/v1` by default;
+  set `OPENAI_BASE_URL` to any OpenAI-compatible endpoint instead,
+  such as a local vLLM, Ollama, or LocalAI server, or a private gateway.
+For a keyless local server, set `OPENAI_API_KEY` to any placeholder,
+  since the server ignores it yet `dogent` calls the LLM only when it is set.
 After the report, `dogent` prints a one-line usage summary to standard error,
   naming the model, the tokens sent and received, and an estimated cost,
   for example `OpenAI: gpt-4o-mini, 1234 sent, 567 received, ~$0.0005`.
 
 ```bash
 export OPENAI_API_KEY=...
+npx @yegor256/dogent CLAUDE.md
+```
+
+Point it at a local model the same way:
+
+```bash
+export OPENAI_BASE_URL=http://localhost:11434/v1
+export OPENAI_MODEL=llama3
+export OPENAI_API_KEY=dummy
 npx @yegor256/dogent CLAUDE.md
 ```
 

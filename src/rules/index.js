@@ -57,6 +57,7 @@ const AmbiguousOr = require('./ambiguous-or');
 const ExternalLink = require('./external-link');
 const Conditional = require('./conditional');
 const Transition = require('./transition');
+const Placement = require('./placement');
 
 module.exports = () => [
   new Grouped(),
@@ -108,6 +109,7 @@ module.exports = () => [
   new ExternalLink(),
   new Conditional(),
   new Transition(),
+  new Placement(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

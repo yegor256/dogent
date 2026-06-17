@@ -77,6 +77,9 @@ const section = () => {
   ];
   const pad = [];
   for (let num = 0; num < 900; num += 1) {
+    if (num === 450) {
+      pad.push('## Mission');
+    }
     pad.push(`Sharpen tool number ${num} now.`);
   }
   return ['## Steps', ...lines, ...pad].join('\n');

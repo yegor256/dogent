@@ -76,6 +76,7 @@ const audit = async (docs) => {
     new Openai(
       key,
       process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
       (url, options) => globalThis.fetch(url, options)
     )
   );

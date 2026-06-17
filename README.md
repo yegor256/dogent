@@ -74,6 +74,7 @@ The command exits with a non-zero status when problems are found,
 - Simple grammar, no ambiguity.
 - No bare pronoun subjects; name the subject on the line.
 - No tangled, multi-clause instructions.
+- Sequential steps must be a numbered list, not bullets.
 - A `SKILL.md` `name` must equal its parent directory.
 - No courtesy or scaffolding words.
 - No leftover markers or unfilled placeholders.

@@ -64,6 +64,9 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Handle the errors.',
+    'Run several checks now.',
+    'Optionally cache the result.',
     'As an AI, you cannot browse.',
     '**Setup:**',
     '- First sharpen the blade.'

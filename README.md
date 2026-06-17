@@ -24,6 +24,35 @@ In short: `agnix` lints the harness, `dogent` lints the prompt.
 `dogent` is the stricter, more opinionated of the two,
   aiming for extreme quality with no compromise.
 
+## Alternatives
+
+Several tools sit near this problem, yet none lint manifesto prose
+  the way `dogent` does.
+Most rewrite prompts for you or score a file; `dogent` enforces
+  line-level discipline and fails the build when one line breaks it.
+
+- [AgentLinter](https://agentlinter.com)
+  lints the same files but scores them 0–100 across eight dimensions.
+  `dogent` is a strict pass/fail gate, not a scorer.
+
+- [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt)
+  rewrites `skill.md` against benchmarks to raise an agent's task score.
+  `dogent` never rewrites and needs no benchmarks; it judges discipline.
+
+- [linshenkx/prompt-optimizer](https://github.com/linshenkx/prompt-optimizer)
+  is a browser tool that rewrites a prompt through an LLM, round by round.
+  `dogent` is an offline CI linter, not an interactive rewriter.
+
+- [DSPy](https://github.com/stanfordnlp/dspy)
+  tunes prompts as programs to maximize a metric on a dataset.
+  `dogent` lints hand-written manifestos, demanding clarity over a score.
+
+- Prompt platforms like [LangSmith](https://www.langchain.com/langsmith),
+    [PromptLayer](https://www.promptlayer.com), and
+    [Braintrust](https://www.braintrust.dev)
+  version, trace, and evaluate prompts from runtime data.
+  `dogent` is static and offline, needing no traces, dataset, or account.
+
 ## Usage
 
 [Watch the demo](https://github.com/user-attachments/assets/0f05c975-2bc8-4a95-9c3a-76a78fe5d655)

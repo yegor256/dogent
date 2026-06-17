@@ -29,6 +29,17 @@ describe('Jargon', () => {
       'a parenthetical expansion must license later mentions'
     );
   });
+  it('accepts an acronym whose initials match a later gloss', () => {
+    const doc = new Markdown(
+      'x.md',
+      '# H\nFollow the AAA pattern (Arrange-Act-Assert) here.'
+    ).document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      0,
+      'a gloss whose initials spell the acronym must license it'
+    );
+  });
   it('accepts an allowlisted acronym', () => {
     const doc = new Markdown('x.md', '# H\nReturn JSON only.').document();
     assert.strictEqual(

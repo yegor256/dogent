@@ -21,6 +21,7 @@ const NameMatchesDir = require('./name-matches-dir');
 const Polite = require('./polite');
 const Unfinished = require('./unfinished');
 const Crowded = require('./crowded');
+const Budget = require('./budget');
 const DescriptionTriggers = require('./description-triggers');
 const Atomic = require('./atomic');
 const Hedging = require('./hedging');
@@ -68,6 +69,7 @@ module.exports = () => [
   new Polite(),
   new Unfinished(),
   new Crowded(10),
+  new Budget(60),
   new DescriptionTriggers(),
   new Example(),
   new Format(),

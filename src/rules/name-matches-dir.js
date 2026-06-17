@@ -45,7 +45,7 @@ class NameMatchesDir {
     return this.mismatch(uri, name);
   }
   mismatch(uri, name) {
-    const parent = path.basename(path.dirname(uri));
+    const parent = path.basename(path.dirname(path.resolve(uri)));
     if (!name || name.value === parent) {
       return [];
     }

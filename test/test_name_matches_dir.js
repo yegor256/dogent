@@ -6,6 +6,7 @@
 'use strict';
 
 const assert = require('assert');
+const path = require('path');
 const Markdown = require('../src/markdown');
 const NameMatchesDir = require('../src/rules/name-matches-dir');
 
@@ -22,6 +23,14 @@ describe('NameMatchesDir', () => {
     const doc = new Markdown('skills/code-review/SKILL.md', text).document();
     assert.strictEqual(
       new NameMatchesDir().violations(doc).length, 1, 'a mismatching name must be flagged'
+    );
+  });
+  it('resolves the parent of a bare filename against the filesystem', () => {
+    const here = path.basename(process.cwd());
+    const text = `---\nname: ${here}\ndescription: Review code\n---\n# Doors\nShut gate`;
+    const doc = new Markdown('SKILL.md', text).document();
+    assert.strictEqual(
+      new NameMatchesDir().violations(doc).length, 0, 'a bare filename must resolve its real parent'
     );
   });
   it('ignores a file that is not a skill', () => {

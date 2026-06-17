@@ -58,6 +58,7 @@ const ExternalLink = require('./external-link');
 const Conditional = require('./conditional');
 const Transition = require('./transition');
 const Placement = require('./placement');
+const InlineCode = require('./inline-code');
 
 module.exports = () => [
   new Grouped(),
@@ -110,6 +111,7 @@ module.exports = () => [
   new Conditional(),
   new Transition(),
   new Placement(),
+  new InlineCode(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

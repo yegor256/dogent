@@ -72,6 +72,7 @@ const section = () => {
     'Follow the steps at https://example.com/guide.',
     'If staging, run smoke tests, else run the full suite.',
     'Furthermore, run the tests.',
+    'Edit the package.json file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

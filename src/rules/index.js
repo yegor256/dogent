@@ -63,6 +63,7 @@ const Emoji = require('./emoji');
 const Homoglyph = require('./homoglyph');
 const DuplicateSection = require('./duplicate-section');
 const DescriptionVoice = require('./description-voice');
+const ExampleFormat = require('./example-format');
 
 module.exports = () => [
   new Grouped(),
@@ -120,6 +121,7 @@ module.exports = () => [
   new Homoglyph(),
   new DuplicateSection(),
   new DescriptionVoice(),
+  new ExampleFormat(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

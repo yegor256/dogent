@@ -1,6 +1,6 @@
 # Dogent
 
-Lint agentic manifesto files like SKILL.md and CLAUDE.md.
+Lint agentic manifesto files like `SKILL.md` and `CLAUDE.md`.
 
 ## Mission
 

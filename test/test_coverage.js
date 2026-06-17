@@ -17,7 +17,7 @@ const pipeline = require('../src/rules');
  * never fire from a fixture alone, so the coverage requirement excludes
  * them. Today `consistent` is the only such rule.
  */
-const ORACLE_ONLY = new Set(['consistent']);
+const ORACLE_ONLY = new Set(['consistent', 'example-format']);
 
 const URI = 'skills/gadget/SKILL.md';
 
@@ -64,11 +64,25 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Handle the errors.',
+    'Run several checks now.',
+    'Optionally cache the result.',
+    'As an AI, you cannot browse.',
+    'Lint and/or format the file.',
+    'Follow the steps at https://example.com/guide.',
+    'If staging, run smoke tests, else run the full suite.',
+    'Furthermore, run the tests.',
+    'Edit the package.json file.',
+    'Ship it \u{1F680} now.',
+    'Sаve the file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];
   const pad = [];
   for (let num = 0; num < 900; num += 1) {
+    if (num === 450) {
+      pad.push('## Mission');
+    }
     pad.push(`Sharpen tool number ${num} now.`);
   }
   return ['## Steps', ...lines, ...pad].join('\n');
@@ -81,7 +95,7 @@ const section = () => {
 const fixture = () => [
   '---',
   'name: Gadget Skill',
-  'description:',
+  `description: ${'I fix bugs and you can trust me here. '.repeat(40)}`,
   'license: MIT',
   'forbidden: yes',
   '---',
@@ -89,6 +103,7 @@ const fixture = () => [
   '## This Heading Has Four Words',
   '### Too Deep',
   '## Hollow',
+  '## More',
   '## More',
   'See @missing/no-such-file.md for detail.',
   `This line runs far beyond the eighty symbol ceiling so it trips ${'x'.repeat(60)}.`,

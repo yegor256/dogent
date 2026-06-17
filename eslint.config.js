@@ -22,6 +22,9 @@
  * Two more (max-statements, max-lines-per-function) are switched off
  * only for src/markdown.js, whose one cohesive scanning loop they
  * cannot usefully measure; everywhere else they stay on.
+ * max-lines-per-function is also switched off for src/rules/index.js,
+ * a flat composition list that grows by one line per rule and that the
+ * metric cannot usefully bound.
  *
  * One more (max-lines-per-function) is switched off for
  * src/rules/index.js, whose single composition-root array of rules
@@ -31,12 +34,12 @@
  * test, which carry OpenAI's snake_case fields "response_format",
  * "prompt_tokens", and "completion_tokens".
  *
- * One more (class-methods-use-this) is switched off for thirteen rules
- * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js and src/rules/description-length.js
+ * One more (class-methods-use-this) is switched off for seventeen rules
+ * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js and src/rules/description-length.js
  * return an empty prompt() to keep the deterministic-only rule out
- * of the AI oracle, and src/rules/consistent.js returns empty
- * violations() to leave its duplicate-and-conflict judgement
- * entirely to the oracle.
+ * of the AI oracle, and src/rules/consistent.js and
+ * src/rules/example-format.js return empty violations() to leave their
+ * oracle judgement entirely to the oracle.
  */
 
 'use strict';
@@ -114,6 +117,10 @@ module.exports = [
       'src/rules/crowded.js',
       'src/rules/budget.js',
       'src/rules/consistent.js',
+      'src/rules/emoji.js',
+      'src/rules/homoglyph.js',
+      'src/rules/duplicate-section.js',
+      'src/rules/example-format.js',
       'src/rules/description-length.js'
     ],
     rules: {

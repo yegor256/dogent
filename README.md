@@ -77,6 +77,7 @@ The command exits with a non-zero status when problems are found,
 - No leftover markers or unfilled placeholders.
 - A section must hold at most ten instructions.
 - A `SKILL.md` `description` must say when to use the skill.
+- A `SKILL.md` must carry at least one worked example.
 - Every line must carry exactly one instruction.
 - No hedging or soft wording.
 - No passive voice; use the active imperative.

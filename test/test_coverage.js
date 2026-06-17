@@ -71,6 +71,7 @@ const section = () => {
     'Lint and/or format the file.',
     'Follow the steps at https://example.com/guide.',
     'If staging, run smoke tests, else run the full suite.',
+    'Furthermore, run the tests.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

@@ -72,6 +72,17 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent rules count', () => {
+  it('reports how many rules it applied', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.match(
+      run([file], {OPENAI_API_KEY: ''}).stderr,
+      /[0-9]+ rules applied/u,
+      'dogent must report the count of rules contributed to the study'
+    );
+  });
+});
+
 describe('dogent help', () => {
   it('exits with success when asked for help', () => {
     assert.strictEqual(

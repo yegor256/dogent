@@ -49,6 +49,19 @@ const ToolClarity = require('./tool-clarity');
 const CounterExample = require('./counter-example');
 const Rationale = require('./rationale');
 const SelfContained = require('./self-contained');
+const Quantifier = require('./quantifier');
+const WeakVerb = require('./weak-verb');
+const Default = require('./default');
+const MetaReference = require('./meta-reference');
+const AmbiguousOr = require('./ambiguous-or');
+const ExternalLink = require('./external-link');
+const Conditional = require('./conditional');
+const Transition = require('./transition');
+const Placement = require('./placement');
+const InlineCode = require('./inline-code');
+const Emoji = require('./emoji');
+const Homoglyph = require('./homoglyph');
+const DuplicateSection = require('./duplicate-section');
 const DescriptionVoice = require('./description-voice');
 
 module.exports = () => [
@@ -93,6 +106,19 @@ module.exports = () => [
   new CounterExample(),
   new Rationale(),
   new SelfContained(),
+  new Quantifier(),
+  new WeakVerb(),
+  new Default(),
+  new MetaReference(),
+  new AmbiguousOr(),
+  new ExternalLink(),
+  new Conditional(),
+  new Transition(),
+  new Placement(),
+  new InlineCode(),
+  new Emoji(),
+  new Homoglyph(),
+  new DuplicateSection(),
   new DescriptionVoice(),
   new Unique(),
   new Frontmatter(

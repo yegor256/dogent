@@ -71,6 +71,7 @@ The command exits with a non-zero status when problems are found,
 - Every sentence must start with a capital and end with a period.
 - No articles, no noise, no bloated text.
 - Simple grammar, no ambiguity.
+- No bare pronoun subjects; name the subject on the line.
 - No tangled, multi-clause instructions.
 - A `SKILL.md` `name` must equal its parent directory.
 - No courtesy or scaffolding words.

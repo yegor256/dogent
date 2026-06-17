@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const Args = require('./args');
+const Defaults = require('./defaults');
 const Markdown = require('./markdown');
 const Report = require('./report');
 const Sources = require('./sources');
@@ -18,7 +19,7 @@ const prettyMs = require('pretty-ms');
 const version = require('./version');
 const rules = require('./rules');
 
-const args = new Args(process.argv.slice(2));
+const args = new Args(new Defaults().argv().concat(process.argv.slice(2)));
 const sarif = args.sarif();
 const banner = 'Usage: dogent [--sarif] [--offline] [--suppress=RULE,...] <file.md|dir>...';
 if (args.version()) {
@@ -34,7 +35,10 @@ if (args.help()) {
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
     '  --version  show the version and exit\n' +
-    '  --help     show this help and exit\n'
+    '  --help     show this help and exit\n\n' +
+    'Defaults:\n' +
+    '  A .dogent file in the current directory or home holds default\n' +
+    '  options, one per line; options typed by hand override it.\n'
   );
   process.exit(0);
 }

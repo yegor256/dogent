@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Referential = require('./referential');
 
 module.exports = () => [
   new Grouped(),
@@ -44,6 +45,7 @@ module.exports = () => [
   new Redundant(),
   new Consistent(),
   new Simple(),
+  new Referential(),
   new NameMatchesDir(),
   new Polite(),
   new Unfinished(),

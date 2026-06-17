@@ -64,6 +64,7 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'If staging, run smoke tests, else run the full suite.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

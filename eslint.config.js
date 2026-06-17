@@ -34,8 +34,8 @@
  * src/rules/hidden-char.js, whose escaped class deliberately lists the
  * combining variation selectors it must reject.
  *
- * One more (class-methods-use-this) is switched off for nineteen rules
- * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js, src/rules/description-length.js and src/rules/hidden-char.js
+ * One more (class-methods-use-this) is switched off for twenty rules
+ * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js, src/rules/description-length.js, src/rules/hidden-char.js and src/rules/fence-language.js
  * return an empty prompt() to keep the deterministic-only rule out
  * of the AI oracle, and src/rules/consistent.js,
  * src/rules/example-format.js and src/rules/scope.js return empty
@@ -129,7 +129,8 @@ module.exports = [
       'src/rules/example-format.js',
       'src/rules/description-length.js',
       'src/rules/scope.js',
-      'src/rules/hidden-char.js'
+      'src/rules/hidden-char.js',
+      'src/rules/fence-language.js'
     ],
     rules: {
       'class-methods-use-this': 'off'

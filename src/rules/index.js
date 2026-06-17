@@ -68,6 +68,7 @@ const DescriptionLength = require('./description-length');
 const Scope = require('./scope');
 const HiddenChar = require('./hidden-char');
 const Units = require('./units');
+const FenceLanguage = require('./fence-language');
 
 module.exports = () => [
   new Grouped(),
@@ -130,6 +131,7 @@ module.exports = () => [
   new Scope(),
   new HiddenChar(),
   new Units(),
+  new FenceLanguage(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

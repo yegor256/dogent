@@ -26,6 +26,10 @@
  * a flat composition list that grows by one line per rule and that the
  * metric cannot usefully bound.
  *
+ * One more (max-lines-per-function) is switched off for
+ * src/rules/index.js, whose sole function is a flat list of rule
+ * registrations that grows by one line per rule.
+ *
  * One more (camelcase) is switched off only for src/openai.js and its
  * test, which carry OpenAI's snake_case fields "response_format",
  * "prompt_tokens", and "completion_tokens".

@@ -62,6 +62,7 @@ const InlineCode = require('./inline-code');
 const Emoji = require('./emoji');
 const Homoglyph = require('./homoglyph');
 const DuplicateSection = require('./duplicate-section');
+const DescriptionVoice = require('./description-voice');
 
 module.exports = () => [
   new Grouped(),
@@ -118,6 +119,7 @@ module.exports = () => [
   new Emoji(),
   new Homoglyph(),
   new DuplicateSection(),
+  new DescriptionVoice(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

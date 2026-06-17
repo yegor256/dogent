@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Vague = require('./vague');
 const Positive = require('./positive');
 
 module.exports = () => [
@@ -52,6 +53,7 @@ module.exports = () => [
   new DescriptionTriggers(),
   new Atomic(),
   new Hedging(),
+  new Vague(),
   new Passive(),
   new Positive(),
   new Unique(),

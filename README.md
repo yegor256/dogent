@@ -124,6 +124,13 @@ npx @yegor256/dogent --offline CLAUDE.md
 
 Pass `--sarif` to print the report as SARIF instead of plain text.
 
+Pass `--suppress` to silence a rule by its id. Repeat the option or
+  join several ids with commas to silence many at once:
+
+```bash
+npx @yegor256/dogent --suppress=name-matches-dir,line-length CLAUDE.md
+```
+
 ## GitHub Actions
 
 Because `dogent` runs through `npx`, no extra action is needed.

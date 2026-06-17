@@ -95,7 +95,7 @@ const section = () => {
 const fixture = () => [
   '---',
   'name: Gadget Skill',
-  'description: I fix bugs.',
+  `description: ${'I fix bugs and you can trust me here. '.repeat(40)}`,
   'license: MIT',
   'forbidden: yes',
   '---',

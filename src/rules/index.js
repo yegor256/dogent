@@ -64,6 +64,7 @@ const Homoglyph = require('./homoglyph');
 const DuplicateSection = require('./duplicate-section');
 const DescriptionVoice = require('./description-voice');
 const ExampleFormat = require('./example-format');
+const DescriptionLength = require('./description-length');
 
 module.exports = () => [
   new Grouped(),
@@ -122,6 +123,7 @@ module.exports = () => [
   new DuplicateSection(),
   new DescriptionVoice(),
   new ExampleFormat(),
+  new DescriptionLength(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

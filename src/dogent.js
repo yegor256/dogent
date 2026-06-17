@@ -14,6 +14,7 @@ const Sources = require('./sources');
 const Openai = require('./openai');
 const Oracle = require('./oracle');
 const Usage = require('./usage');
+const prettyMs = require('pretty-ms');
 const version = require('./version');
 const rules = require('./rules');
 
@@ -54,6 +55,7 @@ process.stderr.write(`${scanned.length} files scanned, ${checks.length} rules ap
 const documents = scanned.map(
   (file) => new Markdown(file, fs.readFileSync(file, 'utf8')).document()
 );
+const started = Date.now();
 const found = [];
 documents.forEach((document) => {
   checks.forEach((rule) => {
@@ -79,25 +81,29 @@ const audit = async (docs) => {
     {extra: [], usage: new Usage('', 0, 0)}
   );
 };
-const finish = (usage) => {
-  const report = new Report('dogent', found);
+const finish = (usage, aiMillis) => {
+  const report = new Report('dogent', found, Date.now() - started);
   process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
   if (usage !== null) {
-    process.stderr.write(`${usage.text()}\n`);
+    process.stderr.write(`${usage.text()}, analysed in ${prettyMs(aiMillis)}\n`);
   }
   process.exit(report.count() > 0 ? 1 : 0);
 };
+const verify = async () => {
+  const clock = Date.now();
+  const result = await audit(documents);
+  result.extra.forEach((violation) => found.push(violation));
+  return {usage: result.usage, aiMillis: Date.now() - clock};
+};
 (async () => {
-  let usage = null;
+  let outcome = {aiMillis: 0, usage: null};
   if (found.length === 0 && key && !args.offline()) {
     try {
-      const result = await audit(documents);
-      result.extra.forEach((violation) => found.push(violation));
-      ({usage} = result);
+      outcome = await verify();
     } catch (error) {
       process.stderr.write(`AI verification failed: ${error.message}\n`);
       process.exit(2);
     }
   }
-  finish(usage);
+  finish(outcome.usage, outcome.aiMillis);
 })();

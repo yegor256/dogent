@@ -83,6 +83,17 @@ describe('dogent rules count', () => {
   });
 });
 
+describe('dogent timing', () => {
+  it('prints the analysis duration beside the problem count', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.match(
+      run([file], {OPENAI_API_KEY: ''}).stdout,
+      /problems found in /u,
+      'dogent must report how long the analysis took'
+    );
+  });
+});
+
 describe('dogent help', () => {
   it('exits with success when asked for help', () => {
     assert.strictEqual(

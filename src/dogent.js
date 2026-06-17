@@ -49,20 +49,21 @@ if (paths.length === 0) {
 }
 const scanned = new Sources(paths).files();
 scanned.forEach((file) => process.stderr.write(`Scanning ${file}\n`));
-process.stderr.write(`${scanned.length} files scanned\n`);
+const checks = rules();
+process.stderr.write(`${scanned.length} files scanned, ${checks.length} rules applied\n`);
 const documents = scanned.map(
   (file) => new Markdown(file, fs.readFileSync(file, 'utf8')).document()
 );
 const found = [];
 documents.forEach((document) => {
-  rules().forEach((rule) => {
+  checks.forEach((rule) => {
     rule.violations(document).forEach((violation) => found.push(violation));
   });
 });
 const key = process.env.OPENAI_API_KEY;
 const audit = async (docs) => {
   const oracle = new Oracle(
-    rules(),
+    checks,
     new Openai(
       key,
       process.env.OPENAI_MODEL || 'gpt-4o-mini',

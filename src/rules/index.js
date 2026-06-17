@@ -49,6 +49,7 @@ const ToolClarity = require('./tool-clarity');
 const CounterExample = require('./counter-example');
 const Rationale = require('./rationale');
 const SelfContained = require('./self-contained');
+const DuplicateSection = require('./duplicate-section');
 
 module.exports = () => [
   new Grouped(),
@@ -92,6 +93,7 @@ module.exports = () => [
   new CounterExample(),
   new Rationale(),
   new SelfContained(),
+  new DuplicateSection(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

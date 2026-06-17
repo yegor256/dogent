@@ -80,6 +80,7 @@ The command exits with a non-zero status when problems are found,
 - Every line must carry exactly one instruction.
 - No hedging or soft wording.
 - No passive voice; use the active imperative.
+- No persona or role-play; it adds no instruction.
 - No instruction may repeat another.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.

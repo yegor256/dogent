@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Persona = require('./persona');
 
 module.exports = () => [
   new Grouped(),
@@ -52,6 +53,7 @@ module.exports = () => [
   new Atomic(),
   new Hedging(),
   new Passive(),
+  new Persona(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

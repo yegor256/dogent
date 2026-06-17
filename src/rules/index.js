@@ -49,6 +49,10 @@ const ToolClarity = require('./tool-clarity');
 const CounterExample = require('./counter-example');
 const Rationale = require('./rationale');
 const SelfContained = require('./self-contained');
+const Quantifier = require('./quantifier');
+const WeakVerb = require('./weak-verb');
+const Default = require('./default');
+const MetaReference = require('./meta-reference');
 const AmbiguousOr = require('./ambiguous-or');
 
 module.exports = () => [
@@ -93,6 +97,10 @@ module.exports = () => [
   new CounterExample(),
   new Rationale(),
   new SelfContained(),
+  new Quantifier(),
+  new WeakVerb(),
+  new Default(),
+  new MetaReference(),
   new AmbiguousOr(),
   new Unique(),
   new Frontmatter(

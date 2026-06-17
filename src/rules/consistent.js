@@ -20,7 +20,7 @@ class Consistent {
     this.id = 'consistent';
   }
   prompt() {
-    return `${this.id}: flag an instruction that repeats another instruction word for word, or that directly contradicts another instruction in the same file`;
+    return `${this.id}: flag an instruction that repeats another instruction word for word, or that logically contradicts another instruction about the very same subject, where one line orders exactly what another forbids; ignore lines that merely share a theme but govern different concerns, since complementary instructions never clash`;
   }
   violations() {
     return [];

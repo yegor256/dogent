@@ -81,6 +81,7 @@ The command exits with a non-zero status when problems are found,
 - No hedging or soft wording.
 - No passive voice; use the active imperative.
 - No instruction may repeat another.
+- No unguarded consumption of untrusted external input.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
 - A `SKILL.md` `name` must be kebab-case.

@@ -64,6 +64,7 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Wait 30 before retry.',
     'Trim the file.​',
     'Handle the errors.',
     'Run several checks now.',

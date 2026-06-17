@@ -67,6 +67,7 @@ const ExampleFormat = require('./example-format');
 const DescriptionLength = require('./description-length');
 const Scope = require('./scope');
 const HiddenChar = require('./hidden-char');
+const Units = require('./units');
 
 module.exports = () => [
   new Grouped(),
@@ -128,6 +129,7 @@ module.exports = () => [
   new DescriptionLength(),
   new Scope(),
   new HiddenChar(),
+  new Units(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -50,6 +50,7 @@ const CounterExample = require('./counter-example');
 const Rationale = require('./rationale');
 const SelfContained = require('./self-contained');
 const Quantifier = require('./quantifier');
+const WeakVerb = require('./weak-verb');
 
 module.exports = () => [
   new Grouped(),
@@ -94,6 +95,7 @@ module.exports = () => [
   new Rationale(),
   new SelfContained(),
   new Quantifier(),
+  new WeakVerb(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

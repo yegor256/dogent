@@ -30,8 +30,12 @@
  * test, which carry OpenAI's snake_case fields "response_format",
  * "prompt_tokens", and "completion_tokens".
  *
- * One more (class-methods-use-this) is switched off for eighteen rules
- * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js and src/rules/description-length.js
+ * One more (no-misleading-character-class) relaxes to allowEscape for
+ * src/rules/hidden-char.js, whose escaped class deliberately lists the
+ * combining variation selectors it must reject.
+ *
+ * One more (class-methods-use-this) is switched off for nineteen rules
+ * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js, src/rules/description-length.js and src/rules/hidden-char.js
  * return an empty prompt() to keep the deterministic-only rule out
  * of the AI oracle, and src/rules/consistent.js,
  * src/rules/example-format.js and src/rules/scope.js return empty
@@ -94,6 +98,12 @@ module.exports = [
     }
   },
   {
+    files: ['src/rules/hidden-char.js'],
+    rules: {
+      'no-misleading-character-class': ['error', {allowEscape: true}]
+    }
+  },
+  {
     files: ['src/openai.js', 'test/test_openai.js'],
     rules: {
       camelcase: 'off'
@@ -118,7 +128,8 @@ module.exports = [
       'src/rules/duplicate-section.js',
       'src/rules/example-format.js',
       'src/rules/description-length.js',
-      'src/rules/scope.js'
+      'src/rules/scope.js',
+      'src/rules/hidden-char.js'
     ],
     rules: {
       'class-methods-use-this': 'off'

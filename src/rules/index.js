@@ -66,6 +66,7 @@ const DescriptionVoice = require('./description-voice');
 const ExampleFormat = require('./example-format');
 const DescriptionLength = require('./description-length');
 const Scope = require('./scope');
+const HiddenChar = require('./hidden-char');
 
 module.exports = () => [
   new Grouped(),
@@ -126,6 +127,7 @@ module.exports = () => [
   new ExampleFormat(),
   new DescriptionLength(),
   new Scope(),
+  new HiddenChar(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

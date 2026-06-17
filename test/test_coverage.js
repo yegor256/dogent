@@ -17,7 +17,7 @@ const pipeline = require('../src/rules');
  * never fire from a fixture alone, so the coverage requirement excludes
  * them. Today `consistent` is the only such rule.
  */
-const ORACLE_ONLY = new Set(['consistent', 'example-format']);
+const ORACLE_ONLY = new Set(['consistent', 'example-format', 'scope']);
 
 const URI = 'skills/gadget/SKILL.md';
 

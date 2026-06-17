@@ -65,6 +65,7 @@ const DuplicateSection = require('./duplicate-section');
 const DescriptionVoice = require('./description-voice');
 const ExampleFormat = require('./example-format');
 const DescriptionLength = require('./description-length');
+const Scope = require('./scope');
 
 module.exports = () => [
   new Grouped(),
@@ -124,6 +125,7 @@ module.exports = () => [
   new DescriptionVoice(),
   new ExampleFormat(),
   new DescriptionLength(),
+  new Scope(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

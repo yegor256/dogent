@@ -64,6 +64,14 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Handle the errors.',
+    'Run several checks now.',
+    'Optionally cache the result.',
+    'As an AI, you cannot browse.',
+    'Lint and/or format the file.',
+    'Follow the steps at https://example.com/guide.',
+    'If staging, run smoke tests, else run the full suite.',
+    'Furthermore, run the tests.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

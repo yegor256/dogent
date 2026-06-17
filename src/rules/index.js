@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Format = require('./format');
 
 module.exports = () => [
   new Grouped(),
@@ -49,6 +50,7 @@ module.exports = () => [
   new Unfinished(),
   new Crowded(10),
   new DescriptionTriggers(),
+  new Format(),
   new Atomic(),
   new Hedging(),
   new Passive(),

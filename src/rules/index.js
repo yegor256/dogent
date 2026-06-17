@@ -46,6 +46,7 @@ const PseudoHeading = require('./pseudo-heading');
 const Stale = require('./stale');
 const ToolClarity = require('./tool-clarity');
 const CounterExample = require('./counter-example');
+const Rationale = require('./rationale');
 
 module.exports = () => [
   new Grouped(),
@@ -86,6 +87,7 @@ module.exports = () => [
   new PseudoHeading(),
   new Stale(),
   new CounterExample(),
+  new Rationale(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Format = require('./format');
 const Untrusted = require('./untrusted');
 const Ordered = require('./ordered');
 const Emphasis = require('./emphasis');
@@ -61,6 +62,7 @@ module.exports = () => [
   new Crowded(10),
   new DescriptionTriggers(),
   new Example(),
+  new Format(),
   new Atomic(),
   new Ordered(),
   new Hedging(),

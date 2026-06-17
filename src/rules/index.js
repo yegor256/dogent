@@ -40,6 +40,7 @@ const Referential = require('./referential');
 const Vague = require('./vague');
 const Positive = require('./positive');
 const Done = require('./done');
+const Terms = require('./terms');
 
 module.exports = () => [
   new Grouped(),
@@ -74,6 +75,7 @@ module.exports = () => [
   new Persona(),
   new Positive(),
   new Done(),
+  new Terms(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

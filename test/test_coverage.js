@@ -68,6 +68,7 @@ const section = () => {
     'Run several checks now.',
     'Optionally cache the result.',
     'As an AI, you cannot browse.',
+    'Lint and/or format the file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

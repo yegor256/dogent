@@ -61,6 +61,7 @@ const Placement = require('./placement');
 const InlineCode = require('./inline-code');
 const Emoji = require('./emoji');
 const Homoglyph = require('./homoglyph');
+const DuplicateSection = require('./duplicate-section');
 
 module.exports = () => [
   new Grouped(),
@@ -116,6 +117,7 @@ module.exports = () => [
   new InlineCode(),
   new Emoji(),
   new Homoglyph(),
+  new DuplicateSection(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

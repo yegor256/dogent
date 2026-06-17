@@ -104,6 +104,7 @@ const fixture = () => [
   '### Too Deep',
   '## Hollow',
   '## More',
+  '## More',
   'See @missing/no-such-file.md for detail.',
   `This line runs far beyond the eighty symbol ceiling so it trips ${'x'.repeat(60)}.`,
   'It produces output every run.',

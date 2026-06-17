@@ -48,6 +48,7 @@ const Stale = require('./stale');
 const ToolClarity = require('./tool-clarity');
 const CounterExample = require('./counter-example');
 const Rationale = require('./rationale');
+const SelfContained = require('./self-contained');
 
 module.exports = () => [
   new Grouped(),
@@ -90,6 +91,7 @@ module.exports = () => [
   new Stale(),
   new CounterExample(),
   new Rationale(),
+  new SelfContained(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

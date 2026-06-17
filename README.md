@@ -67,6 +67,7 @@ The command exits with a non-zero status when problems are found,
 - Every section must be a level-2 (`##`) heading, below the lone `#` title.
 - Every line must be no longer than 80 symbols.
 - The whole file must stay under 4000 tokens.
+- The whole file must stay short; split detail into referenced files.
 - Every line must sound like a command.
 - Every sentence must start with a capital and end with a period.
 - No articles, no noise, no bloated text.

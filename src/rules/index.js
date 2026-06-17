@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Persona = require('./persona');
 const Concise = require('./concise');
 const Example = require('./example');
 const Referential = require('./referential');
@@ -61,6 +62,7 @@ module.exports = () => [
   new Hedging(),
   new Vague(),
   new Passive(),
+  new Persona(),
   new Positive(),
   new Unique(),
   new Frontmatter(

@@ -81,7 +81,7 @@ const section = () => {
 const fixture = () => [
   '---',
   'name: Gadget Skill',
-  'description: short',
+  'description:',
   'license: MIT',
   'forbidden: yes',
   '---',

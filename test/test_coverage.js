@@ -64,12 +64,23 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Handle the errors.',
+    'Run several checks now.',
+    'Optionally cache the result.',
+    'As an AI, you cannot browse.',
+    'Lint and/or format the file.',
+    'Follow the steps at https://example.com/guide.',
+    'If staging, run smoke tests, else run the full suite.',
+    'Furthermore, run the tests.',
     'Edit the package.json file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];
   const pad = [];
   for (let num = 0; num < 900; num += 1) {
+    if (num === 450) {
+      pad.push('## Mission');
+    }
     pad.push(`Sharpen tool number ${num} now.`);
   }
   return ['## Steps', ...lines, ...pad].join('\n');

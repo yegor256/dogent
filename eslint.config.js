@@ -22,6 +22,8 @@
  * Two more (max-statements, max-lines-per-function) are switched off
  * only for src/markdown.js, whose one cohesive scanning loop they
  * cannot usefully measure; everywhere else they stay on.
+ * max-lines-per-function is also off for src/rules/index.js, a flat
+ * composition list whose length carries no logic to measure.
  *
  * One more (camelcase) is switched off only for src/openai.js and its
  * test, which carry OpenAI's snake_case fields "response_format",
@@ -81,6 +83,12 @@ module.exports = [
     files: ['src/markdown.js'],
     rules: {
       'max-statements': 'off',
+      'max-lines-per-function': 'off'
+    }
+  },
+  {
+    files: ['src/rules/index.js'],
+    rules: {
       'max-lines-per-function': 'off'
     }
   },

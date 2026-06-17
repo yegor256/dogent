@@ -39,6 +39,7 @@ const Example = require('./example');
 const Referential = require('./referential');
 const Vague = require('./vague');
 const Positive = require('./positive');
+const Done = require('./done');
 
 module.exports = () => [
   new Grouped(),
@@ -72,6 +73,7 @@ module.exports = () => [
   new Emphasis(),
   new Persona(),
   new Positive(),
+  new Done(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

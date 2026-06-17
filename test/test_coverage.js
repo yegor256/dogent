@@ -74,6 +74,7 @@ const section = () => {
     'Furthermore, run the tests.',
     'Edit the package.json file.',
     'Ship it \u{1F680} now.',
+    'Sаve the file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

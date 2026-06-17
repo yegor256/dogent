@@ -60,6 +60,7 @@ const Transition = require('./transition');
 const Placement = require('./placement');
 const InlineCode = require('./inline-code');
 const Emoji = require('./emoji');
+const Homoglyph = require('./homoglyph');
 
 module.exports = () => [
   new Grouped(),
@@ -114,6 +115,7 @@ module.exports = () => [
   new Placement(),
   new InlineCode(),
   new Emoji(),
+  new Homoglyph(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

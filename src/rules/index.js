@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Concise = require('./concise');
 const Example = require('./example');
 const Referential = require('./referential');
 const Vague = require('./vague');
@@ -41,6 +42,7 @@ module.exports = () => [
   new SectionLevel(),
   new LineLength(80),
   new TokenCount(4000),
+  new Concise(200),
   new NoArticles(),
   new Command(),
   new Punctuation(),

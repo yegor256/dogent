@@ -89,6 +89,7 @@ The command exits with a non-zero status when problems are found,
 - No persona or role-play; it adds no instruction.
 - No negative phrasing; state the positive command instead.
 - No instruction may repeat another.
+- No unguarded consumption of untrusted external input.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.
 - A `SKILL.md` `name` must be kebab-case.

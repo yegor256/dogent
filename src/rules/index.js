@@ -29,6 +29,7 @@ const Unique = require('./unique');
 const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
+const Untrusted = require('./untrusted');
 const Ordered = require('./ordered');
 const Emphasis = require('./emphasis');
 const Persona = require('./persona');
@@ -65,6 +66,7 @@ module.exports = () => [
   new Hedging(),
   new Vague(),
   new Passive(),
+  new Untrusted(),
   new Emphasis(),
   new Persona(),
   new Positive(),

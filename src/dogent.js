@@ -34,6 +34,7 @@ if (args.help()) {
     '  --sarif    render the report as SARIF JSON\n' +
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
+    '  --openai-http-header  add a "Name: Value" header to OpenAI calls\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n\n' +
     'Defaults:\n' +
@@ -46,6 +47,13 @@ const unknown = args.unknown();
 if (unknown.length > 0) {
   process.stderr.write(`Unknown option: ${unknown[0]}\n`);
   process.stderr.write(`${banner}\n`);
+  process.exit(2);
+}
+let headers = {};
+try {
+  headers = args.headers();
+} catch (error) {
+  process.stderr.write(`${error.message}\n`);
   process.exit(2);
 }
 const paths = args.paths();
@@ -77,7 +85,10 @@ const audit = async (docs) => {
       key,
       process.env.OPENAI_MODEL || 'gpt-4o-mini',
       process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-      (url, options) => globalThis.fetch(url, options)
+      (url, options) => globalThis.fetch(
+        url,
+        {...options, headers: {...options.headers, ...headers}}
+      )
     )
   );
   const replies = await Promise.all(docs.map((doc) => oracle.violations(doc)));

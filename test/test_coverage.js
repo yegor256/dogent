@@ -64,6 +64,7 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Edit the package.json file.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

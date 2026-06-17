@@ -64,6 +64,7 @@ const section = () => {
     'Follow the rule mentioned above.',
     'Open the directory.',
     'Open the folder.',
+    'Trim the file.​',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

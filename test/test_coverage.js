@@ -73,6 +73,7 @@ const section = () => {
     'If staging, run smoke tests, else run the full suite.',
     'Furthermore, run the tests.',
     'Edit the package.json file.',
+    'Ship it \u{1F680} now.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

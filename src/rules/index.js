@@ -59,6 +59,7 @@ const Conditional = require('./conditional');
 const Transition = require('./transition');
 const Placement = require('./placement');
 const InlineCode = require('./inline-code');
+const Emoji = require('./emoji');
 
 module.exports = () => [
   new Grouped(),
@@ -112,6 +113,7 @@ module.exports = () => [
   new Transition(),
   new Placement(),
   new InlineCode(),
+  new Emoji(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -67,10 +67,12 @@ The command exits with a non-zero status when problems are found,
 - Every section must be a level-2 (`##`) heading, below the lone `#` title.
 - Every line must be no longer than 80 symbols.
 - The whole file must stay under 4000 tokens.
+- The whole file must stay short; split detail into referenced files.
 - Every line must sound like a command.
 - Every sentence must start with a capital and end with a period.
 - No articles, no noise, no bloated text.
 - Simple grammar, no ambiguity.
+- No bare pronoun subjects; name the subject on the line.
 - No tangled, multi-clause instructions.
 - Sequential steps must be a numbered list, not bullets.
 - A `SKILL.md` `name` must equal its parent directory.
@@ -78,9 +80,14 @@ The command exits with a non-zero status when problems are found,
 - No leftover markers or unfilled placeholders.
 - A section must hold at most ten instructions.
 - A `SKILL.md` `description` must say when to use the skill.
+- A `SKILL.md` must carry at least one worked example.
 - Every line must carry exactly one instruction.
 - No hedging or soft wording.
+- No vague qualifiers; demand a measurable criterion.
 - No passive voice; use the active imperative.
+- No ALL-CAPS shouting or "!!" markers; state it plainly.
+- No persona or role-play; it adds no instruction.
+- No negative phrasing; state the positive command instead.
 - No instruction may repeat another.
 - `SKILL.md` must open with valid frontmatter.
 - Frontmatter must declare only allowed keys.

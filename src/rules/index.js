@@ -30,6 +30,13 @@ const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
 const Ordered = require('./ordered');
+const Emphasis = require('./emphasis');
+const Persona = require('./persona');
+const Concise = require('./concise');
+const Example = require('./example');
+const Referential = require('./referential');
+const Vague = require('./vague');
+const Positive = require('./positive');
 
 module.exports = () => [
   new Grouped(),
@@ -38,6 +45,7 @@ module.exports = () => [
   new SectionLevel(),
   new LineLength(80),
   new TokenCount(4000),
+  new Concise(200),
   new NoArticles(),
   new Command(),
   new Punctuation(),
@@ -45,15 +53,21 @@ module.exports = () => [
   new Redundant(),
   new Consistent(),
   new Simple(),
+  new Referential(),
   new NameMatchesDir(),
   new Polite(),
   new Unfinished(),
   new Crowded(10),
   new DescriptionTriggers(),
+  new Example(),
   new Atomic(),
   new Ordered(),
   new Hedging(),
+  new Vague(),
   new Passive(),
+  new Emphasis(),
+  new Persona(),
+  new Positive(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

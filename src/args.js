@@ -15,13 +15,22 @@ const minimist = require('minimist');
  * The `--sarif` flag switches the report to SARIF, while `--offline` forbids
  * any talk to the LLM even when a token sits in the environment. The `--help`
  * flag, also spelled `-h`, asks for the usage banner. The `--version` flag
- * asks for the release number. Everything after a `--` separator counts as a
- * path, never as an option.
+ * asks for the release number. The `--suppress` option names a rule to
+ * silence; repeat it or join names with commas to silence many at once.
+ * Everything after a `--` separator counts as a path, never as an option.
  */
 class Args {
-  constructor(argv, flags = ['sarif', 'offline', 'help', 'version']) {
+  constructor(
+    argv,
+    flags = ['sarif', 'offline', 'help', 'version'],
+    options = ['suppress']
+  ) {
     this.flags = flags;
-    this.parsed = minimist(argv, {boolean: flags, alias: {help: 'h'}, '--': true});
+    this.options = options;
+    this.parsed = minimist(
+      argv,
+      {boolean: flags, string: options, alias: {help: 'h'}, '--': true}
+    );
   }
   sarif() {
     return this.parsed.sarif === true;
@@ -35,12 +44,19 @@ class Args {
   version() {
     return this.parsed.version === true;
   }
+  suppress() {
+    return [].concat(this.parsed.suppress || [])
+      .flatMap((item) => String(item).split(','))
+      .map((name) => name.trim())
+      .filter((name) => name !== '');
+  }
   paths() {
     return this.parsed._.concat(this.parsed['--']).map(String);
   }
   unknown() {
     return Object.keys(this.parsed)
-      .filter((key) => key !== '_' && key !== '--' && key !== 'h' && !this.flags.includes(key))
+      .filter((key) => key !== '_' && key !== '--' && key !== 'h' &&
+        !this.flags.includes(key) && !this.options.includes(key))
       .map((key) => `${key.length === 1 ? '-' : '--'}${key}`);
   }
 }

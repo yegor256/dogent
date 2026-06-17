@@ -129,6 +129,44 @@ describe('Args help', () => {
   });
 });
 
+describe('Args suppress', () => {
+  it('reads a single suppressed rule', () => {
+    assert.deepStrictEqual(
+      new Args(['--suppress=name-matches-dir', 'CLAUDE.md']).suppress(),
+      ['name-matches-dir'],
+      'a lone --suppress must name one silenced rule'
+    );
+  });
+  it('splits a comma-joined suppress list', () => {
+    assert.deepStrictEqual(
+      new Args(['--suppress=name-matches-dir,foo,bar', 'CLAUDE.md']).suppress(),
+      ['name-matches-dir', 'foo', 'bar'],
+      'a comma-joined --suppress must split into many rules'
+    );
+  });
+  it('merges repeated suppress options', () => {
+    assert.deepStrictEqual(
+      new Args(['--suppress=foo', '--suppress=bar', 'CLAUDE.md']).suppress(),
+      ['foo', 'bar'],
+      'repeated --suppress options must all take effect'
+    );
+  });
+  it('suppresses nothing when the option is absent', () => {
+    assert.deepStrictEqual(
+      new Args(['CLAUDE.md']).suppress(),
+      [],
+      'a missing --suppress must silence no rule'
+    );
+  });
+  it('never counts the suppress option as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--suppress=foo', 'CLAUDE.md']).unknown(),
+      [],
+      'the suppress option must never count as unrecognized'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

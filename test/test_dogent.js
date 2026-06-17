@@ -94,6 +94,18 @@ describe('dogent timing', () => {
   });
 });
 
+describe('dogent suppress', () => {
+  it('silences a named rule and exits clean', () => {
+    const file = manifesto('# Kitchen\nSharpen the knife.');
+    assert.ok(
+      /0 problems found/u.test(
+        run(['--suppress=no-articles', file], {OPENAI_API_KEY: ''}).stdout
+      ),
+      'a suppressed rule must vanish from the report'
+    );
+  });
+});
+
 describe('dogent help', () => {
   it('exits with success when asked for help', () => {
     assert.strictEqual(

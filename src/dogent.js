@@ -20,7 +20,7 @@ const rules = require('./rules');
 
 const args = new Args(process.argv.slice(2));
 const sarif = args.sarif();
-const banner = 'Usage: dogent [--sarif] [--offline] <file.md|dir>...';
+const banner = 'Usage: dogent [--sarif] [--offline] [--suppress=RULE,...] <file.md|dir>...';
 if (args.version()) {
   process.stdout.write(`${version}\n`);
   process.exit(0);
@@ -32,6 +32,7 @@ if (args.help()) {
     'Options:\n' +
     '  --sarif    render the report as SARIF JSON\n' +
     '  --offline  never call the LLM, even when a token exists\n' +
+    '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n'
   );
@@ -56,10 +57,12 @@ const documents = scanned.map(
   (file) => new Markdown(file, fs.readFileSync(file, 'utf8')).document()
 );
 const started = Date.now();
+const suppressed = args.suppress();
+const allowed = (violation) => !suppressed.includes(violation.rule);
 const found = [];
 documents.forEach((document) => {
   checks.forEach((rule) => {
-    rule.violations(document).forEach((violation) => found.push(violation));
+    rule.violations(document).filter(allowed).forEach((violation) => found.push(violation));
   });
 });
 const key = process.env.OPENAI_API_KEY;
@@ -92,7 +95,7 @@ const finish = (usage, aiMillis) => {
 const verify = async () => {
   const clock = Date.now();
   const result = await audit(documents);
-  result.extra.forEach((violation) => found.push(violation));
+  result.extra.filter(allowed).forEach((violation) => found.push(violation));
   return {usage: result.usage, aiMillis: Date.now() - clock};
 };
 (async () => {

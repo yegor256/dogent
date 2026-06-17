@@ -97,15 +97,32 @@ const fixture = () => [
 ].join('\n');
 
 /**
- * Run the whole pipeline over the fixture and collect the ids of rules
+ * A second tiny fixture carrying one bare fenced block. The main fixture
+ * stays snippet-free so the example and format rules keep firing, while
+ * this lone unlabeled fence trips the fence-language rule.
+ * @return {string} The manifesto body.
+ */
+const fenced = () => [
+  '## Steps',
+  'Run the script now.',
+  '```',
+  'echo hi',
+  '```'
+].join('\n');
+
+/**
+ * Run the whole pipeline over every fixture and collect the ids of rules
  * that produced at least one violation.
  * @return {Set<string>} The fired rule ids.
  */
 const fire = () => {
-  const doc = new Markdown(URI, fixture()).document();
+  const docs = [
+    new Markdown(URI, fixture()).document(),
+    new Markdown(URI, fenced()).document()
+  ];
   const fired = new Set();
   pipeline().forEach((rule) => {
-    if (rule.violations(doc).length > 0) {
+    if (docs.some((doc) => rule.violations(doc).length > 0)) {
       fired.add(rule.id);
     }
   });

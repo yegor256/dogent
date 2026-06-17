@@ -58,6 +58,13 @@ const section = () => {
     'Be helpful',
     'Be helpful',
     'IMPORTANT rule here now.',
+    'Run the script.',
+    'Avoid writing `goto`.',
+    'Because clarity matters, keep short.',
+    'Follow the rule mentioned above.',
+    'Open the directory.',
+    'Open the folder.',
+    '**Setup:**',
     '- First sharpen the blade.'
   ];
   const pad = [];

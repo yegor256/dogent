@@ -84,6 +84,7 @@ The command exits with a non-zero status when problems are found,
 - No hedging or soft wording.
 - No vague qualifiers; demand a measurable criterion.
 - No passive voice; use the active imperative.
+- No ALL-CAPS shouting or "!!" markers; state it plainly.
 - No persona or role-play; it adds no instruction.
 - No negative phrasing; state the positive command instead.
 - No instruction may repeat another.

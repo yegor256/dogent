@@ -51,6 +51,7 @@ const Rationale = require('./rationale');
 const SelfContained = require('./self-contained');
 const Quantifier = require('./quantifier');
 const WeakVerb = require('./weak-verb');
+const Default = require('./default');
 
 module.exports = () => [
   new Grouped(),
@@ -96,6 +97,7 @@ module.exports = () => [
   new SelfContained(),
   new Quantifier(),
   new WeakVerb(),
+  new Default(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

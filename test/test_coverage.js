@@ -67,6 +67,7 @@ const section = () => {
     'Handle the errors.',
     'Run several checks now.',
     'Optionally cache the result.',
+    'As an AI, you cannot browse.',
     '**Setup:**',
     '- First sharpen the blade.'
   ];

@@ -26,7 +26,7 @@ In short: `agnix` lints the harness, `dogent` lints the prompt.
 
 ## Usage
 
-https://github.com/user-attachments/assets/0f05c975-2bc8-4a95-9c3a-76a78fe5d655
+[Watch the demo](https://github.com/user-attachments/assets/0f05c975-2bc8-4a95-9c3a-76a78fe5d655)
 
 Run it on any manifesto file, no installation required:
 

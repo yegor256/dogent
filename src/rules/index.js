@@ -41,6 +41,7 @@ const Vague = require('./vague');
 const Positive = require('./positive');
 const Done = require('./done');
 const Terms = require('./terms');
+const Jargon = require('./jargon');
 
 module.exports = () => [
   new Grouped(),
@@ -76,6 +77,7 @@ module.exports = () => [
   new Positive(),
   new Done(),
   new Terms(),
+  new Jargon(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -42,6 +42,7 @@ const Positive = require('./positive');
 const Done = require('./done');
 const Terms = require('./terms');
 const Jargon = require('./jargon');
+const PseudoHeading = require('./pseudo-heading');
 
 module.exports = () => [
   new Grouped(),
@@ -78,6 +79,7 @@ module.exports = () => [
   new Done(),
   new Terms(),
   new Jargon(),
+  new PseudoHeading(),
   new Unique(),
   new Frontmatter(
     'SKILL.md',

@@ -106,6 +106,23 @@ describe('dogent suppress', () => {
   });
 });
 
+describe('dogent defaults', () => {
+  it('reads options from a .dogent file in the current directory', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));
+    fs.writeFileSync(path.join(dir, '.dogent'), '--sarif\n');
+    fs.writeFileSync(path.join(dir, 'CLAUDE.md'), '# Kitchen\nSharpen knife.');
+    const result = spawnSync(
+      'node',
+      [path.join(__dirname, '../src/dogent.js'), 'CLAUDE.md'],
+      {encoding: 'utf8', cwd: dir, env: {...process.env, OPENAI_API_KEY: ''}}
+    );
+    assert.ok(
+      /"version": "2\.1\.0"/u.test(result.stdout),
+      'a .dogent file must hand its options to dogent'
+    );
+  });
+});
+
 describe('dogent help', () => {
   it('exits with success when asked for help', () => {
     assert.strictEqual(

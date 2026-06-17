@@ -155,6 +155,29 @@ Pass `--suppress` to silence a rule by its id. Repeat the option or
 npx @yegor256/dogent --suppress=name-matches-dir,line-length CLAUDE.md
 ```
 
+## Defaults file
+
+Tired of repeating the same flags on every run?
+Drop a `.dogent` file beside your project, and `dogent` reads its options
+  as defaults before it touches the command line.
+The file holds one option per line, written exactly as you would type it,
+  with the value after a space (for example `--suppress name-matches-dir`).
+A blank line is ignored, and a line that starts with `#` is a comment:
+
+```text
+# project defaults for dogent
+--offline
+--suppress name-matches-dir
+--suppress line-length
+```
+
+`dogent` looks first in the current directory, then in your home directory,
+  and reads the first `.dogent` it finds.
+The file only supplies defaults, so any option you type on the command line
+  overrides the same option in the file.
+Thus `npx @yegor256/dogent --sarif .` still prints SARIF even when the file
+  says nothing about it, and a hand-typed flag always wins.
+
 ## GitHub Actions
 
 Because `dogent` runs through `npx`, no extra action is needed.

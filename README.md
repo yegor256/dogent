@@ -46,20 +46,6 @@ Most rewrite prompts for you or score a file, while we enforce
   version, trace, and evaluate prompts from runtime data,
     while we lint statically and offline, needing no traces or account.
 
-## Architecture
-
-The component diagram below shows how the pieces fit together
-  ([source](components.svg)):
-
-![dogent component diagram](components.svg)
-
-A user, or an AI agent, runs `dogent` from the console against a manifesto
-  such as `SKILL.md`.
-`dogent` parses the file into a document, applies every deterministic rule,
-  and renders the violations as text or SARIF.
-Only after the rules find nothing, and only when a token is present,
-  it asks an OpenAI-compatible LLM for a second, deeper opinion.
-
 ## Usage
 
 [Watch the demo](https://github.com/user-attachments/assets/0f05c975-2bc8-4a95-9c3a-76a78fe5d655)
@@ -300,3 +286,33 @@ repos:
 ```
 
 Either way, the commit is rejected until every flagged line is fixed.
+
+## Architecture
+
+The component diagram below shows how the pieces fit together
+  ([source](components.svg)):
+
+![dogent component diagram](components.svg)
+
+A user, or an AI agent, runs `dogent` from the console against a manifesto
+  such as `SKILL.md`.
+`dogent` parses the file into a document, applies every deterministic rule,
+  and renders the violations as text or SARIF.
+Only after the rules find nothing, and only when a token is present,
+  it asks an OpenAI-compatible LLM for a second, deeper opinion.
+
+## How to Contribute
+
+First, make sure you can build it locally:
+
+```bash
+npm test
+```
+
+The build has to be clean.
+If it's not, [submit an issue](https://github.com/yegor256/dogent/issues).
+
+Then, make your changes, make sure the build is still clean,
+  and [submit a pull request][guidelines].
+
+[guidelines]: https://www.yegor256.com/2014/04/15/github-guidelines.html

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="open" markerWidth="13" markerHeight="13" refX="9.5" refY="5" orient="auto">
+      <path d="M1,1 L9.5,5 L1,9" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="700" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="500" y="30" text-anchor="middle" font-size="19" font-weight="bold" fill="#1a1a1a">dogent &#8212; UML Component Diagram</text>
+  <text x="500" y="50" text-anchor="middle" font-size="11" fill="#555">standalone, deterministic manifesto linter with an optional, token-gated AI second opinion</text>
+
+  <!-- ===================== USER (actor) ===================== -->
+  <g stroke="#1a1a1a" stroke-width="1.4" fill="none">
+    <circle cx="135" cy="78" r="10"/>
+    <line x1="135" y1="88" x2="135" y2="116"/>
+    <line x1="117" y1="98" x2="153" y2="98"/>
+    <line x1="135" y1="116" x2="121" y2="136"/>
+    <line x1="135" y1="116" x2="149" y2="136"/>
+  </g>
+  <text x="135" y="153" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a1a">User</text>
+  <line x1="135" y1="136" x2="135" y2="170" stroke="#1a1a1a" stroke-width="1.2"/>
+
+  <!-- ===================== CONSOLE component ===================== -->
+  <g>
+    <rect x="40" y="170" width="195" height="80" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+    <!-- component icon -->
+    <g stroke="#1a1a1a" stroke-width="1.1" fill="#ffffff">
+      <rect x="205" y="180" width="18" height="13"/>
+      <rect x="200" y="183" width="7" height="3"/>
+      <rect x="200" y="188" width="7" height="3"/>
+    </g>
+    <text x="128" y="191" text-anchor="middle" font-size="10" font-style="italic" fill="#555">&#171;component&#187;</text>
+    <text x="128" y="208" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a1a">Console</text>
+    <text x="128" y="227" text-anchor="middle" font-size="10" fill="#333">npx @yegor256/dogent .</text>
+    <text x="128" y="242" text-anchor="middle" font-size="9" fill="#777">prints report &#183; exits non-zero</text>
+  </g>
+
+  <!-- ===================== AI AGENT component ===================== -->
+  <g>
+    <rect x="40" y="360" width="195" height="95" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+    <g stroke="#1a1a1a" stroke-width="1.1" fill="#ffffff">
+      <rect x="205" y="370" width="18" height="13"/>
+      <rect x="200" y="373" width="7" height="3"/>
+      <rect x="200" y="378" width="7" height="3"/>
+    </g>
+    <text x="128" y="381" text-anchor="middle" font-size="10" font-style="italic" fill="#555">&#171;component&#187;</text>
+    <text x="128" y="398" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a1a">AI Agent</text>
+    <text x="128" y="418" text-anchor="middle" font-size="10" fill="#333">asks dogent to lint</text>
+    <text x="128" y="433" text-anchor="middle" font-size="10" fill="#333">its own manifesto</text>
+    <text x="128" y="449" text-anchor="middle" font-size="9" fill="#777">CI &#183; pre-commit hook</text>
+  </g>
+
+  <!-- ===================== DOGENT component ===================== -->
+  <g>
+    <rect x="370" y="110" width="300" height="360" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.6"/>
+    <g stroke="#1a1a1a" stroke-width="1.2" fill="#ffffff">
+      <rect x="640" y="120" width="20" height="14"/>
+      <rect x="634" y="123" width="7" height="3"/>
+      <rect x="634" y="129" width="7" height="3"/>
+    </g>
+    <text x="510" y="132" text-anchor="middle" font-size="10" font-style="italic" fill="#555">&#171;component&#187;</text>
+    <text x="510" y="151" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a1a">dogent</text>
+
+    <!-- internal subcomponents -->
+    <!-- Parser -->
+    <g>
+      <rect x="392" y="175" width="256" height="50" fill="#f6f6f6" stroke="#1a1a1a" stroke-width="1.1"/>
+      <g stroke="#1a1a1a" stroke-width="0.9" fill="#ffffff">
+        <rect x="626" y="181" width="14" height="10"/>
+        <rect x="622" y="183" width="5" height="2.4"/>
+        <rect x="622" y="187" width="5" height="2.4"/>
+      </g>
+      <text x="512" y="197" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a1a">Markdown &#8594; Document</text>
+      <text x="512" y="214" text-anchor="middle" font-size="9" fill="#777">parse lines &#8594; fragments</text>
+    </g>
+    <!-- Rules -->
+    <g>
+      <rect x="392" y="240" width="256" height="50" fill="#f6f6f6" stroke="#1a1a1a" stroke-width="1.1"/>
+      <g stroke="#1a1a1a" stroke-width="0.9" fill="#ffffff">
+        <rect x="626" y="246" width="14" height="10"/>
+        <rect x="622" y="248" width="5" height="2.4"/>
+        <rect x="622" y="252" width="5" height="2.4"/>
+      </g>
+      <text x="512" y="262" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a1a">Rules &#8212; deterministic</text>
+      <text x="512" y="279" text-anchor="middle" font-size="9" fill="#777">atomic &#183; line-length &#183; no-articles &#8230;</text>
+    </g>
+    <!-- Oracle -->
+    <g>
+      <rect x="392" y="305" width="256" height="50" fill="#f6f6f6" stroke="#1a1a1a" stroke-width="1.1"/>
+      <g stroke="#1a1a1a" stroke-width="0.9" fill="#ffffff">
+        <rect x="626" y="311" width="14" height="10"/>
+        <rect x="622" y="313" width="5" height="2.4"/>
+        <rect x="622" y="317" width="5" height="2.4"/>
+      </g>
+      <text x="512" y="327" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a1a">Oracle &#8212; AI opinion</text>
+      <text x="512" y="344" text-anchor="middle" font-size="9" fill="#777">build prompt &#183; parse reply</text>
+    </g>
+    <!-- Report -->
+    <g>
+      <rect x="392" y="370" width="256" height="50" fill="#f6f6f6" stroke="#1a1a1a" stroke-width="1.1"/>
+      <g stroke="#1a1a1a" stroke-width="0.9" fill="#ffffff">
+        <rect x="626" y="376" width="14" height="10"/>
+        <rect x="622" y="378" width="5" height="2.4"/>
+        <rect x="622" y="382" width="5" height="2.4"/>
+      </g>
+      <text x="512" y="392" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a1a">Report &#8212; text / SARIF</text>
+      <text x="512" y="409" text-anchor="middle" font-size="9" fill="#777">violations &#183; exit code</text>
+    </g>
+  </g>
+
+  <!-- ===================== LLM component ===================== -->
+  <g>
+    <rect x="800" y="285" width="180" height="90" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+    <g stroke="#1a1a1a" stroke-width="1.1" fill="#ffffff">
+      <rect x="950" y="295" width="18" height="13"/>
+      <rect x="944" y="298" width="7" height="3"/>
+      <rect x="944" y="303" width="7" height="3"/>
+    </g>
+    <text x="884" y="306" text-anchor="middle" font-size="10" font-style="italic" fill="#555">&#171;component&#187;</text>
+    <text x="884" y="324" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a1a">LLM</text>
+    <text x="884" y="343" text-anchor="middle" font-size="10" fill="#333">OpenAI-compatible endpoint</text>
+    <text x="884" y="359" text-anchor="middle" font-size="9" fill="#777">gpt-4o-mini &#183; vLLM &#183; Ollama</text>
+  </g>
+
+  <!-- ===================== SKILL.md artifact ===================== -->
+  <g>
+    <path d="M430,560 L645,560 L660,575 L660,650 L430,650 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+    <path d="M645,560 L645,575 L660,575" fill="none" stroke="#1a1a1a" stroke-width="1.2"/>
+    <text x="540" y="588" text-anchor="middle" font-size="10" font-style="italic" fill="#555">&#171;artifact&#187;</text>
+    <text x="540" y="610" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a1a">SKILL.md</text>
+    <text x="540" y="631" text-anchor="middle" font-size="10" fill="#777">CLAUDE.md &#183; AGENTS.md</text>
+  </g>
+
+  <!-- ===================== Assembly: clients -> dogent provided "Lint" ===================== -->
+  <!-- client connectors merge into one bus -->
+  <g stroke="#1a1a1a" stroke-width="1.2" fill="none">
+    <polyline points="235,210 285,210 285,290"/>
+    <polyline points="235,407 285,407 285,290"/>
+    <line x1="285" y1="290" x2="291" y2="290"/>
+  </g>
+  <circle cx="285" cy="290" r="3" fill="#1a1a1a"/>
+  <!-- required socket (client side) -->
+  <path d="M303,279 A12,12 0 0 0 303,301" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+  <!-- provided lollipop (dogent side) -->
+  <line x1="327" y1="290" x2="370" y2="290" stroke="#1a1a1a" stroke-width="1.2"/>
+  <circle cx="319" cy="290" r="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+  <text x="305" y="263" text-anchor="middle" font-size="10" fill="#1a1a1a">Lint</text>
+  <text x="252" y="180" text-anchor="middle" font-size="9" font-style="italic" fill="#777">&#171;use&#187;</text>
+
+  <!-- ===================== Assembly: dogent requires "Chat" -> LLM provides ===================== -->
+  <g stroke="#1a1a1a" stroke-width="1.2" fill="none">
+    <line x1="670" y1="330" x2="719" y2="330"/>
+  </g>
+  <!-- required socket (dogent side) -->
+  <path d="M731,319 A12,12 0 0 0 731,341" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+  <!-- provided lollipop (LLM side) -->
+  <line x1="763" y1="330" x2="800" y2="330" stroke="#1a1a1a" stroke-width="1.2"/>
+  <circle cx="755" cy="330" r="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+  <text x="730" y="312" text-anchor="middle" font-size="10" fill="#1a1a1a">Chat</text>
+
+  <!-- token-gated note -->
+  <g>
+    <path d="M700,180 L862,180 L876,194 L876,250 L700,250 Z" fill="#fffdf2" stroke="#999" stroke-width="1"/>
+    <path d="M862,180 L862,194 L876,194" fill="none" stroke="#999" stroke-width="1"/>
+    <text x="712" y="203" font-size="10" fill="#555">Called only after rules</text>
+    <text x="712" y="218" font-size="10" fill="#555">pass and OPENAI_API_KEY</text>
+    <text x="712" y="233" font-size="10" fill="#555">is set (token-gated).</text>
+  </g>
+  <line x1="745" y1="250" x2="722" y2="322" stroke="#999" stroke-width="1" stroke-dasharray="4 3"/>
+
+  <!-- ===================== Dependencies (dashed) ===================== -->
+  <!-- dogent reads artifact -->
+  <line x1="520" y1="470" x2="520" y2="556" stroke="#1a1a1a" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+  <text x="533" y="516" font-size="10" font-style="italic" fill="#555">&#171;read&#187;</text>
+
+  <!-- agent authors artifact -->
+  <polyline points="135,455 135,605 426,605" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+  <text x="250" y="598" font-size="10" font-style="italic" fill="#555">&#171;authors&#187;</text>
+
+  <!-- ===================== Legend ===================== -->
+  <g>
+    <rect x="700" y="560" width="280" height="120" fill="#ffffff" stroke="#999" stroke-width="1"/>
+    <text x="712" y="580" font-size="11" font-weight="bold" fill="#1a1a1a">Legend</text>
+
+    <line x1="714" y1="600" x2="730" y2="600" stroke="#1a1a1a" stroke-width="1.2"/>
+    <circle cx="737" cy="600" r="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+    <text x="752" y="604" font-size="10" fill="#333">provided interface (lollipop)</text>
+
+    <path d="M737,618 A6,6 0 0 0 737,630" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
+    <line x1="714" y1="624" x2="731" y2="624" stroke="#1a1a1a" stroke-width="1.2"/>
+    <text x="752" y="628" font-size="10" fill="#333">required interface (socket)</text>
+
+    <line x1="714" y1="648" x2="738" y2="648" stroke="#1a1a1a" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+    <text x="752" y="652" font-size="10" fill="#333">dependency</text>
+
+    <g stroke="#1a1a1a" stroke-width="1" fill="#ffffff">
+      <rect x="716" y="664" width="18" height="12"/>
+      <rect x="712" y="667" width="6" height="2.6"/>
+      <rect x="712" y="671" width="6" height="2.6"/>
+    </g>
+    <text x="752" y="674" font-size="10" fill="#333">&#171;component&#187; / &#171;artifact&#187;</text>
+  </g>
+</svg>

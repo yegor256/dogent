@@ -14,6 +14,13 @@ jobs:
   dogent:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        model:
+          - gpt-4.1-mini
+          - gpt-4o
+          - gpt-4.1
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
@@ -23,5 +30,5 @@ jobs:
       - run: npm test --no-color
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: gpt-4o
+          OPENAI_MODEL: ${{ matrix.model }}
       - run: node src/dogent.js CLAUDE.md

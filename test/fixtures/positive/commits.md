@@ -1,5 +1,5 @@
 # Commits
 
 Limit subject to fifty characters.
-Explain reasoning inside body.
-Squash fixup commits before review.
+Wrap body text at seventy-two columns.
+Sign every commit before pushing.

@@ -41,4 +41,20 @@ describe('Report', () => {
       'a report with no timing must not invent an elapsed clause'
     );
   });
+  it('invites a false-positive report when problems exist', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
+    );
+    assert.ok(
+      /github\.com\/yegor256\/dogent\/issues/u.test(report.text()),
+      'the text must point at the issue tracker when problems exist'
+    );
+  });
+  it('stays silent about false positives when clean', () => {
+    const report = new Report('dogent', []);
+    assert.ok(
+      !/issues/u.test(report.text()),
+      'a clean report must not nag about false positives'
+    );
+  });
 });

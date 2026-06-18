@@ -26,10 +26,16 @@ class Report {
   }
   text() {
     const suffix = this.millis === null ? '' : ` in ${prettyMs(this.millis)}`;
-    return this.bag
+    const lines = this.bag
       .map((violation) => violation.text())
-      .concat(`${this.bag.length} problems found${suffix}`)
-      .join('\n');
+      .concat(`${this.bag.length} problems found${suffix}`);
+    if (this.bag.length > 0) {
+      lines.push(
+        'Spotted a false positive? dogent is in beta, please report it at ' +
+        'https://github.com/yegor256/dogent/issues'
+      );
+    }
+    return lines.join('\n');
   }
   sarif() {
     return {

@@ -75,9 +75,13 @@ CLAUDE.md
   24:  article "the" detected, remove noise
   31:  section name too long, use 1-3 words
 
-4 problems found, exit code 1
+Locally: 4 problems found, exit code 1
 Spotted a false positive? dogent is in beta, please report it at https://github.com/yegor256/dogent/issues
 ```
+
+The standalone checks report under their own `Locally:` summary line.
+When a token enables AI verification, a second `OpenAI:` summary line
+  follows, reporting the problems the model found on top.
 
 The command exits with a non-zero status when problems are found,
   so it plugs directly into CI and pre-commit hooks.
@@ -125,11 +129,13 @@ The command exits with a non-zero status when problems are found,
 `dogent` works standalone by default,
   using fast deterministic checks with no network access.
 When `OPENAI_API_KEY` is present in the environment,
-  and only after the standalone rules find nothing,
-  `dogent` asks OpenAI for a second, deeper opinion.
+  `dogent` first reports the problems found locally,
+  then asks OpenAI for a second, deeper opinion and reports those apart.
 It sends the manifesto together with one instruction per rule,
   then prints any violation the model reports for ambiguity,
   weak phrasing, and instructions that only pretend to be commands.
+Each step closes with its own summary line, `Locally:` then `OpenAI:`,
+  so both counts stay visible even when neither step finds a problem.
 The model defaults to `gpt-4o-mini`; override it with `OPENAI_MODEL`.
 Requests go to `https://api.openai.com/v1` by default;
   set `OPENAI_BASE_URL` to any OpenAI-compatible endpoint instead,

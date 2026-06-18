@@ -14,23 +14,26 @@ const prettyMs = require('pretty-ms');
  * violation it gathered. Renders itself for humans or as a SARIF log.
  * When handed the analysis duration in milliseconds, the human text
  * closes with a friendly "in 340ms" rendered through pretty-ms.
+ * A label tags the summary line, telling local checks from AI ones.
  * Given the rules that ran, it can also render one fixing hint per rule
  * that reported a violation, in first-appearance order.
  */
 class Report {
-  constructor(tool, violations, millis = null) {
+  constructor(tool, violations, millis = null, label = '') {
     this.tool = tool;
     this.bag = violations;
     this.millis = millis;
+    this.label = label;
   }
   count() {
     return this.bag.length;
   }
   text() {
     const suffix = this.millis === null ? '' : ` in ${prettyMs(this.millis)}`;
+    const prefix = this.label === '' ? '' : `${this.label}: `;
     const lines = this.bag
       .map((violation) => violation.text())
-      .concat(`${this.bag.length} problems found${suffix}`);
+      .concat(`${prefix}${this.bag.length} problems found${suffix}`);
     if (this.bag.length > 0) {
       lines.push(
         'Spotted a false positive? dogent is in beta, please report it at ' +

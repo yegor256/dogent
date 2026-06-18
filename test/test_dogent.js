@@ -70,6 +70,14 @@ describe('dogent', () => {
       'dogent must announce every file it scans'
     );
   });
+  it('labels the local summary line on its own', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.match(
+      run([file], {OPENAI_API_KEY: ''}).stdout,
+      /Locally: 0 problems found/u,
+      'dogent must report the locally found problems under their own summary line'
+    );
+  });
 });
 
 describe('dogent rules count', () => {

@@ -77,6 +77,7 @@ documents.forEach((document) => {
     rule.violations(document).filter(allowed).forEach((violation) => found.push(violation));
   });
 });
+const localMillis = Date.now() - started;
 const key = process.env.OPENAI_API_KEY;
 const audit = async (docs) => {
   const oracle = new Oracle(
@@ -100,23 +101,34 @@ const audit = async (docs) => {
     {extra: [], usage: new Usage('', 0, 0)}
   );
 };
-const finish = (usage, aiMillis) => {
-  const report = new Report('dogent', found, Date.now() - started);
-  process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
-  if (usage !== null) {
-    process.stderr.write(`${usage.text()}, analysed in ${prettyMs(aiMillis)}\n`);
-  }
-  process.exit(report.count() > 0 ? 1 : 0);
-};
 const verify = async () => {
   const clock = Date.now();
   const result = await audit(documents);
-  result.extra.filter(allowed).forEach((violation) => found.push(violation));
-  return {usage: result.usage, aiMillis: Date.now() - clock};
+  return {
+    extra: result.extra.filter(allowed),
+    usage: result.usage,
+    aiMillis: Date.now() - clock
+  };
+};
+const consult = Boolean(key) && !args.offline();
+const render = (outcome) => {
+  if (sarif) {
+    const report = new Report('dogent', found.concat(outcome.extra), localMillis + outcome.aiMillis);
+    process.stdout.write(`${JSON.stringify(report.sarif(), null, 2)}\n`);
+  } else {
+    process.stdout.write(`${new Report('dogent', found, localMillis, 'Locally').text()}\n`);
+    if (consult) {
+      process.stdout.write(`${new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI').text()}\n`);
+    }
+  }
+  if (outcome.usage !== null) {
+    process.stderr.write(`${outcome.usage.text()}, analysed in ${prettyMs(outcome.aiMillis)}\n`);
+  }
+  process.exit(found.length + outcome.extra.length > 0 ? 1 : 0);
 };
 (async () => {
-  let outcome = {aiMillis: 0, usage: null};
-  if (found.length === 0 && key && !args.offline()) {
+  let outcome = {extra: [], aiMillis: 0, usage: null};
+  if (consult) {
     try {
       outcome = await verify();
     } catch (error) {
@@ -124,5 +136,5 @@ const verify = async () => {
       process.exit(2);
     }
   }
-  finish(outcome.usage, outcome.aiMillis);
+  render(outcome);
 })();

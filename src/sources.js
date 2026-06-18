@@ -26,6 +26,9 @@ class Sources {
   files() {
     const found = [];
     this.paths.forEach((entry) => {
+      if (!fs.existsSync(entry)) {
+        throw new Error(`No such file or directory: ${entry}`);
+      }
       if (fs.statSync(entry).isDirectory()) {
         this.scan(entry, found);
       } else {

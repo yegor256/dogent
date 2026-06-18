@@ -72,6 +72,26 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent source paths', () => {
+  it('exits with a usage error on a missing source path', () => {
+    const missing = path.join(os.tmpdir(), 'dogent-missing-source.md');
+    const result = run([missing], {OPENAI_API_KEY: ''});
+    assert.strictEqual(
+      result.status,
+      2,
+      'a missing source path must make dogent exit with code two'
+    );
+    assert.ok(
+      result.stderr.includes(`No such file or directory: ${missing}`),
+      'dogent must explain which source path does not exist'
+    );
+    assert.ok(
+      !result.stderr.includes('Error:') && !result.stderr.includes('at '),
+      'dogent must not print a raw stack trace for a missing source path'
+    );
+  });
+});
+
 describe('dogent local summary', () => {
   it('labels the local summary line on its own', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');

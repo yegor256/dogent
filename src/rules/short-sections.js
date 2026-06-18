@@ -21,6 +21,9 @@ class ShortSections {
   constructor() {
     this.id = 'short-sections';
   }
+  hint() {
+    return 'Trim every section heading to a label of one to three words so the manifesto reads as a map, not as prose.';
+  }
   prompt() {
     return '';
   }

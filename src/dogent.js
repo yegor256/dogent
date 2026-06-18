@@ -21,7 +21,7 @@ const rules = require('./rules');
 
 const args = new Args(new Defaults().argv().concat(process.argv.slice(2)));
 const sarif = args.sarif();
-const banner = 'Usage: dogent [--sarif] [--offline] [--suppress=RULE,...] <file.md|dir>...';
+const banner = 'Usage: dogent [--sarif] [--offline] [--hints] [--suppress=RULE,...] <file.md|dir>...';
 if (args.version()) {
   process.stdout.write(`${version}\n`);
   process.exit(0);
@@ -34,6 +34,7 @@ if (args.help()) {
     '  --sarif    render the report as SARIF JSON\n' +
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
+    '  --hints    append a fixing hint for every rule that reported a violation\n' +
     '  --openai-http-header  add a "Name: Value" header to OpenAI calls\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n\n' +
@@ -103,6 +104,9 @@ const audit = async (docs) => {
 const finish = (usage, aiMillis) => {
   const report = new Report('dogent', found, Date.now() - started);
   process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
+  if (args.hints() && !sarif && report.count() > 0) {
+    process.stdout.write(`\n${report.hints(checks)}\n`);
+  }
   if (usage !== null) {
     process.stderr.write(`${usage.text()}, analysed in ${prettyMs(aiMillis)}\n`);
   }

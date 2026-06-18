@@ -26,6 +26,9 @@ class Format {
   constructor() {
     this.id = 'format';
   }
+  hint() {
+    return 'Declare and show the exact output format whenever the skill generates output, since a pinned-down contract makes structured output far more reliable.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, judge whether the declared output format is concrete and machine-checkable, and flag a generating skill that pins down no format`;
   }

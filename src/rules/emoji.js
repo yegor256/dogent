@@ -27,6 +27,9 @@ class Emoji {
     this.id = 'emoji';
     this.glyph = /[\p{Extended_Pictographic}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]/gu;
   }
+  hint() {
+    return 'Delete decorative emoji and pictographic symbols, since they add token noise without carrying any instruction, and keep the text plain.';
+  }
   prompt() {
     return '';
   }

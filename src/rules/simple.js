@@ -39,6 +39,9 @@ class Simple {
   constructor() {
     this.id = 'simple';
   }
+  hint() {
+    return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
+  }
   prompt() {
     return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions`;
   }

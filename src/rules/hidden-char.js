@@ -26,6 +26,9 @@ class HiddenChar {
     this.id = 'hidden-char';
     this.hidden = /[\u200B-\u200D\uFEFF\u202A-\u202E\u2066-\u2069\uFE00-\uFE0F\u{E0100}-\u{E01EF}]/gu;
   }
+  hint() {
+    return 'Delete the invisible or control character named by its codepoint, since hidden characters can corrupt parsing or smuggle instructions.';
+  }
   prompt() {
     return '';
   }

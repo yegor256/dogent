@@ -215,6 +215,30 @@ describe('Args headers', () => {
   });
 });
 
+describe('Args hints', () => {
+  it('detects the hints flag', () => {
+    assert.strictEqual(
+      new Args(['--hints', 'CLAUDE.md']).hints(),
+      true,
+      'the --hints flag must ask dogent for fixing hints'
+    );
+  });
+  it('reports no hints flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).hints(),
+      false,
+      'a missing --hints flag must leave the report hint-free'
+    );
+  });
+  it('never counts the hints flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--hints', 'CLAUDE.md']).unknown(),
+      [],
+      'the hints flag must never count as an unrecognized option'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

@@ -106,6 +106,27 @@ describe('dogent suppress', () => {
   });
 });
 
+describe('dogent hints', () => {
+  it('prints a fixing hint for a firing rule when asked', () => {
+    const file = manifesto('# This Section Name Is Far Too Long\nShut the gate');
+    assert.ok(
+      /Trim every section heading/u.test(
+        run(['--hints', file], {OPENAI_API_KEY: ''}).stdout
+      ),
+      'the --hints flag must print a fixing hint for every firing rule'
+    );
+  });
+  it('prints no hints block when not asked', () => {
+    const file = manifesto('# This Section Name Is Far Too Long\nShut the gate');
+    assert.ok(
+      !/Trim every section heading/u.test(
+        run([file], {OPENAI_API_KEY: ''}).stdout
+      ),
+      'a run without --hints must carry no fixing hints'
+    );
+  });
+});
+
 describe('dogent defaults', () => {
   it('reads options from a .dogent file in the current directory', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));

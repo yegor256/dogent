@@ -42,3 +42,35 @@ describe('Report', () => {
     );
   });
 });
+
+describe('Report hints', () => {
+  it('renders the hint of a rule that reported a violation', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
+    );
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it like so'}]),
+      '[r]: fix it like so',
+      'the hints must name each firing rule and carry its fixing paragraph'
+    );
+  });
+  it('names each firing rule only once', () => {
+    const report = new Report('dogent', [
+      new Violation('r', 'error', 'm', new Region('a.md', 1, 1)),
+      new Violation('r', 'error', 'm', new Region('a.md', 2, 1))
+    ]);
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it'}]),
+      '[r]: fix it',
+      'a rule that fires twice must contribute only one hint'
+    );
+  });
+  it('emits nothing when no violation fired', () => {
+    const report = new Report('dogent', []);
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it'}]),
+      '',
+      'a report with no violations must render no hints'
+    );
+  });
+});

@@ -21,6 +21,9 @@ class Passive {
   constructor() {
     this.id = 'passive';
   }
+  hint() {
+    return 'Rewrite the line in active imperative voice, naming the action to take instead of describing what gets done.';
+  }
   prompt() {
     return `${this.id}: flag any instruction written in passive voice, judging true grammatical voice including irregular past participles a fixed pattern misses`;
   }

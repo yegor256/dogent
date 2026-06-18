@@ -22,6 +22,9 @@ class DescriptionTriggers {
     this.id = 'description-triggers';
     this.minimum = 20;
   }
+  hint() {
+    return 'Name the concrete situations and user phrases that should activate the skill in its description, so the loader knows exactly when to invoke it.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, flag a description that is too short or fails to name the concrete situations and user phrases that should activate the skill, even when it contains the word "when"`;
   }

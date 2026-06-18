@@ -25,6 +25,9 @@ class Unfinished {
   constructor() {
     this.id = 'unfinished';
   }
+  hint() {
+    return 'Resolve every leftover marker such as TODO, a placeholder, or a trailing ellipsis, since they signal half-finished work.';
+  }
   prompt() {
     return '';
   }

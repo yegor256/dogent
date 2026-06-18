@@ -23,6 +23,9 @@ class SectionLevel {
   constructor() {
     this.id = 'section-level';
   }
+  hint() {
+    return 'Make every section a level-2 heading marked by two hashes, allowing only one optional top-level title to open the file.';
+  }
   prompt() {
     return '';
   }

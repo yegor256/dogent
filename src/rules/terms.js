@@ -29,6 +29,9 @@ class Terms {
       ['function', 'method', 'routine']
     ];
   }
+  hint() {
+    return 'Pick one canonical term for each concept and use it everywhere, since naming the same idea two ways makes the agent guess they differ.';
+  }
   prompt() {
     return `${this.id}: flag any pair of words used interchangeably for one concept, and demand a single canonical term across the whole file`;
   }

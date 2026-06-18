@@ -25,6 +25,9 @@ class CounterExample {
   constructor() {
     this.id = 'counter-example';
   }
+  hint() {
+    return 'Remove the demonstration of the wrong form and show only the correct form, since displaying a mistake can teach the agent to repeat it.';
+  }
   prompt() {
     return `${this.id}: judge whether each example shows the correct behavior, and flag any example that demonstrates the incorrect form`;
   }

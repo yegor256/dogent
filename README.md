@@ -162,6 +162,14 @@ npx @yegor256/dogent --offline CLAUDE.md
 
 Pass `--sarif` to print the report as SARIF instead of plain text.
 
+Pass `--hints` to append, for every rule that reported a violation, one
+  English paragraph explaining how to fix it. This helps you or your agent
+  repair the manifesto faster:
+
+```bash
+npx @yegor256/dogent --hints CLAUDE.md
+```
+
 Pass `--suppress` to silence a rule by its id. Repeat the option or
   join several ids with commas to silence many at once:
 

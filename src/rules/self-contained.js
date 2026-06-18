@@ -32,6 +32,9 @@ class SelfContained {
       'iu'
     );
   }
+  hint() {
+    return 'Replace a relative cross-reference such as see above with a concrete named target, so the line survives reordering and chunking.';
+  }
   prompt() {
     return `${this.id}: flag any line leaning on a relative cross-reference such as "see above" that breaks when the file is reordered or chunked, deferring subtler dangling references to the oracle`;
   }

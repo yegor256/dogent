@@ -76,6 +76,7 @@ CLAUDE.md
   31:  section name too long, use 1-3 words
 
 4 problems found, exit code 1
+Spotted a false positive? dogent is in beta, please report it at https://github.com/yegor256/dogent/issues
 ```
 
 The command exits with a non-zero status when problems are found,

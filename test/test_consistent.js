@@ -24,4 +24,10 @@ describe('Consistent', () => {
       'the rule must ask the oracle to flag contradicting instructions'
     );
   });
+  it('spares complementary instructions about different concerns', () => {
+    assert.ok(
+      new Consistent().prompt().includes('different concerns'),
+      'the rule must ignore lines that only share a theme'
+    );
+  });
 });

@@ -23,6 +23,9 @@ class ToolClarity {
   constructor() {
     this.id = 'tool-clarity';
   }
+  hint() {
+    return 'Name the exact tool, path, or invocation instead of a generic noun like the script, so the agent never guesses which one to run.';
+  }
   prompt() {
     return `${this.id}: flag any vague reference to a tool or command beyond the fixed list, and demand the exact name, path, or invocation instead`;
   }

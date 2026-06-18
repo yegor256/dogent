@@ -22,6 +22,9 @@ class Hedging {
   constructor() {
     this.id = 'hedging';
   }
+  hint() {
+    return 'Remove hedging words such as should, just, or usually and state the order firmly, since timid wording weakens the command.';
+  }
   prompt() {
     return `${this.id}: flag soft, non-committal, or hedging wording, including conditional escape hatches and vague scope that carry no fixed hedge word`;
   }

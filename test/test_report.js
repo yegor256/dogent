@@ -41,4 +41,52 @@ describe('Report', () => {
       'a report with no timing must not invent an elapsed clause'
     );
   });
+  it('invites a false-positive report when problems exist', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
+    );
+    assert.ok(
+      /github\.com\/yegor256\/dogent\/issues/u.test(report.text()),
+      'the text must point at the issue tracker when problems exist'
+    );
+  });
+  it('stays silent about false positives when clean', () => {
+    const report = new Report('dogent', []);
+    assert.ok(
+      !/issues/u.test(report.text()),
+      'a clean report must not nag about false positives'
+    );
+  });
+});
+
+describe('Report hints', () => {
+  it('renders the hint of a rule that reported a violation', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
+    );
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it like so'}]),
+      '[r]: fix it like so',
+      'the hints must name each firing rule and carry its fixing paragraph'
+    );
+  });
+  it('names each firing rule only once', () => {
+    const report = new Report('dogent', [
+      new Violation('r', 'error', 'm', new Region('a.md', 1, 1)),
+      new Violation('r', 'error', 'm', new Region('a.md', 2, 1))
+    ]);
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it'}]),
+      '[r]: fix it',
+      'a rule that fires twice must contribute only one hint'
+    );
+  });
+  it('emits nothing when no violation fired', () => {
+    const report = new Report('dogent', []);
+    assert.strictEqual(
+      report.hints([{id: 'r', hint: () => 'fix it'}]),
+      '',
+      'a report with no violations must render no hints'
+    );
+  });
 });

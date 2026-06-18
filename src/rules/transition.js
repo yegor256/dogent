@@ -23,6 +23,9 @@ class Transition {
   constructor() {
     this.id = 'transition';
   }
+  hint() {
+    return 'Delete a discourse connector such as furthermore or however that opens a line, since it chains prose without adding a command.';
+  }
   prompt() {
     return `${this.id}: flag connective filler beyond the fixed list, and delete it`;
   }

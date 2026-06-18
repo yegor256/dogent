@@ -25,6 +25,9 @@ class Emphasis {
     this.id = 'emphasis';
     this.shout = new Set(['IMPORTANT', 'ALWAYS', 'NEVER', 'MUST', 'CRITICAL', 'REQUIRED']);
   }
+  hint() {
+    return 'Drop shouting such as all-caps words or repeated exclamation marks and state the instruction plainly, since volume adds no meaning for the model.';
+  }
   prompt() {
     return `${this.id}: flag emphatic shouting the patterns miss, including borderline all-caps and reward framing, since emphasis adds no instruction`;
   }

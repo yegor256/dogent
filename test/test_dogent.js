@@ -72,6 +72,17 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent local summary', () => {
+  it('labels the local summary line on its own', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.match(
+      run([file], {OPENAI_API_KEY: ''}).stdout,
+      /Locally: 0 problems found/u,
+      'dogent must report the locally found problems under their own summary line'
+    );
+  });
+});
+
 describe('dogent rules count', () => {
   it('reports how many rules it applied', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
@@ -102,6 +113,27 @@ describe('dogent suppress', () => {
         run(['--suppress=no-articles', file], {OPENAI_API_KEY: ''}).stdout
       ),
       'a suppressed rule must vanish from the report'
+    );
+  });
+});
+
+describe('dogent hints', () => {
+  it('prints a fixing hint for a firing rule when asked', () => {
+    const file = manifesto('# This Section Name Is Far Too Long\nShut the gate');
+    assert.ok(
+      /Trim every section heading/u.test(
+        run(['--hints', file], {OPENAI_API_KEY: ''}).stdout
+      ),
+      'the --hints flag must print a fixing hint for every firing rule'
+    );
+  });
+  it('prints no hints block when not asked', () => {
+    const file = manifesto('# This Section Name Is Far Too Long\nShut the gate');
+    assert.ok(
+      !/Trim every section heading/u.test(
+        run([file], {OPENAI_API_KEY: ''}).stdout
+      ),
+      'a run without --hints must carry no fixing hints'
     );
   });
 });

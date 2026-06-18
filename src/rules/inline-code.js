@@ -34,6 +34,9 @@ class InlineCode {
   constructor() {
     this.id = 'inline-code';
   }
+  hint() {
+    return 'Wrap a bare literal token, such as a command, path, filename, or flag, in backticks so the model treats it as a literal and never rewords it.';
+  }
   prompt() {
     return `${this.id}: flag a bare literal token (command, path, filename, or flag) that should be wrapped in backticks, judging borderline cases`;
   }

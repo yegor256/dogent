@@ -21,6 +21,9 @@ class Done {
   constructor() {
     this.id = 'done';
   }
+  hint() {
+    return 'Add a verifiable, pass-or-fail completion check to the SKILL.md so the agent knows exactly how to confirm the work is finished.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, judge whether the stated completion check is actually pass/fail testable rather than a vague gesture toward being finished`;
   }

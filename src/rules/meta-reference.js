@@ -24,6 +24,9 @@ class MetaReference {
     this.id = 'meta-reference';
     this.phrase = /\b(?:as an ai|as a language model|you are an ai|you are a model|this prompt|these instructions|this manifesto|the system prompt)\b/giu;
   }
+  hint() {
+    return 'Delete self-referential framing such as as an AI or this prompt, since it narrates the setup instead of issuing a command.';
+  }
   prompt() {
     return `${this.id}: flag self-referential framing of the model or document beyond the fixed list, and delete it`;
   }

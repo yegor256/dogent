@@ -21,7 +21,7 @@ const rules = require('./rules');
 
 const args = new Args(new Defaults().argv().concat(process.argv.slice(2)));
 const sarif = args.sarif();
-const banner = 'Usage: dogent [--sarif] [--offline] [--suppress=RULE,...] <file.md|dir>...';
+const banner = 'Usage: dogent [--sarif] [--offline] [--hints] [--suppress=RULE,...] <file.md|dir>...';
 if (args.version()) {
   process.stdout.write(`${version}\n`);
   process.exit(0);
@@ -34,6 +34,7 @@ if (args.help()) {
     '  --sarif    render the report as SARIF JSON\n' +
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
+    '  --hints    append a fixing hint for every rule that reported a violation\n' +
     '  --openai-http-header  add a "Name: Value" header to OpenAI calls\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n\n' +
@@ -77,6 +78,7 @@ documents.forEach((document) => {
     rule.violations(document).filter(allowed).forEach((violation) => found.push(violation));
   });
 });
+const localMillis = Date.now() - started;
 const key = process.env.OPENAI_API_KEY;
 const audit = async (docs) => {
   const oracle = new Oracle(
@@ -100,23 +102,42 @@ const audit = async (docs) => {
     {extra: [], usage: new Usage('', 0, 0)}
   );
 };
-const finish = (usage, aiMillis) => {
-  const report = new Report('dogent', found, Date.now() - started);
-  process.stdout.write(`${sarif ? JSON.stringify(report.sarif(), null, 2) : report.text()}\n`);
-  if (usage !== null) {
-    process.stderr.write(`${usage.text()}, analysed in ${prettyMs(aiMillis)}\n`);
-  }
-  process.exit(report.count() > 0 ? 1 : 0);
-};
 const verify = async () => {
   const clock = Date.now();
   const result = await audit(documents);
-  result.extra.filter(allowed).forEach((violation) => found.push(violation));
-  return {usage: result.usage, aiMillis: Date.now() - clock};
+  return {
+    extra: result.extra.filter(allowed),
+    usage: result.usage,
+    aiMillis: Date.now() - clock
+  };
+};
+const consult = Boolean(key) && !args.offline();
+const human = (outcome) => {
+  const all = found.concat(outcome.extra);
+  process.stdout.write(`${new Report('dogent', found, localMillis, 'Locally').text()}\n`);
+  if (consult) {
+    process.stdout.write(`${new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI').text()}\n`);
+  }
+  if (args.hints() && all.length > 0) {
+    process.stdout.write(`\n${new Report('dogent', all).hints(checks)}\n`);
+  }
+};
+const render = (outcome) => {
+  const all = found.concat(outcome.extra);
+  if (sarif) {
+    const report = new Report('dogent', all, localMillis + outcome.aiMillis);
+    process.stdout.write(`${JSON.stringify(report.sarif(), null, 2)}\n`);
+  } else {
+    human(outcome);
+  }
+  if (outcome.usage !== null) {
+    process.stderr.write(`${outcome.usage.text()}, analysed in ${prettyMs(outcome.aiMillis)}\n`);
+  }
+  process.exit(all.length > 0 ? 1 : 0);
 };
 (async () => {
-  let outcome = {aiMillis: 0, usage: null};
-  if (found.length === 0 && key && !args.offline()) {
+  let outcome = {extra: [], aiMillis: 0, usage: null};
+  if (consult) {
     try {
       outcome = await verify();
     } catch (error) {
@@ -124,5 +145,5 @@ const verify = async () => {
       process.exit(2);
     }
   }
-  finish(outcome.usage, outcome.aiMillis);
+  render(outcome);
 })();

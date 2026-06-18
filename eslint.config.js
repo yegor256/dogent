@@ -34,12 +34,13 @@
  * src/rules/hidden-char.js, whose escaped class deliberately lists the
  * combining variation selectors it must reject.
  *
- * One more (class-methods-use-this) is switched off for twenty rules
- * whose bodies are deliberately constant: src/rules/empty.js, src/rules/line-length.js, src/rules/grouped.js, src/rules/short-sections.js, src/rules/section-level.js, src/rules/name-format.js, src/rules/name-matches-dir.js, src/rules/polite.js, src/rules/unfinished.js, src/rules/crowded.js, src/rules/budget.js, src/rules/emoji.js, src/rules/homoglyph.js, src/rules/duplicate-section.js, src/rules/description-length.js, src/rules/hidden-char.js and src/rules/fence-language.js
- * return an empty prompt() to keep the deterministic-only rule out
- * of the AI oracle, and src/rules/consistent.js,
- * src/rules/example-format.js and src/rules/scope.js return empty
- * violations() to leave their oracle judgement entirely to the oracle.
+ * One more (class-methods-use-this) is switched off for every rule in
+ * src/rules/*.js. Each rule exposes a constant hint() that returns a
+ * fixed fixing paragraph, and many also return an empty prompt() to keep
+ * a deterministic-only rule out of the AI oracle or an empty violations()
+ * to leave the verdict entirely to the oracle. These deliberately
+ * constant bodies reference no instance state, so the rule cannot
+ * usefully apply to them.
  */
 
 'use strict';
@@ -110,28 +111,7 @@ module.exports = [
     }
   },
   {
-    files: [
-      'src/rules/empty.js',
-      'src/rules/line-length.js',
-      'src/rules/grouped.js',
-      'src/rules/short-sections.js',
-      'src/rules/section-level.js',
-      'src/rules/name-format.js',
-      'src/rules/name-matches-dir.js',
-      'src/rules/polite.js',
-      'src/rules/unfinished.js',
-      'src/rules/crowded.js',
-      'src/rules/budget.js',
-      'src/rules/consistent.js',
-      'src/rules/emoji.js',
-      'src/rules/homoglyph.js',
-      'src/rules/duplicate-section.js',
-      'src/rules/example-format.js',
-      'src/rules/description-length.js',
-      'src/rules/scope.js',
-      'src/rules/hidden-char.js',
-      'src/rules/fence-language.js'
-    ],
+    files: ['src/rules/*.js'],
     rules: {
       'class-methods-use-this': 'off'
     }

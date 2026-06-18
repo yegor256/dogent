@@ -19,6 +19,9 @@ class Punctuation {
   constructor() {
     this.id = 'punctuation';
   }
+  hint() {
+    return 'Write each instruction as one complete sentence that opens with a capital letter and closes with a period.';
+  }
   prompt() {
     return `${this.id}: flag any instruction that is not one complete, grammatical sentence`;
   }

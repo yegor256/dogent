@@ -23,6 +23,9 @@ class Default {
   constructor() {
     this.id = 'default';
   }
+  hint() {
+    return 'State the default outcome whenever you mark behavior optional, telling the agent exactly what to do when it declines the option.';
+  }
   prompt() {
     return `${this.id}: flag optionality that names no default even without a listed marker, and state the default`;
   }

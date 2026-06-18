@@ -25,6 +25,9 @@ class Positive {
   constructor() {
     this.id = 'positive';
   }
+  hint() {
+    return 'Rewrite a prohibition as a positive imperative stating what to do, since a ban forces the model to process the forbidden idea first.';
+  }
   prompt() {
     return `${this.id}: flag any instruction phrased as a prohibition, including bans carrying no fixed keyword, and rewrite each as a positive imperative`;
   }

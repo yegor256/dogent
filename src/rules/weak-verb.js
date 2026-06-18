@@ -25,6 +25,9 @@ class WeakVerb {
   constructor() {
     this.id = 'weak-verb';
   }
+  hint() {
+    return 'Replace a vague leading verb such as handle or manage with a precise action verb that names exactly what to do.';
+  }
   prompt() {
     return `${this.id}: flag a leading imperative verb that names no concrete action beyond the fixed list, and propose a precise action verb`;
   }

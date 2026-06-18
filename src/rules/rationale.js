@@ -23,6 +23,9 @@ class Rationale {
   constructor() {
     this.id = 'rationale';
   }
+  hint() {
+    return 'Delete the explanation or convert it into a direct order, since a manifesto carries commands, not justifications.';
+  }
   prompt() {
     return `${this.id}: flag any line that explains a reason, motivation, or benefit instead of issuing a direct order, even when it carries no fixed marker, and convert each into a command or delete it`;
   }

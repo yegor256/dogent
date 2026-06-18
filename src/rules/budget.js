@@ -24,6 +24,9 @@ class Budget {
     this.id = 'budget';
     this.cap = cap;
   }
+  hint() {
+    return 'Trim or split the manifesto so it holds fewer instructions than the budget, moving secondary guidance into separate referenced files to keep the core small.';
+  }
   prompt() {
     return '';
   }

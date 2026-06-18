@@ -52,10 +52,10 @@ describe('Prompt', () => {
       'the prompt must tell the oracle an empty reply is the expected outcome'
     );
   });
-  it('orders the oracle to always report a clash', () => {
+  it('subjects clashes to the same confidence gate as every check', () => {
     assert.ok(
-      text().includes('clash is never a false alarm'),
-      'the prompt must mandate reporting duplicate or contradictory lines'
+      !text().includes('clash is never a false alarm'),
+      'the prompt must not exempt clashes from the shared confidence gate'
     );
   });
   it('omits the phantom line a trailing newline would add', () => {

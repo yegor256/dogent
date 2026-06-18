@@ -21,6 +21,9 @@ class Grouped {
   constructor() {
     this.id = 'grouped';
   }
+  hint() {
+    return 'Move every loose instruction under a section heading, since prose before the first heading belongs to no section.';
+  }
   prompt() {
     return '';
   }

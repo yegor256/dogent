@@ -24,6 +24,9 @@ class FenceLanguage {
     this.id = 'fence-language';
     this.fence = /^\s*(?:```|~~~)\s*(?<lang>\S*)/u;
   }
+  hint() {
+    return 'Declare a language right after the opening fence of every code block so readers and tooling know the snippet syntax.';
+  }
   prompt() {
     return '';
   }

@@ -28,6 +28,9 @@ class Homoglyph {
     this.latin = /[A-Za-z]/u;
     this.confusable = /[Ѐ-ӿͰ-Ͽ＀-￯]/u;
   }
+  hint() {
+    return 'Replace the mixed-script look-alike character with its plain ASCII equivalent, since a foreign codepoint hidden inside a word breaks tooling.';
+  }
   prompt() {
     return '';
   }

@@ -27,6 +27,9 @@ class Placement {
     this.id = 'placement';
     this.keyword = /^#{1,6}\s+.*\b(?:safety|security|mission|critical|constraints?)\b/iu;
   }
+  hint() {
+    return 'Move the critical section to the top or bottom of the file, since models attend least to the buried middle of a long context.';
+  }
   prompt() {
     return `${this.id}: identify the single most important instruction and judge whether it sits near the top or bottom of the file rather than buried in the middle`;
   }

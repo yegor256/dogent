@@ -23,6 +23,9 @@ class NameFormat {
   constructor() {
     this.id = 'name-format';
   }
+  hint() {
+    return 'Write the SKILL.md frontmatter name in kebab-case, using only lowercase letters and digits joined by single hyphens.';
+  }
   prompt() {
     return '';
   }

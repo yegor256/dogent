@@ -24,6 +24,9 @@ class Vague {
   constructor() {
     this.id = 'vague';
   }
+  hint() {
+    return 'Replace a subjective qualifier such as properly or clean with a concrete, checkable threshold the agent can measure.';
+  }
   prompt() {
     return `${this.id}: flag any subjective or unmeasurable qualifier beyond the fixed list, and propose a concrete, checkable threshold to replace it`;
   }

@@ -57,6 +57,9 @@ class DeadImport {
     this.id = 'dead-import';
     this.depth = 5;
   }
+  hint() {
+    return 'Fix or remove the @path import so it points to a real file, and break any circular or overly deep import chain the host tool cannot resolve.';
+  }
   prompt() {
     return `${this.id}: flag any @path/to/file import that points to no file on disk`;
   }

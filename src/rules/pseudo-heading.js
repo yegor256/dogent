@@ -25,6 +25,9 @@ class PseudoHeading {
   constructor() {
     this.id = 'pseudo-heading';
   }
+  hint() {
+    return 'Replace a bold line posing as a heading with a real level-2 heading marked by two hashes.';
+  }
   prompt() {
     return `${this.id}: flag any bold line posing as a section heading, deferring borderline label-versus-instruction calls to the oracle, and demand a real level-2 "##" heading`;
   }

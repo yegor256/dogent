@@ -21,6 +21,9 @@ class TokenCount {
     this.id = 'token-count';
     this.cap = cap;
   }
+  hint() {
+    return 'Cut bloated wording across the file so its total token count fits the cap, keeping every instruction terse.';
+  }
   prompt() {
     return `${this.id}: flag bloated wording that wastes the context budget`;
   }

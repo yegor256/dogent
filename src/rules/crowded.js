@@ -25,6 +25,9 @@ class Crowded {
     this.id = 'crowded';
     this.limit = limit;
   }
+  hint() {
+    return 'Split an overcrowded section into smaller sections, each holding only a handful of related instructions under its own short heading.';
+  }
   prompt() {
     return '';
   }

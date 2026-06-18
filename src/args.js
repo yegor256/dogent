@@ -17,6 +17,8 @@ const minimist = require('minimist');
  * flag, also spelled `-h`, asks for the usage banner. The `--version` flag
  * asks for the release number. The `--suppress` option names a rule to
  * silence; repeat it or join names with commas to silence many at once. The
+ * `--hints` flag appends, for every rule that reported a violation, one
+ * English paragraph telling the agent how to fix it. The
  * `--openai-http-header` option adds one `Name: Value` header to every OpenAI
  * call; repeat it to add many. Everything after a `--` separator counts as a
  * path, never as an option.
@@ -24,7 +26,7 @@ const minimist = require('minimist');
 class Args {
   constructor(
     argv,
-    flags = ['sarif', 'offline', 'help', 'version'],
+    flags = ['sarif', 'offline', 'help', 'version', 'hints'],
     options = ['suppress', 'openai-http-header']
   ) {
     this.flags = flags;
@@ -45,6 +47,9 @@ class Args {
   }
   version() {
     return this.parsed.version === true;
+  }
+  hints() {
+    return this.parsed.hints === true;
   }
   suppress() {
     return [].concat(this.parsed.suppress || [])

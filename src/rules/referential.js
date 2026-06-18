@@ -31,6 +31,9 @@ class Referential {
       'iu'
     );
   }
+  hint() {
+    return 'Open the line by naming its own subject instead of a bare pronoun, since a dangling pronoun points at another line and breaks one line, one instruction.';
+  }
   prompt() {
     return `${this.id}: flag any line whose subject is a pronoun with no antecedent on the same line, including mid-line dangling references a head pattern misses`;
   }

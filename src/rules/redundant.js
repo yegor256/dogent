@@ -54,6 +54,9 @@ class Redundant {
     this.id = 'redundant';
     this.phrases = phrases;
   }
+  hint() {
+    return 'Delete the line that restates default model behavior, since generic advice the model already knows wastes the context budget.';
+  }
   prompt() {
     return `${this.id}: flag any line that restates default agent behavior already known to the model, not a project-specific instruction, including reworded paraphrases that match no fixed phrase list`;
   }

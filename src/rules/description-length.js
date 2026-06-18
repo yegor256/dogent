@@ -25,6 +25,9 @@ class DescriptionLength {
     this.id = 'description-length';
     this.ceiling = 1024;
   }
+  hint() {
+    return 'Write a SKILL.md description that is neither empty nor bloated, stating the capability concisely so it fits the loader budget.';
+  }
   prompt() {
     return '';
   }

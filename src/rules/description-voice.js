@@ -27,6 +27,9 @@ class DescriptionVoice {
     this.id = 'description-voice';
     this.pronoun = /\b(?:I|we|you|your|my|our)\b/giu;
   }
+  hint() {
+    return 'Write the SKILL.md description as a third-person capability statement such as Extracts tables, never in first or second person.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, flag a description written in first or second person and demand a third-person capability statement`;
   }

@@ -24,6 +24,9 @@ class NameMatchesDir {
   constructor() {
     this.id = 'name-matches-dir';
   }
+  hint() {
+    return 'Rename the SKILL.md frontmatter name so it matches the name of the directory that holds the file.';
+  }
   prompt() {
     return '';
   }

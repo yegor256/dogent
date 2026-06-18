@@ -25,6 +25,9 @@ class Quantifier {
   constructor() {
     this.id = 'quantifier';
   }
+  hint() {
+    return 'Replace a vague quantity word such as some or several with an exact number or threshold the agent can act on.';
+  }
   prompt() {
     return `${this.id}: flag a vague amount that names no exact count even without a listed word, and propose a concrete number or threshold to replace it`;
   }

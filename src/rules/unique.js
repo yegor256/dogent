@@ -31,6 +31,9 @@ class Unique {
   constructor() {
     this.id = 'unique';
   }
+  hint() {
+    return 'Remove the repeated instruction and state each rule once, since duplicated guidance wastes context and can drift out of sync.';
+  }
   prompt() {
     return `${this.id}: flag any instruction that repeats another instruction in the file, including two lines that carry the same meaning in different words, not only lines matching after normalized case, punctuation, and word order`;
   }

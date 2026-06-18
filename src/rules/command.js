@@ -20,6 +20,9 @@ class Command {
   constructor() {
     this.id = 'command';
   }
+  hint() {
+    return 'Rewrite the line as a direct imperative that opens with a base-form verb such as Write, Strip, or Keep, dropping any pronoun, question, or plain statement.';
+  }
   prompt() {
     return `${this.id}: flag any line that reads as a description, a question, or a plain statement rather than a direct order; a line opening with a base-form imperative verb, such as "Write", "Strip", "Drop", or "Keep", is itself a direct order and must never be flagged`;
   }

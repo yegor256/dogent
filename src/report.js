@@ -14,6 +14,8 @@ const prettyMs = require('pretty-ms');
  * violation it gathered. Renders itself for humans or as a SARIF log.
  * When handed the analysis duration in milliseconds, the human text
  * closes with a friendly "in 340ms" rendered through pretty-ms.
+ * Given the rules that ran, it can also render one fixing hint per rule
+ * that reported a violation, in first-appearance order.
  */
 class Report {
   constructor(tool, violations, millis = null) {
@@ -36,6 +38,18 @@ class Report {
       );
     }
     return lines.join('\n');
+  }
+  hints(rules) {
+    const byId = new Map(rules.map((rule) => [rule.id, rule]));
+    const seen = [];
+    this.bag.forEach((violation) => {
+      if (!seen.includes(violation.rule) && byId.has(violation.rule)) {
+        seen.push(violation.rule);
+      }
+    });
+    return seen
+      .map((id) => `[${id}]: ${byId.get(id).hint()}`)
+      .join('\n');
   }
   sarif() {
     return {

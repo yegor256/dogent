@@ -22,6 +22,9 @@ class LineLength {
     this.id = 'line-length';
     this.max = max;
   }
+  hint() {
+    return 'Shorten the line below the width cap, splitting it into separate instructions if needed so each stays easy to read.';
+  }
   prompt() {
     return '';
   }

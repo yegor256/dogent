@@ -24,6 +24,9 @@ class AmbiguousOr {
   constructor() {
     this.id = 'ambiguous-or';
   }
+  hint() {
+    return 'Replace every either-or choice such as and/or or a slashed alternative with one explicit branch, naming exactly which option the agent must take so no guessing remains.';
+  }
   prompt() {
     return `${this.id}: flag either-or ambiguity beyond "and/or" and slashed alternatives, and state exactly which option applies`;
   }

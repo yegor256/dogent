@@ -24,6 +24,9 @@ class Atomic {
   constructor() {
     this.id = 'atomic';
   }
+  hint() {
+    return 'Split a line that bundles several instructions into one line per instruction, since the agent reads each line as a single command and welded clauses get half-followed.';
+  }
   prompt() {
     return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses whether or not a semicolon, "and", or "then" welds them, yet never count a coordinated object or noun phrase trailing "and" or "then" as a second instruction`;
   }

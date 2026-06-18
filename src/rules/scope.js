@@ -20,6 +20,9 @@ class Scope {
   constructor() {
     this.id = 'scope';
   }
+  hint() {
+    return 'Split a SKILL.md that mixes unrelated responsibilities into separate single-purpose skills, since reliability scales with a narrow scope.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, judge whether the sections describe a single coherent responsibility or several unrelated ones, and recommend a split when they diverge`;
   }

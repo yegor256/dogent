@@ -21,7 +21,6 @@ jobs:
           - gpt-4.1-mini
           - gpt-4o
           - gpt-4.1
-          - gpt-5.4-mini
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4

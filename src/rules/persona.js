@@ -24,6 +24,9 @@ class Persona {
   constructor() {
     this.id = 'persona';
   }
+  hint() {
+    return 'Delete the role-play persona such as You are a senior engineer, since assigning a role adds no instruction and can hurt performance.';
+  }
   prompt() {
     return `${this.id}: flag indirect persona or role-play framing that assigns the agent a role with no fixed keyword, since a persona adds no instruction`;
   }

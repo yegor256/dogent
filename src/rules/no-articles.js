@@ -19,6 +19,9 @@ class NoArticles {
   constructor() {
     this.id = 'no-articles';
   }
+  hint() {
+    return 'Remove filler articles such as a, an, and the, since they add noise without changing the instruction.';
+  }
   prompt() {
     return `${this.id}: flag filler or noise words that add nothing to an instruction`;
   }

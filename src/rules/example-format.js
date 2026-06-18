@@ -21,6 +21,9 @@ class ExampleFormat {
   constructor() {
     this.id = 'example-format';
   }
+  hint() {
+    return 'Make the example in the SKILL.md conform exactly to the declared output format, since a mismatched example teaches the agent the wrong shape.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md that both shows an example and declares an output format, judge whether the example conforms to the declared format and flag any mismatch`;
   }

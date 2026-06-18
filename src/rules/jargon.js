@@ -76,6 +76,9 @@ class Jargon {
   constructor() {
     this.id = 'jargon';
   }
+  hint() {
+    return 'Expand each acronym on first use with a parenthetical gloss, and replace rare domain jargon with plain words a fresh reader can parse.';
+  }
   prompt() {
     return `${this.id}: flag non-acronym domain jargon, rare nouns a fresh reader cannot parse, and ask for a plain-word definition on first use`;
   }

@@ -25,6 +25,9 @@ class Concise {
     this.id = 'concise';
     this.max = max;
   }
+  hint() {
+    return 'Shorten the file or split its detail into referenced files so its middle instructions survive, since models attend to the start and end and skim the middle.';
+  }
   prompt() {
     return `${this.id}: flag a manifesto so long its middle instructions risk being lost, and recommend splitting detail into referenced files`;
   }

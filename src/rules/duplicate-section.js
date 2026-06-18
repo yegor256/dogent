@@ -28,6 +28,9 @@ class DuplicateSection {
   constructor() {
     this.id = 'duplicate-section';
   }
+  hint() {
+    return 'Give every section a distinct heading, merging or renaming any two sections that share the same name.';
+  }
   prompt() {
     return '';
   }

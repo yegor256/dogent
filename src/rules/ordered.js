@@ -24,6 +24,9 @@ class Ordered {
   constructor() {
     this.id = 'ordered';
   }
+  hint() {
+    return 'Convert a sequence of steps into a numbered list, since models follow numbered ordered steps far more reliably than unordered bullets.';
+  }
   prompt() {
     return `${this.id}: flag an implied sequence that no marker word signals, demanding a numbered list whenever the order of steps matters`;
   }

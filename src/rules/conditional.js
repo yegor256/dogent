@@ -23,6 +23,9 @@ class Conditional {
   constructor() {
     this.id = 'conditional';
   }
+  hint() {
+    return 'Break a line that packs several conditions into one case per line, so the agent never has to untangle a whole decision tree welded onto a single line.';
+  }
   prompt() {
     return `${this.id}: flag implicit branching that carries no keyword, and split each case into its own command`;
   }

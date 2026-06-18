@@ -23,6 +23,9 @@ class Empty {
   constructor() {
     this.id = 'empty';
   }
+  hint() {
+    return 'Fill the hollow section with at least one instruction, or delete the heading, so no section declares itself without a body.';
+  }
   prompt() {
     return '';
   }

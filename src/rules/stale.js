@@ -24,6 +24,9 @@ class Stale {
   constructor() {
     this.id = 'stale';
   }
+  hint() {
+    return 'Replace a volatile time or version reference such as currently or a pinned version number with a durable rule that never rots.';
+  }
   prompt() {
     return `${this.id}: flag any implicit time-bound or version-bound claim that carries no keyword, and propose a durable rule that never rots`;
   }

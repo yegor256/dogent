@@ -15,6 +15,8 @@ const prettyMs = require('pretty-ms');
  * When handed the analysis duration in milliseconds, the human text
  * closes with a friendly "in 340ms" rendered through pretty-ms.
  * A label tags the summary line, telling local checks from AI ones.
+ * Given the rules that ran, it can also render one fixing hint per rule
+ * that reported a violation, in first-appearance order.
  */
 class Report {
   constructor(tool, violations, millis = null, label = '') {
@@ -29,9 +31,27 @@ class Report {
   text() {
     const suffix = this.millis === null ? '' : ` in ${prettyMs(this.millis)}`;
     const prefix = this.label === '' ? '' : `${this.label}: `;
-    return this.bag
+    const lines = this.bag
       .map((violation) => violation.text())
-      .concat(`${prefix}${this.bag.length} problems found${suffix}`)
+      .concat(`${prefix}${this.bag.length} problems found${suffix}`);
+    if (this.bag.length > 0) {
+      lines.push(
+        'Spotted a false positive? dogent is in beta, please report it at ' +
+        'https://github.com/yegor256/dogent/issues'
+      );
+    }
+    return lines.join('\n');
+  }
+  hints(rules) {
+    const byId = new Map(rules.map((rule) => [rule.id, rule]));
+    const seen = [];
+    this.bag.forEach((violation) => {
+      if (!seen.includes(violation.rule) && byId.has(violation.rule)) {
+        seen.push(violation.rule);
+      }
+    });
+    return seen
+      .map((id) => `[${id}]: ${byId.get(id).hint()}`)
       .join('\n');
   }
   sarif() {

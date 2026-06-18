@@ -76,6 +76,7 @@ CLAUDE.md
   31:  section name too long, use 1-3 words
 
 Locally: 4 problems found, exit code 1
+Spotted a false positive? dogent is in beta, please report it at https://github.com/yegor256/dogent/issues
 ```
 
 The standalone checks report under their own `Locally:` summary line.
@@ -167,6 +168,14 @@ npx @yegor256/dogent --offline CLAUDE.md
 ```
 
 Pass `--sarif` to print the report as SARIF instead of plain text.
+
+Pass `--hints` to append, for every rule that reported a violation, one
+  English paragraph explaining how to fix it. This helps you or your agent
+  repair the manifesto faster:
+
+```bash
+npx @yegor256/dogent --hints CLAUDE.md
+```
 
 Pass `--suppress` to silence a rule by its id. Repeat the option or
   join several ids with commas to silence many at once:

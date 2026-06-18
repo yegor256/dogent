@@ -24,6 +24,9 @@ class Example {
   constructor() {
     this.id = 'example';
   }
+  hint() {
+    return 'Add at least one concrete worked input and output example to the SKILL.md, since a single demonstration guides the agent far better than prose alone.';
+  }
   prompt() {
     return `${this.id}: in a SKILL.md, judge whether a present code block is a genuine worked example rather than a stray snippet, and flag a skill that only describes without demonstrating`;
   }

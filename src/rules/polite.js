@@ -24,6 +24,9 @@ class Polite {
   constructor() {
     this.id = 'polite';
   }
+  hint() {
+    return 'Remove courtesy and scaffolding phrases such as please or make sure to, since they waste tokens and weaken the command.';
+  }
   prompt() {
     return '';
   }

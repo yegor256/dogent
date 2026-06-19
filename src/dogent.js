@@ -62,7 +62,17 @@ if (paths.length === 0) {
   process.stderr.write(`${banner}\n`);
   process.exit(2);
 }
-const scanned = new Sources(paths).files();
+const scan = () => {
+  try {
+    return new Sources(paths).files();
+  } catch (error) {
+    process.stderr.write(`${error.message}\n`);
+    process.stderr.write(`${banner}\n`);
+    process.exit(2);
+  }
+  return [];
+};
+const scanned = scan();
 scanned.forEach((file) => process.stderr.write(`Scanning ${file}\n`));
 const checks = rules();
 process.stderr.write(`${scanned.length} files scanned, ${checks.length} rules applied\n`);

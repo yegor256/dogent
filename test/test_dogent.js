@@ -72,6 +72,22 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent missing path', () => {
+  it('exits with a readable message when a passed path does not exist', () => {
+    const absent = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'absent.md');
+    const out = run([absent], {OPENAI_API_KEY: ''});
+    assert.strictEqual(out.status, 2, 'a missing path must make dogent exit with code two');
+    assert.ok(
+      out.stderr.includes(`No such file or directory: ${absent}`),
+      'a missing path must surface a clear stderr message, not a stack trace'
+    );
+    assert.ok(
+      !out.stderr.includes('ENOENT'),
+      'a missing path must not leak the raw ENOENT stack trace'
+    );
+  });
+});
+
 describe('dogent local summary', () => {
   it('labels the local summary line on its own', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');

@@ -59,3 +59,14 @@ describe('Sources', () => {
     );
   });
 });
+
+describe('Sources error handling', () => {
+  it('throws a clear error when a passed path does not exist', () => {
+    const missing = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'absent.md');
+    assert.throws(
+      () => new Sources([missing]).files(),
+      (error) => error.message === `No such file or directory: ${missing}`,
+      'a missing path must surface as a clear, human-readable error'
+    );
+  });
+});

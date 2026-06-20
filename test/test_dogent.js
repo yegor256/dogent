@@ -72,6 +72,19 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent file size', () => {
+  it('announces the line count and byte size of a scanned manifesto', () => {
+    const body = '# Kitchen\nSharpen knife.';
+    const file = manifesto(body);
+    assert.ok(
+      run([file], {OPENAI_API_KEY: ''}).stderr.includes(
+        `Scanning ${file} (2 lines, ${Buffer.byteLength(body)} bytes)`
+      ),
+      'dogent must announce the size of every file it scans'
+    );
+  });
+});
+
 describe('dogent missing path', () => {
   it('exits with a readable message when a passed path does not exist', () => {
     const absent = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'absent.md');

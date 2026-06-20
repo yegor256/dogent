@@ -60,3 +60,32 @@ describe('Oracle', () => {
     );
   });
 });
+
+describe('Oracle guard', () => {
+  it('drops a flag a rule vetoes through its suppress guard', async () => {
+    const Command = require('../src/rules/command');
+    const reply = JSON.stringify({
+      results: [
+        {
+          ruleId: 'command',
+          level: 'warning',
+          message: {text: 'reads as a plain statement'},
+          locations: [
+            {
+              physicalLocation: {
+                artifactLocation: {uri: 'x.md'},
+                region: {startLine: 2, startColumn: 1}
+              }
+            }
+          ]
+        }
+      ]
+    });
+    const doc = new Markdown('x.md', '# Rules\nThrow exception on failure.').document();
+    assert.strictEqual(
+      (await new Oracle([new Command()], new FakeChat(reply)).violations(doc)).found.length,
+      0,
+      'a flag vetoed by a rule must never reach the report'
+    );
+  });
+});

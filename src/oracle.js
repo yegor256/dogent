@@ -14,7 +14,9 @@ const Answer = require('./answer');
  * The AI second opinion. Wraps the rules and a chat endpoint, builds one
  * prompt from a document, asks the endpoint, and parses the reply into
  * violations paired with the token usage the model reported. Mirrors a
- * rule, but consults a model instead of guessing.
+ * rule, but consults a model instead of guessing. Lets each rule veto an
+ * oracle flag it knows to be false, so a deterministic guard overrides
+ * the model.
  */
 class Oracle {
   constructor(rules, chat) {
@@ -24,7 +26,11 @@ class Oracle {
   async violations(document) {
     const reply = await this.chat.answer(new Prompt(this.rules, document).text());
     return {
-      found: new Answer(reply.content).violations(),
+      found: new Answer(reply.content).violations().filter(
+        (violation) => !this.rules.some(
+          (rule) => rule.suppress?.(violation, document)
+        )
+      ),
       usage: reply.usage
     };
   }

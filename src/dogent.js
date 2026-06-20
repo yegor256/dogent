@@ -73,11 +73,17 @@ const scan = () => {
   return [];
 };
 const scanned = scan();
-scanned.forEach((file) => process.stderr.write(`Scanning ${file}\n`));
+const bodies = new Map(scanned.map((file) => [file, fs.readFileSync(file, 'utf8')]));
+scanned.forEach((file) => {
+  const body = bodies.get(file);
+  const lines = body === '' ? 0 : body.split('\n').length - (body.endsWith('\n') ? 1 : 0);
+  const bytes = Buffer.byteLength(body);
+  process.stderr.write(`Scanning ${file} (${lines} lines, ${bytes} bytes)\n`);
+});
 const checks = rules();
 process.stderr.write(`${scanned.length} files scanned, ${checks.length} rules applied\n`);
 const documents = scanned.map(
-  (file) => new Markdown(file, fs.readFileSync(file, 'utf8')).document()
+  (file) => new Markdown(file, bodies.get(file)).document()
 );
 const started = Date.now();
 const suppressed = args.suppress();

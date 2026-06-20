@@ -52,6 +52,25 @@ describe('Untrusted', () => {
   });
 });
 
+describe('Untrusted hyphen boundaries', () => {
+  it('ignores a verb buried in a hyphenated compound word', () => {
+    const doc = new Markdown('x.md', '# H\nStop after follow-up comment.').document();
+    assert.strictEqual(
+      new Untrusted().violations(doc).length,
+      0,
+      'a verb inside a hyphenated compound must not be flagged'
+    );
+  });
+  it('ignores a verb trailing a hyphenated compound word', () => {
+    const doc = new Markdown('x.md', '# H\nDiscard report when it matches already-open issue.').document();
+    assert.strictEqual(
+      new Untrusted().violations(doc).length,
+      0,
+      'a verb after a hyphen must not be flagged'
+    );
+  });
+});
+
 describe('Untrusted prompt', () => {
   it('exposes its id through the prompt', () => {
     assert.ok(

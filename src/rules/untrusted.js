@@ -44,7 +44,7 @@ class Untrusted {
   }
   scan(text, line, uri) {
     const masked = mask(text);
-    const verb = /\b(?:read|fetch|open|follow|execute)\b/iu;
+    const verb = /(?<!-)\b(?:read|fetch|open|follow|execute)\b(?!-)/iu;
     const source = /\b(?:page|url|link|email|file|issue|output|comment)\b/iu;
     const guard = /\b(?:as data|do not follow|treat as untrusted|inside delimiters|untrusted)\b/iu;
     if (!verb.test(masked) || !source.test(masked) || guard.test(masked)) {

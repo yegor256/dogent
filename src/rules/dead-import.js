@@ -61,7 +61,7 @@ class DeadImport {
     return 'Fix or remove the @path import so it points to a real file, and break any circular or overly deep import chain the host tool cannot resolve.';
   }
   prompt() {
-    return `${this.id}: flag any @path/to/file import that points to no file on disk`;
+    return `${this.id}: flag any @path/to/file import that points to no file on disk; only an @-prefixed token counts as an import, so never treat a bare path in prose as one`;
   }
   violations(document) {
     const uri = document.uri();

@@ -35,6 +35,21 @@ class NoArticles {
       frontmatter: () => []
     });
   }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    return this.headers(document).has(violation.spot.line());
+  }
+  headers(document) {
+    return new Set(document.walk({
+      header: (text, line) => [line],
+      prose: () => [],
+      snippet: () => [],
+      bullets: () => [],
+      frontmatter: () => []
+    }));
+  }
   scan(text, line, uri) {
     const found = [];
     const masked = mask(text);

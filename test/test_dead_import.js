@@ -27,7 +27,7 @@ describe('DeadImport', () => {
   it('offers a prompt fragment for the oracle', () => {
     assert.equal(
       new DeadImport().prompt(),
-      'dead-import: flag any @path/to/file import that points to no file on disk'
+      'dead-import: flag any @path/to/file import that points to no file on disk; only an @-prefixed token counts as an import, so never treat a bare path in prose as one'
     );
   });
   it('flags a missing import target', () => {

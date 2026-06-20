@@ -20,7 +20,11 @@ const Region = require('../region');
  * Distinct from description-triggers, which checks that a "when" clause
  * exists, and from description-length, which checks the size; this one
  * checks the grammatical voice. Its prompt hands subtler voice
- * judgement to the AI oracle.
+ * judgement to the AI oracle. A deterministic guard then drops any
+ * oracle flag that lands off the frontmatter description row, or on that
+ * row when the deterministic pronoun check finds nothing, so the oracle
+ * stays bound to the same single line and vocabulary the standalone
+ * checker enforces.
  */
 class DescriptionVoice {
   constructor() {
@@ -38,6 +42,23 @@ class DescriptionVoice {
     if (uri.replace(/^.*\//u, '') !== 'SKILL.md') {
       return [];
     }
+    const pair = this.description(document);
+    if (pair === null) {
+      return [];
+    }
+    return this.judge(pair, uri);
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const pair = this.description(document);
+    if (pair === null || violation.spot.line() !== pair.row) {
+      return true;
+    }
+    return this.judge(pair, document.uri()).length === 0;
+  }
+  description(document) {
     const pairs = document.walk({
       header: () => [],
       prose: () => [],
@@ -46,10 +67,7 @@ class DescriptionVoice {
       frontmatter: (keys) => keys
     });
     const found = pairs.filter((pair) => pair.key === 'description');
-    if (found.length === 0) {
-      return [];
-    }
-    return this.judge(found[0], uri);
+    return found.length === 0 ? null : found[0];
   }
   judge(pair, uri) {
     const text = pair.value.replace(/use when.*$/isu, '');

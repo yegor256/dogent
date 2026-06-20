@@ -48,6 +48,8 @@ const defined = (masked) => {
   while (hit !== null) {
     if (hit.groups.acronym) {
       found.add(hit.groups.acronym);
+    } else if (/^[A-Z]{2,}$/u.test(hit.groups.gloss)) {
+      found.add(hit.groups.gloss);
     } else {
       found.add(initials(hit.groups.gloss));
     }
@@ -64,10 +66,11 @@ const undefining = (acronym, scope) => !scope.known.has(acronym) &&
  *
  * Flags an acronym that lands in prose without ever being expanded. An
  * acronym counts as defined when the document, anywhere, follows it with
- * a parenthetical gloss, as in "RBAC (role-based access control)", or when
+ * a parenthetical gloss, as in "RBAC (role-based access control)", when
  * a parenthetical's word initials spell it, as in "AAA pattern
- * (Arrange-Act-Assert)", so a single expansion licenses every later
- * mention. Well-known acronyms sit
+ * (Arrange-Act-Assert)", or when the expansion precedes a parenthetical
+ * acronym, as in "Virtual Private Network (VPN)", so a single expansion
+ * licenses every later mention. Well-known acronyms sit
  * in a built-in allowlist and pass untouched. Only the first unexpanded
  * occurrence of each acronym is reported. Its prompt hands non-acronym
  * domain jargon, the rare nouns a reader cannot parse, to the AI oracle.

@@ -58,6 +58,20 @@ describe('Jargon', () => {
   });
 });
 
+describe('Jargon definitions', () => {
+  it('accepts an acronym defined as expansion before parentheses', () => {
+    const doc = new Markdown(
+      'x.md',
+      '# H\nFind Virtual Private Network (VPN) client here.\nUse VPN again.'
+    ).document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      0,
+      'an "Expansion (ACRONYM)" definition must license later mentions'
+    );
+  });
+});
+
 describe('Jargon prompt', () => {
   it('exposes its id through the prompt', () => {
     assert.ok(

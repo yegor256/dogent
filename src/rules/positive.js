@@ -21,6 +21,10 @@ const mask = require('../mask');
  * oracle, which rewrites a prohibition with no keyword as a positive
  * command. The prompt demands an actual negation before flagging, so
  * an affirmative imperative that already states what to do stays clean.
+ * Because the model still misreads plain imperatives as bans, a
+ * deterministic guard then drops any oracle flag on a line that carries
+ * no negation token at all, so an affirmative imperative can never be
+ * reported regardless of what the model returns.
  */
 class Positive {
   constructor() {
@@ -41,6 +45,17 @@ class Positive {
       bullets: () => [],
       frontmatter: () => []
     });
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const lines = document.text().split('\n');
+    return !this.negated(lines[violation.spot.line() - 1] || '');
+  }
+  negated(text) {
+    const regex = /\b(?:do not|don't|never|avoid|refrain from|must not|no longer|no|not)\b/iu;
+    return regex.test(mask(text));
   }
   scan(text, line, uri) {
     const regex = /^(?<marker>\s*(?:[-*+]|\d+\.)\s+)?(?:do not|don't|never|avoid|refrain from|must not|no longer)\b/iu;

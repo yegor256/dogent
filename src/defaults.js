@@ -40,7 +40,12 @@ class Defaults {
       .split('\n')
       .map((line) => line.trim())
       .filter((line) => line !== '' && !line.startsWith('#'))
-      .flatMap((line) => line.split(/\s+/u));
+      .flatMap((line) => {
+        const separator = line.search(/\s/u);
+        return separator < 0
+          ? [line]
+          : [line.slice(0, separator), line.slice(separator).trimStart()];
+      });
   }
 }
 

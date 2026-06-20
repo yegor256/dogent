@@ -30,6 +30,17 @@ describe('Defaults parsing', () => {
       'an option and its value must split into two tokens'
     );
   });
+  it('keeps whitespace inside an option value', () => {
+    assert.deepStrictEqual(
+      new Defaults(
+        ['/here'],
+        () => true,
+        () => '--openai-http-header X-Auth: a b c\n'
+      ).argv(),
+      ['--openai-http-header', 'X-Auth: a b c'],
+      'whitespace inside a value must stay in one argv token'
+    );
+  });
   it('drops a blank line', () => {
     assert.deepStrictEqual(
       fake({'/here/.dogent': '\n--offline\n\n'}).argv(),

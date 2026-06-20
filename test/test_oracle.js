@@ -9,6 +9,7 @@ const assert = require('assert');
 const Markdown = require('../src/markdown');
 const Oracle = require('../src/oracle');
 const Usage = require('../src/usage');
+const Positive = require('../src/rules/positive');
 
 /**
  * FakeChat.
@@ -57,6 +58,34 @@ describe('Oracle', () => {
       (await new Oracle([], new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
       9,
       'the oracle must surface the token usage from the chat'
+    );
+  });
+});
+
+describe('Oracle refine', () => {
+  it('lets a rule refine away a flag the model should never raise', async () => {
+    const reply = JSON.stringify({
+      results: [
+        {
+          ruleId: 'positive',
+          level: 'warning',
+          message: {text: 'Rewrite as a positive imperative'},
+          locations: [
+            {
+              physicalLocation: {
+                artifactLocation: {uri: 'x.md'},
+                region: {startLine: 2, startColumn: 1}
+              }
+            }
+          ]
+        }
+      ]
+    });
+    const doc = new Markdown('x.md', '# Errors\nThrow exception when wrong.').document();
+    assert.strictEqual(
+      (await new Oracle([new Positive()], new FakeChat(reply)).violations(doc)).found.length,
+      0,
+      'the oracle must drop a positive flag on an affirmative imperative'
     );
   });
 });

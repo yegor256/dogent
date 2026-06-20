@@ -9,7 +9,6 @@ const assert = require('assert');
 const Markdown = require('../src/markdown');
 const Oracle = require('../src/oracle');
 const Usage = require('../src/usage');
-const Positive = require('../src/rules/positive');
 
 /**
  * FakeChat.
@@ -62,14 +61,15 @@ describe('Oracle', () => {
   });
 });
 
-describe('Oracle refine', () => {
-  it('lets a rule refine away a flag the model should never raise', async () => {
+describe('Oracle guard', () => {
+  it('drops a flag a rule vetoes through its suppress guard', async () => {
+    const Command = require('../src/rules/command');
     const reply = JSON.stringify({
       results: [
         {
-          ruleId: 'positive',
+          ruleId: 'command',
           level: 'warning',
-          message: {text: 'Rewrite as a positive imperative'},
+          message: {text: 'reads as a plain statement'},
           locations: [
             {
               physicalLocation: {
@@ -81,11 +81,11 @@ describe('Oracle refine', () => {
         }
       ]
     });
-    const doc = new Markdown('x.md', '# Errors\nThrow exception when wrong.').document();
+    const doc = new Markdown('x.md', '# Rules\nThrow exception on failure.').document();
     assert.strictEqual(
-      (await new Oracle([new Positive()], new FakeChat(reply)).violations(doc)).found.length,
+      (await new Oracle([new Command()], new FakeChat(reply)).violations(doc)).found.length,
       0,
-      'the oracle must drop a positive flag on an affirmative imperative'
+      'a flag vetoed by a rule must never reach the report'
     );
   });
 });

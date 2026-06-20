@@ -73,47 +73,47 @@ describe('Positive acceptance', () => {
   });
 });
 
-describe('Positive refine', () => {
+describe('Positive suppress', () => {
   const flag = (line) => new Violation(
     'positive',
     'warning',
     'Rewrite as a positive imperative',
     new Region('x.md', line, 1)
   );
-  it('drops an oracle flag on an affirmative imperative', () => {
+  it('vetoes an oracle flag on an affirmative imperative', () => {
     const doc = new Markdown(
       'x.md', '# Errors\n\nThrow exception immediately when anything goes wrong.'
     ).document();
     assert.strictEqual(
-      new Positive().refine([flag(3)], doc).length,
-      0,
-      'a flag on a line with no negation token must be dropped'
+      new Positive().suppress(flag(3), doc),
+      true,
+      'a flag on a line with no negation token must be vetoed'
     );
   });
   it('keeps an oracle flag on a line carrying a negation token', () => {
     const doc = new Markdown('x.md', '# H\n\nLeave no comment in the diff.').document();
     assert.strictEqual(
-      new Positive().refine([flag(3)], doc).length,
-      1,
+      new Positive().suppress(flag(3), doc),
+      false,
       'a flag on a line with a real negation must survive'
     );
   });
-  it('leaves a flag from another rule untouched', () => {
+  it('ignores an oracle flag raised by another rule', () => {
     const doc = new Markdown('x.md', '# H\n\nReturn value from method.').document();
     const other = new Violation(
       'command', 'warning', 'sounds like a question', new Region('x.md', 3, 1)
     );
     assert.strictEqual(
-      new Positive().refine([other], doc).length,
-      1,
-      'a flag owned by a different rule must not be touched'
+      new Positive().suppress(other, doc),
+      false,
+      'only a positive flag may be vetoed by the positive guard'
     );
   });
   it('ignores a negation token hidden inside a code span', () => {
     const doc = new Markdown('x.md', '# H\n\nReturn `not` from method.').document();
     assert.strictEqual(
-      new Positive().refine([flag(3)], doc).length,
-      0,
+      new Positive().suppress(flag(3), doc),
+      true,
       'a negation token inside inline code must not rescue the flag'
     );
   });

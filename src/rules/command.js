@@ -15,6 +15,8 @@ const Region = require('../region');
  * checker can only guess: it flags lines that open with a pronoun or
  * end with a question mark, both signs of description, not order. Its
  * prompt hands the subtler imperative-mood judgement to the AI oracle.
+ * A deterministic guard then drops any oracle flag on a line that
+ * shows neither sign, so a base-form imperative is never flagged.
  */
 class Command {
   constructor() {
@@ -37,16 +39,7 @@ class Command {
     });
   }
   judge(text, line, uri) {
-    const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trim();
-    if (clean === '') {
-      return [];
-    }
-    const first = clean
-      .split(/\s+/u)[0]
-      .toLowerCase()
-      .replace(/[^a-z]/gu, '');
-    const weak = /^(?:i|you|we|they|he|she|it|this|that|these|those|there|here)$/u;
-    if (!weak.test(first) && clean.slice(-1) !== '?') {
+    if (!this.describes(text)) {
       return [];
     }
     return [new Violation(
@@ -55,6 +48,25 @@ class Command {
       'line must sound like a command',
       new Region(uri, line, 1)
     )];
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const lines = document.text().split('\n');
+    return !this.describes(lines[violation.spot.line() - 1] || '');
+  }
+  describes(text) {
+    const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trim();
+    if (clean === '') {
+      return false;
+    }
+    const first = clean
+      .split(/\s+/u)[0]
+      .toLowerCase()
+      .replace(/[^a-z]/gu, '');
+    const weak = /^(?:i|you|we|they|he|she|it|this|that|these|those|there|here)$/u;
+    return weak.test(first) || clean.slice(-1) === '?';
   }
 }
 

@@ -19,7 +19,8 @@ const mask = require('../mask');
  * "Only use real data" beats "Don't use mock data". Its prompt hands
  * subtler bans, those carrying no head keyword, to the AI
  * oracle, which rewrites a prohibition with no keyword as a positive
- * command.
+ * command. The prompt demands an actual negation before flagging, so
+ * an affirmative imperative that already states what to do stays clean.
  */
 class Positive {
   constructor() {
@@ -29,7 +30,7 @@ class Positive {
     return 'Rewrite a prohibition as a positive imperative stating what to do, since a ban forces the model to process the forbidden idea first.';
   }
   prompt() {
-    return `${this.id}: flag any instruction phrased as a prohibition, including bans carrying no fixed keyword, and rewrite each as a positive imperative`;
+    return `${this.id}: flag an instruction only when it forbids or negates an action, including a ban that carries no fixed keyword, and rewrite each as a positive imperative; leave an affirmative imperative that already states what to do untouched, returning nothing for it`;
   }
   violations(document) {
     const uri = document.uri();

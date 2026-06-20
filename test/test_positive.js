@@ -84,4 +84,16 @@ describe('Positive prompt', () => {
       'the prompt must hand subtler bans to the oracle'
     );
   });
+  it('requires an actual negation before flagging', () => {
+    assert.ok(
+      new Positive().prompt().includes('negates'),
+      'the prompt must demand a real negation, not just any imperative'
+    );
+  });
+  it('spares an affirmative imperative', () => {
+    assert.ok(
+      new Positive().prompt().includes('affirmative imperative'),
+      'the prompt must leave a line that already states what to do alone'
+    );
+  });
 });

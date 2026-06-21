@@ -117,6 +117,36 @@ describe('Simple suppress', () => {
   });
 });
 
+describe('Simple coordinated object', () => {
+  it('vetoes an oracle flag on an Oxford-comma object list closed by and', () => {
+    const doc = new Markdown('x.md', '# H\nCover bug, why it is wrong, and proposed fix.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      true,
+      'a leading imperative taking a coordinated three-part object is not tangled'
+    );
+  });
+  it('vetoes an oracle flag on a comma list closed by and', () => {
+    const doc = new Markdown('x.md', '# H\nMirror its title shape, structure, and tone.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      true,
+      'a leading imperative taking a comma-listed object is not tangled'
+    );
+  });
+  it('keeps an oracle flag when and welds a verb taking its own object', () => {
+    const doc = new Markdown('x.md', '# H\nCover the bug, and rewrite the patch.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      false,
+      'a second verb taking a determiner-led object must survive'
+    );
+  });
+});
+
 describe('Simple frontmatter', () => {
   it('vetoes an oracle flag on the frontmatter description', () => {
     const doc = new Markdown(

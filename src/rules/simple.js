@@ -36,7 +36,10 @@ const listCommas = function listCommas(text) {
  * which weighs true clause depth rather than counting punctuation. A
  * deterministic guard then drops any oracle flag on a line that carries no
  * clause comma and no subordinating conjunction, since such a line holds a
- * single clause and cannot be tangled. Commas inside a coordinated list are
+ * single clause and cannot be tangled. A lone subordinating conjunction with
+ * no second conjunction and no clause comma is dropped too, so a plain "do X
+ * when Y" guard reads as one clause while a genuine multi-clause tangle still
+ * survives. Commas inside a coordinated list are
  * discounted first, so a leading imperative taking an `A, B, and C` object
  * reads as one clause and is vetoed, unless its "and" or "then" welds a
  * second verb that takes a determiner-led object of its own. The same guard
@@ -86,13 +89,17 @@ class Simple {
     })[0] || 0;
   }
   tangleable(text) {
-    if (this.conjunction.test(text)) {
+    if (this.conjunction.test(text) && (this.conjunctions(text) > 1 || this.clauseCommas(text) > 0)) {
       return true;
     }
     if (this.clause(text)) {
       return true;
     }
     return this.clauseCommas(text) > 0;
+  }
+  conjunctions(text) {
+    const all = new RegExp(this.conjunction.source, 'giu');
+    return (text.match(all) || []).length;
   }
   clauseCommas(text) {
     const commas = text.match(/,/gu);

@@ -35,14 +35,7 @@ class Example {
     if (uri.replace(/^.*\//u, '') !== 'SKILL.md') {
       return [];
     }
-    const hints = document.walk({
-      header: (text) => this.heading(text),
-      prose: () => [],
-      snippet: () => ['snippet'],
-      bullets: () => [],
-      frontmatter: () => []
-    });
-    if (hints.length > 0) {
+    if (this.hints(document).length > 0) {
       return [];
     }
     return [new Violation(
@@ -51,6 +44,22 @@ class Example {
       'SKILL.md has no example, add a worked input/output sample',
       new Region(uri, 1, 1)
     )];
+  }
+  hints(document) {
+    return document.walk({
+      header: (text) => this.heading(text),
+      prose: () => [],
+      snippet: () => ['snippet'],
+      bullets: () => [],
+      frontmatter: () => []
+    });
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const hints = this.hints(document);
+    return hints.includes('snippet') && hints.includes(this.id);
   }
   heading(text) {
     if (/^#{1,6}\s+examples?\b/iu.test(text)) {

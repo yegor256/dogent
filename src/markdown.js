@@ -50,8 +50,8 @@ class Markdown {
       const close = rest.findIndex((line) => line.trim() === '---');
       if (close !== -1) {
         const front = rest.slice(0, close).join('\n');
-        pieces.push(new Frontmatter(new Yaml(front, 2).pairs(), 1));
         skip = close + 2;
+        pieces.push(new Frontmatter(new Yaml(front, 2).pairs(), 1, skip));
       }
     }
     lines.forEach((line, index) => {

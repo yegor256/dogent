@@ -18,8 +18,11 @@ const mask = require('../mask');
  * unspecified, so the line carries no real instruction. The check fires
  * only on the first word of the line, leaving the same verb mid-sentence
  * alone, and stays apart from "vague" (adjectives) and "command"
- * (imperative form). Its prompt hands subtler catch-all verbs outside
- * the fixed list to the AI oracle.
+ * (imperative form). The curated list already captures the catch-all
+ * verbs, so prompt() returns an empty string and the AI oracle never
+ * re-checks this rule; handing it to the oracle made it flag concrete
+ * action verbs such as "clone", "verify", or "stop", far beyond the
+ * narrow set of delegating verbs the rule targets.
  */
 class WeakVerb {
   constructor() {
@@ -29,7 +32,7 @@ class WeakVerb {
     return 'Replace a vague leading verb such as handle or manage with a precise action verb that names exactly what to do.';
   }
   prompt() {
-    return `${this.id}: flag a leading imperative verb that names no concrete action beyond the fixed list, and propose a precise action verb`;
+    return '';
   }
   violations(document) {
     const uri = document.uri();

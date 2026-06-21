@@ -45,10 +45,11 @@ describe('WeakVerb', () => {
 });
 
 describe('WeakVerb prompt', () => {
-  it('directs the oracle toward a precise verb', () => {
-    assert.ok(
-      new WeakVerb().prompt().includes('precise'),
-      'the prompt must ask the oracle for a precise verb'
+  it('offers no fragment so the oracle never re-checks it', () => {
+    assert.strictEqual(
+      new WeakVerb().prompt(),
+      '',
+      'the weak-verb rule stays deterministic and out of the oracle'
     );
   });
 });

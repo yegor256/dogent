@@ -8,6 +8,8 @@
 const assert = require('assert');
 const Markdown = require('../src/markdown');
 const Atomic = require('../src/rules/atomic');
+const Violation = require('../src/violation');
+const Region = require('../src/region');
 
 describe('Atomic', () => {
   it('flags two sentences welded by a mid-line terminator', () => {
@@ -52,6 +54,54 @@ describe('Atomic', () => {
     assert.ok(
       new Atomic().prompt().includes('clauses'),
       'the prompt must hand subtle clause-counting to the oracle'
+    );
+  });
+});
+
+describe('Atomic suppress', () => {
+  it('vetoes an oracle flag on a lone imperative with no welding token', () => {
+    const doc = new Markdown('x.md', '# Rules\nOpen with substance over boilerplate.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'an oracle flag on a line with no welding token must be vetoed'
+    );
+  });
+  it('vetoes an oracle flag on an imperative closed by a prepositional phrase', () => {
+    const doc = new Markdown('x.md', '# Rules\nAsk only for owner\'s attention.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'a trailing prepositional phrase must not count as a second instruction'
+    );
+  });
+  it('keeps an oracle flag on a line welded by and', () => {
+    const doc = new Markdown('x.md', '# Rules\nList supporting claims and note the evidence.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      false,
+      'an oracle flag on an and-welded line must survive'
+    );
+  });
+  it('keeps an oracle flag on a line welded by a semicolon', () => {
+    const doc = new Markdown('x.md', '# Rules\nRead line by line; never use a grammar.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      false,
+      'an oracle flag on a semicolon-welded line must survive'
+    );
+  });
+  it('ignores an oracle flag raised by another rule', () => {
+    const doc = new Markdown('x.md', '# Rules\nOpen with substance over boilerplate.').document();
+    const flag = new Violation('command', 'warning', 'reads as a description', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      false,
+      'only an atomic flag may be vetoed by the atomic guard'
     );
   });
 });

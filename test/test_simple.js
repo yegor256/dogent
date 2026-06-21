@@ -88,15 +88,6 @@ describe('Simple suppress', () => {
       'a line without comma or conjunction cannot be tangled'
     );
   });
-  it('keeps an oracle flag on a line carrying a conjunction', () => {
-    const doc = new Markdown('x.md', '# H\nEmit the result when input is valid.').document();
-    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
-    assert.strictEqual(
-      new Simple().suppress(flag, doc),
-      false,
-      'a conjunction leaves room for genuine tangle'
-    );
-  });
   it('keeps an oracle flag on a line carrying a comma', () => {
     const doc = new Markdown('x.md', '# H\nEmit the result, then halt.').document();
     const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
@@ -113,6 +104,36 @@ describe('Simple suppress', () => {
       new Simple().suppress(flag, doc),
       false,
       'only a simple flag may be vetoed by the simple guard'
+    );
+  });
+});
+
+describe('Simple lone guard', () => {
+  it('vetoes an oracle flag on a lone when guard with no comma', () => {
+    const doc = new Markdown('x.md', '# H\nEmit the result when input is valid.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      true,
+      'a lone do X when Y guard holds one clause and cannot be tangled'
+    );
+  });
+  it('keeps an oracle flag on a line carrying a second conjunction', () => {
+    const doc = new Markdown('x.md', '# H\nEmit the result when input is valid unless verbose.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      false,
+      'a second conjunction leaves room for genuine tangle'
+    );
+  });
+  it('keeps an oracle flag on a conjunction carrying a clause comma', () => {
+    const doc = new Markdown('x.md', '# H\nWhen input is valid, emit the result.').document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      false,
+      'a conjunction with a clause comma leaves room for genuine tangle'
     );
   });
 });

@@ -53,6 +53,15 @@ class Conditional {
       new Region(uri, line, column + 1)
     )];
   }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const lines = document.text().split('\n');
+    const clean = mask(lines[violation.spot.line() - 1] || '');
+    const hits = clean.match(/\b(?:if|unless|when|else|otherwise)\b/giu);
+    return hits === null || hits.length < 2;
+  }
 }
 
 module.exports = Conditional;

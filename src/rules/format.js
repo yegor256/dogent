@@ -39,9 +39,21 @@ class Format {
     if (uri.replace(/^.*\//u, '') !== 'SKILL.md') {
       return [];
     }
+    const signals = this.signals(document);
+    if (!signals.includes('generates') || signals.includes('declared')) {
+      return [];
+    }
+    return [new Violation(
+      this.id,
+      'warning',
+      'SKILL.md generates output but never declares its format',
+      new Region(uri, 1, 1)
+    )];
+  }
+  signals(document) {
     const heading = /^#{1,6}\s+.*\b(?:format|schema|structure|output)\b/iu;
     const verb = /\b(?:produces?|outputs?|returns?|generates?|writes?|emits?)\b/iu;
-    const signals = document.walk({
+    return document.walk({
       header: (text) => {
         if (heading.test(text)) {
           return ['declared'];
@@ -58,15 +70,12 @@ class Format {
       bullets: () => [],
       frontmatter: () => []
     });
-    if (!signals.includes('generates') || signals.includes('declared')) {
-      return [];
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
     }
-    return [new Violation(
-      this.id,
-      'warning',
-      'SKILL.md generates output but never declares its format',
-      new Region(uri, 1, 1)
-    )];
+    return this.signals(document).includes('declared');
   }
 }
 

@@ -47,7 +47,7 @@ class Simple {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
   }
   prompt() {
-    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions`;
+    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions, yet never count a single leading imperative trailed only by a coordinated object or Oxford-comma list as tangled even when a list item embeds its own verb, as in "Cover bug, why it is wrong, and proposed fix", which is one simple order "cover" taking a three-part object, not a tangled multi-clause sentence`;
   }
   violations(document) {
     const uri = document.uri();

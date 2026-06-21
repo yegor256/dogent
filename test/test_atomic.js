@@ -44,6 +44,9 @@ describe('Atomic', () => {
     const doc = new Markdown('x.md', '# H\nList supporting claims and note the evidence.').document();
     assert.strictEqual(new Atomic().violations(doc).length, 0, 'the standalone checker must defer and-welded verbs to the oracle');
   });
+});
+
+describe('Atomic prompt', () => {
   it('exposes the id through the prompt', () => {
     assert.ok(
       new Atomic().prompt().includes('atomic'),
@@ -54,6 +57,24 @@ describe('Atomic', () => {
     assert.ok(
       new Atomic().prompt().includes('clauses'),
       'the prompt must hand subtle clause-counting to the oracle'
+    );
+  });
+  it('tells the oracle an Oxford-comma object list stays one instruction', () => {
+    assert.ok(
+      new Atomic().prompt().includes('Oxford-comma list'),
+      'the prompt must spare a leading imperative trailed by an Oxford-comma object list'
+    );
+  });
+  it('warns the oracle that a list item may embed its own verb', () => {
+    assert.ok(
+      new Atomic().prompt().includes('embeds its own verb'),
+      'the prompt must clear a list item that embeds a finite verb'
+    );
+  });
+  it('shows the oracle the coordinated-object example', () => {
+    assert.ok(
+      new Atomic().prompt().includes('why it is wrong'),
+      'the prompt must carry the coordinated-object example'
     );
   });
 });

@@ -9,8 +9,8 @@
  * Version.
  *
  * The current release of dogent, replaced on every release by rultor.
- * The default `0.0.0` marks an unreleased build straight from source.
+ * The default `0.12.10` marks an unreleased build straight from source.
  */
-const version = '0.0.0';
+const version = '0.12.10';
 
 module.exports = version;

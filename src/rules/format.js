@@ -19,8 +19,10 @@ const Region = require('../region');
  * "output", "return", "generate", "write", "emit") yet no section or
  * snippet declares the output shape. This is distinct from the example
  * rule: an example shows one case, a format spec defines the contract.
- * Its prompt asks the AI oracle whether the declared format is concrete
- * enough to be machine-checkable.
+ * Its prompt asks the AI oracle whether the declared format pins the
+ * deliverable down, demanding a machine-checkable schema only when the
+ * output is structured data and accepting named fields with prose shapes
+ * when the deliverable is prose.
  */
 class Format {
   constructor() {
@@ -30,7 +32,7 @@ class Format {
     return 'Declare and show the exact output format whenever the skill generates output, since a pinned-down contract makes structured output far more reliable.';
   }
   prompt() {
-    return `${this.id}: in a SKILL.md, judge whether the declared output format is concrete and machine-checkable, and flag a generating skill that pins down no format`;
+    return `${this.id}: in a SKILL.md, judge whether the declared output format pins the deliverable down, demanding a machine-checkable schema only when the output is structured data and accepting named fields with prose shapes when the deliverable is prose, and flag a generating skill that pins down no format`;
   }
   violations(document) {
     const uri = document.uri();

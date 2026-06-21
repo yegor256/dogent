@@ -116,3 +116,23 @@ describe('Simple suppress', () => {
     );
   });
 });
+
+describe('Simple frontmatter', () => {
+  it('vetoes an oracle flag on the frontmatter description', () => {
+    const doc = new Markdown(
+      'SKILL.md', '---\nname: g\ndescription: |\n  Reads tables, writes a report, and pings the owner in one comment.\n---\n# H\nDo it.'
+    ).document();
+    const flag = new Violation('simple', 'warning', 'grammatically tangled', new Region('SKILL.md', 4, 1));
+    assert.strictEqual(
+      new Simple().suppress(flag, doc),
+      true,
+      'an oracle flag inside the frontmatter description must be vetoed'
+    );
+  });
+  it('tells the oracle to spare the frontmatter description', () => {
+    assert.ok(
+      new Simple().prompt().includes('frontmatter'),
+      'the prompt must exempt the frontmatter description from the tangle check'
+    );
+  });
+});

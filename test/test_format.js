@@ -69,4 +69,16 @@ describe('Format prompt', () => {
       'the prompt must hand format concreteness to the oracle'
     );
   });
+  it('confines machine-checkability to structured data', () => {
+    assert.ok(
+      new Format().prompt().includes('structured data'),
+      'the prompt must scope machine-checkability to structured output'
+    );
+  });
+  it('accepts a prose deliverable pinned down as named fields', () => {
+    assert.ok(
+      /prose/iu.test(new Format().prompt()),
+      'the prompt must let a declared prose format pass'
+    );
+  });
 });

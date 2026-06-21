@@ -127,6 +127,45 @@ describe('Atomic suppress', () => {
   });
 });
 
+describe('Atomic coordinated object', () => {
+  it('vetoes an oracle flag on an Oxford-comma object list closed by and', () => {
+    const doc = new Markdown('x.md', '# Rules\nCover bug, why it is wrong, and proposed fix.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'a leading imperative taking a coordinated three-part object must be vetoed'
+    );
+  });
+  it('vetoes an oracle flag on a comma list closed by and', () => {
+    const doc = new Markdown('x.md', '# Rules\nMirror its title shape, structure, and tone.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'a leading imperative taking a comma-listed object must be vetoed'
+    );
+  });
+  it('vetoes an oracle flag on two nouns joined by and', () => {
+    const doc = new Markdown('x.md', "# Rules\nEnd body and comment with report's final sentence.").document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'a leading imperative taking two coordinated noun objects must be vetoed'
+    );
+  });
+  it('keeps an oracle flag when and welds a verb taking its own object', () => {
+    const doc = new Markdown('x.md', '# Rules\nList supporting claims and note the evidence.').document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('x.md', 2, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      false,
+      'a second verb taking a determiner-led object must survive'
+    );
+  });
+});
+
 describe('Atomic frontmatter', () => {
   it('vetoes an oracle flag on the frontmatter description', () => {
     const doc = new Markdown(

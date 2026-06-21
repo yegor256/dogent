@@ -20,9 +20,12 @@ const Region = require('../region');
  * hands that subtler clause-counting to the AI oracle, which weighs the
  * full sentence before judging a line as multi-instruction. A
  * deterministic guard then drops any oracle flag on a line that bears no
- * welding token at all, since a lone imperative cannot hold two
- * instructions without a semicolon, a mid-line terminator, or an "and"
- * or "then" to weld the second clause on. The same guard drops any
+ * second clause: a lone imperative without a semicolon or mid-line
+ * terminator holds one instruction, and so does a leading imperative whose
+ * only "and" or "then" precedes a coordinated object rather than a second
+ * verb. The guard reads a second verb only where the word after "and" or
+ * "then" itself takes a determiner-led object, so "and note the evidence"
+ * survives while "and proposed fix" is vetoed. The same guard drops any
  * oracle flag landing inside the YAML frontmatter, whose description is a
  * third-person capability statement the deterministic side never inspects.
  */
@@ -65,8 +68,11 @@ class Atomic {
     if (line <= this.frontmatter(document)) {
       return true;
     }
-    const lines = document.text().split('\n');
-    return !this.welds(lines[line - 1] || '');
+    const text = document.text().split('\n')[line - 1] || '';
+    if (this.splits(text)) {
+      return false;
+    }
+    return !this.clause(text);
   }
   frontmatter(document) {
     return document.walk({
@@ -81,8 +87,18 @@ class Atomic {
     const masked = this.mask(text);
     return /[.!?]\s+\S/u.test(masked) || /;/u.test(masked);
   }
-  welds(text) {
-    return this.splits(text) || /\b(?:and|then)\b/iu.test(this.mask(text));
+  clause(text) {
+    const masked = this.mask(text);
+    const welds = (masked.match(/\b(?:and|then)\b/giu) || []).length;
+    if (welds !== 1) {
+      return welds > 1;
+    }
+    const tail = /\b(?:and|then)\s+\S+\s+(?<next>\S+)/iu.exec(masked);
+    return tail !== null && this.determiner(tail.groups.next);
+  }
+  determiner(word) {
+    const clean = word.replace(/[^a-z]/giu, '').toLowerCase();
+    return /^(?:the|a|an|this|that|these|those|its|his|her|their|our|my|your|every|each|all|any|some|no)$/u.test(clean);
   }
   mask(text) {
     const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();

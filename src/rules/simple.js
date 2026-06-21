@@ -34,11 +34,15 @@ const listCommas = function listCommas(text) {
  * first, so a lone enumeration sitting in one clause does not read as
  * tangled. Its prompt hands the subtler tangle judgement to the oracle,
  * which weighs true clause depth rather than counting punctuation. A
- * deterministic guard then drops any oracle flag on a line that carries
- * neither a comma nor a subordinating conjunction, since such a line
- * holds a single clause and cannot be tangled. The same guard drops any
- * oracle flag landing inside the YAML frontmatter, whose description is a
- * third-person capability statement the deterministic side never inspects.
+ * deterministic guard then drops any oracle flag on a line that carries no
+ * clause comma and no subordinating conjunction, since such a line holds a
+ * single clause and cannot be tangled. Commas inside a coordinated list are
+ * discounted first, so a leading imperative taking an `A, B, and C` object
+ * reads as one clause and is vetoed, unless its "and" or "then" welds a
+ * second verb that takes a determiner-led object of its own. The same guard
+ * drops any oracle flag landing inside the YAML frontmatter, whose
+ * description is a third-person capability statement the deterministic side
+ * never inspects.
  */
 class Simple {
   constructor() {
@@ -82,12 +86,33 @@ class Simple {
     })[0] || 0;
   }
   tangleable(text) {
-    return text.includes(',') || this.conjunction.test(text);
+    if (this.conjunction.test(text)) {
+      return true;
+    }
+    if (this.clause(text)) {
+      return true;
+    }
+    return this.clauseCommas(text) > 0;
+  }
+  clauseCommas(text) {
+    const commas = text.match(/,/gu);
+    const count = commas === null ? 0 : commas.length;
+    return count - listCommas(text);
+  }
+  clause(text) {
+    const welds = (text.match(/\b(?:and|then)\b/giu) || []).length;
+    if (welds !== 1) {
+      return welds > 1;
+    }
+    const tail = /\b(?:and|then)\s+\S+\s+(?<next>\S+)/iu.exec(text);
+    return tail !== null && this.determiner(tail.groups.next);
+  }
+  determiner(word) {
+    const clean = word.replace(/[^a-z]/giu, '').toLowerCase();
+    return /^(?:the|a|an|this|that|these|those|its|his|her|their|our|my|your|every|each|all|any|some|no)$/u.test(clean);
   }
   judge(text, line, uri) {
-    const commas = text.match(/,/gu);
-    const commaCount = commas === null ? 0 : commas.length;
-    const clauseCommas = commaCount - listCommas(text);
+    const clauseCommas = this.clauseCommas(text);
     const hasConjunction = this.conjunction.test(text);
     const tangled = hasConjunction && clauseCommas >= 2;
     if (!tangled) {

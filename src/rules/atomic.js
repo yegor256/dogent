@@ -18,7 +18,11 @@ const Region = require('../region');
  * no suffix heuristic can tell a second verb from a coordinated object
  * or temporal adverb without reading the word as language. The prompt
  * hands that subtler clause-counting to the AI oracle, which weighs the
- * full sentence before judging a line as multi-instruction.
+ * full sentence before judging a line as multi-instruction. A
+ * deterministic guard then drops any oracle flag on a line that bears no
+ * welding token at all, since a lone imperative cannot hold two
+ * instructions without a semicolon, a mid-line terminator, or an "and"
+ * or "then" to weld the second clause on.
  */
 class Atomic {
   constructor() {
@@ -41,9 +45,7 @@ class Atomic {
     });
   }
   judge(text, line, uri) {
-    const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();
-    const masked = clean.replace(/\b(?:e\.g|i\.e|etc)\./giu, (match) => match.replace(/\./gu, ' '));
-    if (!/[.!?]\s+\S/u.test(masked) && !/;/u.test(masked)) {
+    if (!this.splits(text)) {
       return [];
     }
     return [new Violation(
@@ -52,6 +54,24 @@ class Atomic {
       'line carries more than one instruction',
       new Region(uri, line, 1)
     )];
+  }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const lines = document.text().split('\n');
+    return !this.welds(lines[violation.spot.line() - 1] || '');
+  }
+  splits(text) {
+    const masked = this.mask(text);
+    return /[.!?]\s+\S/u.test(masked) || /;/u.test(masked);
+  }
+  welds(text) {
+    return this.splits(text) || /\b(?:and|then)\b/iu.test(this.mask(text));
+  }
+  mask(text) {
+    const clean = text.replace(/^\s*(?:[-*+]|\d+\.)\s+/u, '').trimEnd();
+    return clean.replace(/\b(?:e\.g|i\.e|etc)\./giu, (match) => match.replace(/\./gu, ' '));
   }
 }
 

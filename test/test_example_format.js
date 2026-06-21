@@ -30,4 +30,10 @@ describe('ExampleFormat', () => {
       'the rule must ask the oracle to weigh the shown example'
     );
   });
+  it('judges the example against the format the skill declares', () => {
+    assert.ok(
+      new ExampleFormat().prompt().includes('actually declares'),
+      'the rule must weigh the example against the declared format, not a machine ideal'
+    );
+  });
 });

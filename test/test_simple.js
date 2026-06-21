@@ -43,6 +43,9 @@ describe('Simple', () => {
     const doc = new Markdown('x.md', '# H\nStop when text is missing, empty, or only whitespace.').document();
     assert.strictEqual(new Simple().violations(doc).length, 0, 'a list inside one clause must not count as tangled');
   });
+});
+
+describe('Simple prompt', () => {
   it('exposes its id in the prompt', () => {
     assert.ok(
       new Simple().prompt().includes('simple'),
@@ -53,6 +56,24 @@ describe('Simple', () => {
     assert.ok(
       new Simple().prompt().includes('clause depth'),
       'the prompt must hand true clause-depth analysis to the oracle'
+    );
+  });
+  it('tells the oracle an Oxford-comma object list is not tangled', () => {
+    assert.ok(
+      new Simple().prompt().includes('Oxford-comma list'),
+      'the prompt must spare a leading imperative trailed by an Oxford-comma object list'
+    );
+  });
+  it('warns the oracle that a list item may embed its own verb', () => {
+    assert.ok(
+      new Simple().prompt().includes('embeds its own verb'),
+      'the prompt must clear a list item that embeds a finite verb'
+    );
+  });
+  it('shows the oracle the coordinated-object example', () => {
+    assert.ok(
+      new Simple().prompt().includes('why it is wrong'),
+      'the prompt must carry the coordinated-object example'
     );
   });
 });

@@ -34,7 +34,7 @@ class Atomic {
     return 'Split a line that bundles several instructions into one line per instruction, since the agent reads each line as a single command and welded clauses get half-followed.';
   }
   prompt() {
-    return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses whether or not a semicolon, "and", or "then" welds them, yet never count a coordinated object or noun phrase trailing "and" or "then" as a second instruction, and never flag a line inside the YAML frontmatter, whose description is a third-person capability statement that names several actions in one sentence`;
+    return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses whether or not a semicolon, "and", or "then" welds them, yet never count a coordinated object or noun phrase trailing "and" or "then" as a second instruction; read the first word as the lone imperative and treat everything after it as that single verb's object, so a leading imperative trailed only by a coordinated object or Oxford-comma list stays one instruction even when a list item embeds its own verb, as in "Cover bug, why it is wrong, and proposed fix", which is the single order "cover" taking a three-part object, not several instructions; never flag a line inside the YAML frontmatter, whose description is a third-person capability statement that names several actions in one sentence`;
   }
   violations(document) {
     const uri = document.uri();

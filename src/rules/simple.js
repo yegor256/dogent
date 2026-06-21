@@ -33,11 +33,15 @@ const listCommas = function listCommas(text) {
  * clauses. Commas inside a coordinated `A, B, or C` list are discounted
  * first, so a lone enumeration sitting in one clause does not read as
  * tangled. Its prompt hands the subtler tangle judgement to the oracle,
- * which weighs true clause depth rather than counting punctuation.
+ * which weighs true clause depth rather than counting punctuation. A
+ * deterministic guard then drops any oracle flag on a line that carries
+ * neither a comma nor a subordinating conjunction, since such a line
+ * holds a single clause and cannot be tangled.
  */
 class Simple {
   constructor() {
     this.id = 'simple';
+    this.conjunction = /\b(?:if|when|unless|because|although|while)\b/iu;
   }
   hint() {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
@@ -55,11 +59,21 @@ class Simple {
       frontmatter: () => []
     });
   }
+  suppress(violation, document) {
+    if (violation.rule !== this.id) {
+      return false;
+    }
+    const lines = document.text().split('\n');
+    return !this.tangleable(lines[violation.spot.line() - 1] || '');
+  }
+  tangleable(text) {
+    return text.includes(',') || this.conjunction.test(text);
+  }
   judge(text, line, uri) {
     const commas = text.match(/,/gu);
     const commaCount = commas === null ? 0 : commas.length;
     const clauseCommas = commaCount - listCommas(text);
-    const hasConjunction = /\b(?:if|when|unless|because|although|while)\b/iu.test(text);
+    const hasConjunction = this.conjunction.test(text);
     const tangled = hasConjunction && clauseCommas >= 2;
     if (!tangled) {
       return [];

@@ -36,7 +36,9 @@ const listCommas = function listCommas(text) {
  * which weighs true clause depth rather than counting punctuation. A
  * deterministic guard then drops any oracle flag on a line that carries
  * neither a comma nor a subordinating conjunction, since such a line
- * holds a single clause and cannot be tangled.
+ * holds a single clause and cannot be tangled. The same guard drops any
+ * oracle flag landing inside the YAML frontmatter, whose description is a
+ * third-person capability statement the deterministic side never inspects.
  */
 class Simple {
   constructor() {
@@ -47,7 +49,7 @@ class Simple {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
   }
   prompt() {
-    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions`;
+    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions, yet never flag a line inside the YAML frontmatter, whose description is a third-person capability statement that names several actions in one sentence`;
   }
   violations(document) {
     const uri = document.uri();
@@ -63,8 +65,21 @@ class Simple {
     if (violation.rule !== this.id) {
       return false;
     }
+    const line = violation.spot.line();
+    if (line <= this.frontmatter(document)) {
+      return true;
+    }
     const lines = document.text().split('\n');
-    return !this.tangleable(lines[violation.spot.line() - 1] || '');
+    return !this.tangleable(lines[line - 1] || '');
+  }
+  frontmatter(document) {
+    return document.walk({
+      header: () => [],
+      prose: () => [],
+      snippet: () => [],
+      bullets: () => [],
+      frontmatter: (keys, row, last) => [last]
+    })[0] || 0;
   }
   tangleable(text) {
     return text.includes(',') || this.conjunction.test(text);

@@ -22,7 +22,9 @@ const Region = require('../region');
  * deterministic guard then drops any oracle flag on a line that bears no
  * welding token at all, since a lone imperative cannot hold two
  * instructions without a semicolon, a mid-line terminator, or an "and"
- * or "then" to weld the second clause on.
+ * or "then" to weld the second clause on. The same guard drops any
+ * oracle flag landing inside the YAML frontmatter, whose description is a
+ * third-person capability statement the deterministic side never inspects.
  */
 class Atomic {
   constructor() {
@@ -32,7 +34,7 @@ class Atomic {
     return 'Split a line that bundles several instructions into one line per instruction, since the agent reads each line as a single command and welded clauses get half-followed.';
   }
   prompt() {
-    return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses whether or not a semicolon, "and", or "then" welds them, yet never count a coordinated object or noun phrase trailing "and" or "then" as a second instruction`;
+    return `${this.id}: flag any line that carries more than one instruction, counting distinct clauses whether or not a semicolon, "and", or "then" welds them, yet never count a coordinated object or noun phrase trailing "and" or "then" as a second instruction, and never flag a line inside the YAML frontmatter, whose description is a third-person capability statement that names several actions in one sentence`;
   }
   violations(document) {
     const uri = document.uri();
@@ -59,8 +61,21 @@ class Atomic {
     if (violation.rule !== this.id) {
       return false;
     }
+    const line = violation.spot.line();
+    if (line <= this.frontmatter(document)) {
+      return true;
+    }
     const lines = document.text().split('\n');
-    return !this.welds(lines[violation.spot.line() - 1] || '');
+    return !this.welds(lines[line - 1] || '');
+  }
+  frontmatter(document) {
+    return document.walk({
+      header: () => [],
+      prose: () => [],
+      snippet: () => [],
+      bullets: () => [],
+      frontmatter: (keys, row, last) => [last]
+    })[0] || 0;
   }
   splits(text) {
     const masked = this.mask(text);

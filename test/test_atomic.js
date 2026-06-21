@@ -106,6 +106,26 @@ describe('Atomic suppress', () => {
   });
 });
 
+describe('Atomic frontmatter', () => {
+  it('vetoes an oracle flag on the frontmatter description', () => {
+    const doc = new Markdown(
+      'SKILL.md', '---\nname: g\ndescription: |\n  Reads tables, writes a report, and pings the owner in one comment.\n---\n# H\nDo it.'
+    ).document();
+    const flag = new Violation('atomic', 'warning', 'line carries more than one instruction', new Region('SKILL.md', 4, 1));
+    assert.strictEqual(
+      new Atomic().suppress(flag, doc),
+      true,
+      'an oracle flag inside the frontmatter description must be vetoed'
+    );
+  });
+  it('tells the oracle to spare the frontmatter description', () => {
+    assert.ok(
+      new Atomic().prompt().includes('frontmatter'),
+      'the prompt must exempt the frontmatter description from the atomic check'
+    );
+  });
+});
+
 describe('Atomic abbreviations', () => {
   it('accepts an inline example introduced by e.g.', () => {
     const doc = new Markdown('x.md', '# H\nOpen paragraph with salutation, e.g. `Boss,`.').document();

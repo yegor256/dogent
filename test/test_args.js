@@ -287,6 +287,68 @@ describe('Args show-prompt', () => {
   });
 });
 
+describe('Args model', () => {
+  it('reads the chosen model', () => {
+    assert.strictEqual(
+      new Args(['--model=gpt-4o', 'CLAUDE.md']).model(),
+      'gpt-4o',
+      'the --model option must name the LLM to consult'
+    );
+  });
+  it('reports an empty model when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).model(),
+      '',
+      'a missing --model must leave the model unchosen'
+    );
+  });
+  it('lets the last model win when repeated', () => {
+    assert.strictEqual(
+      new Args(['--model=gpt-4o', '--model=o3', 'CLAUDE.md']).model(),
+      'o3',
+      'a repeated --model must keep the last value typed'
+    );
+  });
+  it('never counts the model option as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--model=gpt-4o', 'CLAUDE.md']).unknown(),
+      [],
+      'the model option must never count as unrecognized'
+    );
+  });
+});
+
+describe('Args token', () => {
+  it('reads the chosen token', () => {
+    assert.strictEqual(
+      new Args(['--token=sk-secret', 'CLAUDE.md']).token(),
+      'sk-secret',
+      'the --token option must name the API key to send'
+    );
+  });
+  it('reports an empty token when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).token(),
+      '',
+      'a missing --token must leave the key unchosen'
+    );
+  });
+  it('lets the last token win when repeated', () => {
+    assert.strictEqual(
+      new Args(['--token=sk-old', '--token=sk-new', 'CLAUDE.md']).token(),
+      'sk-new',
+      'a repeated --token must keep the last value typed'
+    );
+  });
+  it('never counts the token option as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--token=sk-secret', 'CLAUDE.md']).unknown(),
+      [],
+      'the token option must never count as unrecognized'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

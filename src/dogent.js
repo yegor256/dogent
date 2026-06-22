@@ -36,6 +36,8 @@ if (args.help()) {
     '  --sarif    render the report as SARIF JSON\n' +
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
+    '  --model    name the LLM to consult, overriding OPENAI_MODEL\n' +
+    '  --token    carry the API key, overriding OPENAI_API_KEY\n' +
     '  --hints    append a fixing hint for every rule that reported a violation\n' +
     '  --verbose  print diagnostic notes, scanned files and timings, to stderr\n' +
     '  --show-prompt  print the whole prompt sent to the AI oracle to stderr\n' +
@@ -99,13 +101,13 @@ documents.forEach((document) => {
   });
 });
 const localMillis = Date.now() - started;
-const key = process.env.OPENAI_API_KEY;
+const key = args.token() || process.env.OPENAI_API_KEY;
 const audit = async (docs) => {
   const oracle = new Oracle(
     checks,
     new Openai(
       key,
-      process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      args.model() || process.env.OPENAI_MODEL || 'gpt-4o-mini',
       process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
       (url, options) => globalThis.fetch(
         url,

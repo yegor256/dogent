@@ -24,8 +24,32 @@ describe('Prompt', () => {
   });
   it('carries a fragment from every rule it is given', () => {
     assert.ok(
-      text().includes('command:'),
+      text().includes('command'),
       'the prompt must include the command rule fragment'
+    );
+  });
+  it('opens its sections with first-level Markdown headers', () => {
+    assert.ok(
+      text().includes('# Checks'),
+      'the prompt must split its parts into first-level Markdown sections'
+    );
+  });
+  it('wraps the manifesto body in a fenced Markdown snippet', () => {
+    assert.ok(
+      text('# Doors\nShut the gate').includes('```\n1: # Doors'),
+      'the prompt must fence the numbered manifesto inside a Markdown snippet'
+    );
+  });
+  it('lists each rule as a bullet', () => {
+    assert.ok(
+      text().includes('- **command**'),
+      'the prompt must list every rule name as a bullet item'
+    );
+  });
+  it('bolds each rule name with double asterisks', () => {
+    assert.ok(
+      text().includes('**command**:'),
+      'the prompt must wrap every rule name in bold double-asterisks'
     );
   });
   it('teaches the oracle the terse imperative house style', () => {

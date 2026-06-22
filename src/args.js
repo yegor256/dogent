@@ -21,8 +21,10 @@ const minimist = require('minimist');
  * English paragraph telling the agent how to fix it. The `--verbose` flag
  * turns on diagnostic notes, the scanned files and timings the run prints to
  * standard error. The `--show-prompt` flag prints, to standard error, the
- * whole prompt the run sends to the AI oracle. The `--openai-http-header`
- * option adds one `Name: Value`
+ * whole prompt the run sends to the AI oracle. The `--model` option names the
+ * LLM to consult, overriding the `OPENAI_MODEL` environment variable. The
+ * `--token` option carries the API key, overriding the `OPENAI_API_KEY`
+ * environment variable. The `--openai-http-header` option adds one `Name: Value`
  * header to every OpenAI call; repeat it to add many. Everything after a `--`
  * separator counts as a path, never as an option.
  */
@@ -30,7 +32,7 @@ class Args {
   constructor(
     argv,
     flags = ['sarif', 'offline', 'help', 'version', 'hints', 'verbose', 'show-prompt'],
-    options = ['suppress', 'openai-http-header']
+    options = ['suppress', 'model', 'token', 'openai-http-header']
   ) {
     this.flags = flags;
     this.options = options;
@@ -59,6 +61,12 @@ class Args {
   }
   showPrompt() {
     return this.parsed['show-prompt'] === true;
+  }
+  model() {
+    return String([].concat(this.parsed.model || '').pop()).trim();
+  }
+  token() {
+    return String([].concat(this.parsed.token || '').pop()).trim();
   }
   suppress() {
     return [].concat(this.parsed.suppress || [])

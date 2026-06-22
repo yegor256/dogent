@@ -8,9 +8,11 @@
 /**
  * Prompt.
  *
- * The full request handed to the AI oracle: a header fixing the task and
- * the reply shape, one fragment per rule, and the manifesto itself with
- * every line numbered so the oracle can cite an exact row.
+ * The full request handed to the AI oracle, laid out as a Markdown
+ * document: a Task section fixing the role and reply shape, a Checks
+ * section bulleting one bold-named rule per line, and a Manifesto
+ * section fencing the file under review with every line numbered so
+ * the oracle can cite an exact row.
  */
 class Prompt {
   constructor(rules, document) {
@@ -18,11 +20,13 @@ class Prompt {
     this.doc = document;
   }
   text() {
-    return [this.header(), this.fragments(), this.body()].join('\n\n');
+    return [this.task(), this.checks(), this.manifesto()].join('\n\n');
   }
-  header() {
+  task() {
     const uri = this.doc.uri();
     return [
+      '# Task',
+      '',
       'You are a strict linter for an AI-agent manifesto.',
       `The file under review is "${uri}".`,
       'The manifesto is written in a terse house style: each line is',
@@ -35,7 +39,7 @@ class Prompt {
       'A heading opens a section, and every line beneath it, until the',
       'next heading, belongs to that section. Treat a deeper heading as',
       'a subsection of the one above, never as a misplaced instruction.',
-      'Apply only the checks listed below this header.',
+      'Apply only the checks listed in the Checks section below.',
       'Most manifestos are clean. An empty result list is the normal,',
       'expected reply: when no line clearly breaks a listed check,',
       'report nothing and return {"results": []}. Never invent a',
@@ -56,11 +60,32 @@ class Prompt {
       'echo the offending line, the line number already locates it.'
     ].join('\n');
   }
-  fragments() {
+  checks() {
+    return [
+      '# Checks',
+      '',
+      'Apply each of these checks, named in bold, to every line:',
+      '',
+      this.bullets()
+    ].join('\n');
+  }
+  bullets() {
     return this.rules
       .map((rule) => rule.prompt())
       .filter((fragment) => fragment !== '')
+      .map((fragment) => `- ${fragment.replace(/^([\w-]+): /u, '**$1**: ')}`)
       .join('\n');
+  }
+  manifesto() {
+    return [
+      '# Manifesto',
+      '',
+      'Review this manifesto, every line prefixed with its number:',
+      '',
+      '```',
+      this.body(),
+      '```'
+    ].join('\n');
   }
   body() {
     const lines = this.doc.text().split('\n');

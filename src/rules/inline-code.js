@@ -27,8 +27,7 @@ const PATTERNS = [
  * slashed path, a filename carrying a known extension, a CLI flag, or a
  * known shell command followed by an argument — once its inline-code
  * spans are masked away, so an already-backticked literal passes. It
- * leaves @-imports to the dead-import rule. Its prompt hands borderline
- * literals to the AI oracle.
+ * leaves @-imports to the dead-import rule.
  */
 class InlineCode {
   constructor() {
@@ -36,9 +35,6 @@ class InlineCode {
   }
   hint() {
     return 'Wrap a bare literal token, such as a command, path, filename, or flag, in backticks so the model treats it as a literal and never rewords it.';
-  }
-  prompt() {
-    return `${this.id}: flag a bare literal token (command, path, filename, or flag) that should be wrapped in backticks, judging borderline cases`;
   }
   violations(document) {
     const uri = document.uri();

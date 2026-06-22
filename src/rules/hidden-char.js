@@ -17,9 +17,6 @@ const Region = require('../region');
  * override, or a variation selector tucked into code is just as dangerous as
  * one tucked into prose. Flags zero-width characters, bidi controls, and
  * variation selectors, naming each by its hex codepoint so it can be deleted.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class HiddenChar {
   constructor() {
@@ -28,9 +25,6 @@ class HiddenChar {
   }
   hint() {
     return 'Delete the invisible or control character named by its codepoint, since hidden characters can corrupt parsing or smuggle instructions.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

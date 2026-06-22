@@ -51,18 +51,3 @@ describe('Persona', () => {
     );
   });
 });
-
-describe('Persona prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Persona().prompt().includes('persona'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to catch indirect persona framing', () => {
-    assert.ok(
-      new Persona().prompt().includes('indirect persona'),
-      'the prompt must hand indirect framing to the oracle'
-    );
-  });
-});

@@ -36,13 +36,3 @@ describe('LineLength', () => {
     );
   });
 });
-
-describe('LineLength prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new LineLength(80).prompt(),
-      '',
-      'the line-length rule stays deterministic and out of the oracle'
-    );
-  });
-});

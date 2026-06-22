@@ -16,8 +16,7 @@ const mask = require('../mask');
  * "furthermore", "in summary", or "however". A leading connector
  * chains prose without adding a command, so it earns one violation.
  * The check stays disjoint from the polite rule: it lists no courtesy
- * word such as "please" or "make sure to". Its prompt hands looser
- * connective filler to the AI oracle for deletion.
+ * word such as "please" or "make sure to".
  */
 class Transition {
   constructor() {
@@ -25,9 +24,6 @@ class Transition {
   }
   hint() {
     return 'Delete a discourse connector such as furthermore or however that opens a line, since it chains prose without adding a command.';
-  }
-  prompt() {
-    return `${this.id}: flag connective filler beyond the fixed list, and delete it`;
   }
   violations(document) {
     const uri = document.uri();

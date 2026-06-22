@@ -18,9 +18,6 @@ const mask = require('../mask');
  * which targets letters borrowed from other scripts; this one stays to
  * pictographs, symbols, and dingbats only and never flags a foreign
  * letter.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Emoji {
   constructor() {
@@ -29,9 +26,6 @@ class Emoji {
   }
   hint() {
     return 'Delete decorative emoji and pictographic symbols, since they add token noise without carrying any instruction, and keep the text plain.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

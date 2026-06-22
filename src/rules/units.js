@@ -36,9 +36,6 @@ class Units {
   hint() {
     return 'State the unit beside every magnitude, such as 80 symbols, so the reader knows what the number measures.';
   }
-  prompt() {
-    return `${this.id}: flag a magnitude whose unit is implicit even in context, and state what it measures`;
-  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

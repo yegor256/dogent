@@ -16,9 +16,6 @@ const Region = require('../region');
  * Demands that a SKILL.md frontmatter "name" equal the name of the
  * directory that holds the file. The check applies only to SKILL.md
  * and stays silent when the file carries no "name" key.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class NameMatchesDir {
   constructor() {
@@ -26,9 +23,6 @@ class NameMatchesDir {
   }
   hint() {
     return 'Rename the SKILL.md frontmatter name so it matches the name of the directory that holds the file.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

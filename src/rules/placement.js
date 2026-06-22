@@ -14,13 +14,11 @@ const Region = require('../region');
  * Transformers attend most to the start and the end of their input and
  * skim the middle, so a critical section buried in the middle third of a
  * manifesto sits exactly where the model is least likely to use it. This
- * standalone check spots a critical section by a heading keyword (Safety,
+ * check spots a critical section by a heading keyword (Safety,
  * Security, Mission, Critical, Constraints) and warns when it lands in
  * the middle third rather than near the top or bottom. The generic word
  * "Rules" is left out on purpose: it names a neutral section in many
- * manifestos and would misfire. Its prompt hands the deeper judgement to
- * the AI oracle, which weighs which instruction matters most and whether
- * it is well placed.
+ * manifestos and would misfire.
  */
 class Placement {
   constructor() {
@@ -29,9 +27,6 @@ class Placement {
   }
   hint() {
     return 'Move the critical section to the top or bottom of the file, since models attend least to the buried middle of a long context.';
-  }
-  prompt() {
-    return `${this.id}: identify the single most important instruction and judge whether it sits near the top or bottom of the file rather than buried in the middle`;
   }
   violations(document) {
     const uri = document.uri();

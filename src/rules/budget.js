@@ -15,9 +15,6 @@ const Region = require('../region');
  * holding no more instructions than the cap allows. Counts every prose
  * line plus every bullet item across the file and complains once with a
  * single file-level violation when the total exceeds the cap.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Budget {
   constructor(cap) {
@@ -26,9 +23,6 @@ class Budget {
   }
   hint() {
     return 'Trim or split the manifesto so it holds fewer instructions than the budget, moving secondary guidance into separate referenced files to keep the core small.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const count = document.walk({

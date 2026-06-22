@@ -43,12 +43,3 @@ describe('Default', () => {
     );
   });
 });
-
-describe('Default prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Default().prompt().includes('default'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

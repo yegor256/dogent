@@ -17,8 +17,7 @@ const mask = require('../mask');
  * and shuffling steps drops accuracy sharply. A standalone checker flags
  * an unordered bullet item that carries a sequence marker like "first",
  * "then", "next", "after that", "finally", or "step 2", since the order
- * is real but the structure hides it. Its prompt hands implicit ordering
- * with no marker word to the AI oracle.
+ * is real but the structure hides it.
  */
 class Ordered {
   constructor() {
@@ -26,9 +25,6 @@ class Ordered {
   }
   hint() {
     return 'Convert a sequence of steps into a numbered list, since models follow numbered ordered steps far more reliably than unordered bullets.';
-  }
-  prompt() {
-    return `${this.id}: flag an implied sequence that no marker word signals, demanding a numbered list whenever the order of steps matters`;
   }
   violations(document) {
     const uri = document.uri();

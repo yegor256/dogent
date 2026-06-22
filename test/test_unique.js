@@ -26,16 +26,4 @@ describe('Unique', () => {
       'distinct instructions must pass'
     );
   });
-  it('names the rule id in the prompt', () => {
-    assert.ok(
-      new Unique().prompt().includes('unique'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to catch same-meaning pairs', () => {
-    assert.ok(
-      new Unique().prompt().includes('same meaning'),
-      'the prompt must hand semantic near-duplicates to the oracle'
-    );
-  });
 });

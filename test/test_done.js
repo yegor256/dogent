@@ -47,12 +47,3 @@ describe('Done', () => {
     );
   });
 });
-
-describe('Done prompt', () => {
-  it('names the rule id', () => {
-    assert.ok(
-      new Done().prompt().includes('done'),
-      'the prompt must carry the rule id'
-    );
-  });
-});

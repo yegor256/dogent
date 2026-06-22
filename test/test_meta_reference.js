@@ -51,12 +51,3 @@ describe('MetaReference', () => {
     );
   });
 });
-
-describe('MetaReference prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new MetaReference().prompt().includes('meta-reference'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

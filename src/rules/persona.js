@@ -16,9 +16,8 @@ const mask = require('../mask');
  * "You are a senior engineer", "Act as an expert reviewer", and the
  * like. The largest controlled study finds personas do not improve task
  * performance and can hurt, so a role-play line is pure context bloat
- * that adds no instruction. A standalone checker flags the line whose
- * head assigns the agent a role; its prompt hands the indirect persona
- * framing the regex misses to the AI oracle.
+ * that adds no instruction. The checker flags the line whose head
+ * assigns the agent a role.
  */
 class Persona {
   constructor() {
@@ -26,9 +25,6 @@ class Persona {
   }
   hint() {
     return 'Delete the role-play persona such as You are a senior engineer, since assigning a role adds no instruction and can hurt performance.';
-  }
-  prompt() {
-    return `${this.id}: flag indirect persona or role-play framing that assigns the agent a role with no fixed keyword, since a persona adds no instruction`;
   }
   violations(document) {
     const uri = document.uri();

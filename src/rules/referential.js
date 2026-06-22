@@ -12,13 +12,12 @@ const mask = require('../mask');
 /**
  * Referential.
  *
- * Demands that every line name its own subject. A standalone checker
- * flags a line that opens with a bare pronoun acting as the subject:
- * "it", "they", and "them" always, and "this", "that", "these", or
- * "those" only when a verb follows rather than a noun, so a determiner
- * like "These rules stay final" stays clean. Such a pronoun points at a
- * previous line, breaking the "one line, one instruction" contract. Its
- * prompt hands the subtler mid-line dangling references to the AI oracle.
+ * Demands that every line name its own subject. It flags a line that
+ * opens with a bare pronoun acting as the subject: "it", "they", and
+ * "them" always, and "this", "that", "these", or "those" only when a
+ * verb follows rather than a noun, so a determiner like "These rules
+ * stay final" stays clean. Such a pronoun points at a previous line,
+ * breaking the "one line, one instruction" contract.
  */
 class Referential {
   constructor() {
@@ -33,9 +32,6 @@ class Referential {
   }
   hint() {
     return 'Open the line by naming its own subject instead of a bare pronoun, since a dangling pronoun points at another line and breaks one line, one instruction.';
-  }
-  prompt() {
-    return `${this.id}: flag any line whose subject is a pronoun with no antecedent on the same line, including mid-line dangling references a head pattern misses`;
   }
   violations(document) {
     const uri = document.uri();

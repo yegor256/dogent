@@ -38,13 +38,3 @@ describe('Homoglyph', () => {
     );
   });
 });
-
-describe('Homoglyph prompt', () => {
-  it('returns an empty prompt', () => {
-    assert.strictEqual(
-      new Homoglyph().prompt(),
-      '',
-      'the prompt must be empty'
-    );
-  });
-});

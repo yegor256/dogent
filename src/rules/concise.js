@@ -17,8 +17,7 @@ const Region = require('../region');
  * Counts physical lines and warns once the file crosses a configurable
  * ceiling, recommending a split into referenced detail files in the
  * spirit of progressive disclosure. This is distinct from token-count: it
- * measures structure and position risk, not raw token volume. Its prompt
- * hands the deeper split judgement to the AI oracle.
+ * measures structure and position risk, not raw token volume.
  */
 class Concise {
   constructor(max) {
@@ -27,9 +26,6 @@ class Concise {
   }
   hint() {
     return 'Shorten the file or split its detail into referenced files so its middle instructions survive, since models attend to the start and end and skim the middle.';
-  }
-  prompt() {
-    return `${this.id}: flag a manifesto so long its middle instructions risk being lost, and recommend splitting detail into referenced files`;
   }
   violations(document) {
     const lines = document.text().split('\n');

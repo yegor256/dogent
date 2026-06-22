@@ -9,10 +9,10 @@ const assert = require('assert');
 const rules = require('../src/rules');
 
 describe('rules', () => {
-  it('hands every assembled rule a prompt fragment for the oracle', () => {
+  it('hands every assembled rule a violations method', () => {
     assert.ok(
-      rules().every((rule) => typeof rule.prompt === 'function'),
-      'every rule consulted by the oracle must offer a prompt fragment'
+      rules().every((rule) => typeof rule.violations === 'function'),
+      'every assembled rule must offer a violations method'
     );
   });
 });

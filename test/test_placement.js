@@ -55,12 +55,3 @@ describe('Placement accepts', () => {
     );
   });
 });
-
-describe('Placement prompt', () => {
-  it('asks the oracle to judge the most important instruction', () => {
-    assert.ok(
-      new Placement().prompt().includes('most important'),
-      'the prompt must ask the oracle to weigh the most important instruction'
-    );
-  });
-});

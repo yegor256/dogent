@@ -17,8 +17,7 @@ const mask = require('../mask');
  * version literals such as "18.17.0". Each pins an instruction to a
  * moment or release that drifts, so the manifesto silently ages. The
  * rule scans only prose, never fenced snippets, so version pins inside
- * code blocks survive untouched. Its prompt hands implicit time-bound
- * claims with no keyword to the AI oracle.
+ * code blocks survive untouched.
  */
 class Stale {
   constructor() {
@@ -26,9 +25,6 @@ class Stale {
   }
   hint() {
     return 'Replace a volatile time or version reference such as currently or a pinned version number with a durable rule that never rots.';
-  }
-  prompt() {
-    return `${this.id}: flag any implicit time-bound or version-bound claim that carries no keyword, and propose a durable rule that never rots`;
   }
   violations(document) {
     const uri = document.uri();

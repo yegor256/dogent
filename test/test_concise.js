@@ -35,18 +35,3 @@ describe('Concise', () => {
     );
   });
 });
-
-describe('Concise prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Concise(200).prompt().includes('concise'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to recommend referenced files', () => {
-    assert.ok(
-      new Concise(200).prompt().includes('referenced files'),
-      'the prompt must recommend splitting into referenced files'
-    );
-  });
-});

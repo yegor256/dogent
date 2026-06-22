@@ -45,16 +45,4 @@ describe('Passive', () => {
       'a participle modifying a following noun is not passive voice'
     );
   });
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Passive().prompt().includes('passive'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to judge true grammatical voice', () => {
-    assert.ok(
-      new Passive().prompt().includes('grammatical voice'),
-      'the prompt must hand true grammatical-voice judgement to the oracle'
-    );
-  });
 });

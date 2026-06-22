@@ -16,8 +16,7 @@ const mask = require('../mask');
  * as optional through "optionally", "you may", or "feel free to" leaves
  * the agent guessing what happens when it declines, so the line must
  * state a default. A line that already declares one through "by
- * default", "defaults to", or "otherwise" passes untouched. Its prompt
- * hands subtler optionality with no stated default to the AI oracle.
+ * default", "defaults to", or "otherwise" passes untouched.
  */
 class Default {
   constructor() {
@@ -25,9 +24,6 @@ class Default {
   }
   hint() {
     return 'State the default outcome whenever you mark behavior optional, telling the agent exactly what to do when it declines the option.';
-  }
-  prompt() {
-    return `${this.id}: flag optionality that names no default even without a listed marker, and state the default`;
   }
   violations(document) {
     const uri = document.uri();

@@ -38,13 +38,3 @@ describe('DuplicateSection acceptance', () => {
     );
   });
 });
-
-describe('DuplicateSection prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new DuplicateSection().prompt(),
-      '',
-      'the duplicate-section rule stays deterministic and out of the oracle'
-    );
-  });
-});

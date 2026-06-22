@@ -51,18 +51,3 @@ describe('Ordered', () => {
     );
   });
 });
-
-describe('Ordered prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Ordered().prompt().includes('ordered'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to demand a numbered list', () => {
-    assert.ok(
-      new Ordered().prompt().includes('numbered list'),
-      'the prompt must hand implicit ordering to the oracle'
-    );
-  });
-});

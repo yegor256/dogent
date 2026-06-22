@@ -70,12 +70,3 @@ describe('Units exemptions', () => {
     );
   });
 });
-
-describe('Units prompt', () => {
-  it('mentions a unit in its prompt', () => {
-    assert.ok(
-      new Units().prompt().includes('unit'),
-      'the prompt must mention a unit'
-    );
-  });
-});

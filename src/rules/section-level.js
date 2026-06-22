@@ -15,9 +15,6 @@ const Region = require('../region');
  * hashes. A lone top-level title may open the file, but any later
  * first-level heading or any deeper sub-heading breaks the flat shape
  * a manifesto must keep.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class SectionLevel {
   constructor() {
@@ -25,9 +22,6 @@ class SectionLevel {
   }
   hint() {
     return 'Make every section a level-2 heading marked by two hashes, allowing only one optional top-level title to open the file.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

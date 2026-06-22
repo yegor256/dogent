@@ -43,12 +43,3 @@ describe('ToolClarity', () => {
     );
   });
 });
-
-describe('ToolClarity prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new ToolClarity().prompt().includes('tool-clarity'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

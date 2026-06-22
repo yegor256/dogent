@@ -42,10 +42,4 @@ describe('Transition', () => {
       new Transition().violations(doc).length, 0, 'a code span must be skipped'
     );
   });
-  it('names the rule id in its prompt', () => {
-    assert.ok(
-      new Transition().prompt().includes('transition'),
-      'the prompt must name the rule id'
-    );
-  });
 });

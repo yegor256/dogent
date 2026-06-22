@@ -26,9 +26,6 @@ class Conditional {
   hint() {
     return 'Break a line that packs several conditions into one case per line, so the agent never has to untangle a whole decision tree welded onto a single line.';
   }
-  prompt() {
-    return `${this.id}: flag implicit branching that carries no keyword, and split each case into its own command`;
-  }
   violations(document) {
     const uri = document.uri();
     return document.walk({
@@ -52,15 +49,6 @@ class Conditional {
       'multi-branch conditional, split each case into its own command',
       new Region(uri, line, column + 1)
     )];
-  }
-  suppress(violation, document) {
-    if (violation.rule !== this.id) {
-      return false;
-    }
-    const lines = document.text().split('\n');
-    const clean = mask(lines[violation.spot.line() - 1] || '');
-    const hits = clean.match(/\b(?:if|unless|when|else|otherwise)\b/giu);
-    return hits === null || hits.length < 2;
   }
 }
 

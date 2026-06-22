@@ -51,18 +51,3 @@ describe('Emphasis', () => {
     );
   });
 });
-
-describe('Emphasis prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Emphasis().prompt().includes('emphasis'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to weigh borderline shouting', () => {
-    assert.ok(
-      new Emphasis().prompt().includes('shouting'),
-      'the prompt must hand borderline emphasis to the oracle'
-    );
-  });
-});

@@ -28,24 +28,10 @@ const listCommas = function listCommas(text) {
 /**
  * Simple.
  *
- * Demands simple grammar over ambiguity. A standalone checker can only
- * guess: it counts commas and conjunctions to flag lines that pile up
- * clauses. Commas inside a coordinated `A, B, or C` list are discounted
- * first, so a lone enumeration sitting in one clause does not read as
- * tangled. Its prompt hands the subtler tangle judgement to the oracle,
- * which weighs true clause depth rather than counting punctuation. A
- * deterministic guard then drops any oracle flag on a line that carries no
- * clause comma and no subordinating conjunction, since such a line holds a
- * single clause and cannot be tangled. A lone subordinating conjunction with
- * no second conjunction and no clause comma is dropped too, so a plain "do X
- * when Y" guard reads as one clause while a genuine multi-clause tangle still
- * survives. Commas inside a coordinated list are
- * discounted first, so a leading imperative taking an `A, B, and C` object
- * reads as one clause and is vetoed, unless its "and" or "then" welds a
- * second verb that takes a determiner-led object of its own. The same guard
- * drops any oracle flag landing inside the YAML frontmatter, whose
- * description is a third-person capability statement the deterministic side
- * never inspects.
+ * Demands simple grammar over ambiguity. It counts commas and
+ * conjunctions to flag lines that pile up clauses. Commas inside a
+ * coordinated `A, B, or C` list are discounted first, so a lone
+ * enumeration sitting in one clause does not read as tangled.
  */
 class Simple {
   constructor() {
@@ -54,9 +40,6 @@ class Simple {
   }
   hint() {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
-  }
-  prompt() {
-    return `${this.id}: flag any grammatically tangled, multi-clause instruction, judging true clause depth even when the line carries few commas or conjunctions, yet never count a single leading imperative trailed only by a coordinated object or Oxford-comma list as tangled even when a list item embeds its own verb, as in "Cover bug, why it is wrong, and proposed fix", which is one simple order "cover" taking a three-part object, not a tangled multi-clause sentence; never flag a line inside the YAML frontmatter, whose description is a third-person capability statement that names several actions in one sentence`;
   }
   violations(document) {
     const uri = document.uri();
@@ -68,55 +51,10 @@ class Simple {
       frontmatter: () => []
     });
   }
-  suppress(violation, document) {
-    if (violation.rule !== this.id) {
-      return false;
-    }
-    const line = violation.spot.line();
-    if (line <= this.frontmatter(document)) {
-      return true;
-    }
-    const lines = document.text().split('\n');
-    return !this.tangleable(lines[line - 1] || '');
-  }
-  frontmatter(document) {
-    return document.walk({
-      header: () => [],
-      prose: () => [],
-      snippet: () => [],
-      bullets: () => [],
-      frontmatter: (keys, row, last) => [last]
-    })[0] || 0;
-  }
-  tangleable(text) {
-    if (this.conjunction.test(text) && (this.conjunctions(text) > 1 || this.clauseCommas(text) > 0)) {
-      return true;
-    }
-    if (this.clause(text)) {
-      return true;
-    }
-    return this.clauseCommas(text) > 0;
-  }
-  conjunctions(text) {
-    const all = new RegExp(this.conjunction.source, 'giu');
-    return (text.match(all) || []).length;
-  }
   clauseCommas(text) {
     const commas = text.match(/,/gu);
     const count = commas === null ? 0 : commas.length;
     return count - listCommas(text);
-  }
-  clause(text) {
-    const welds = (text.match(/\b(?:and|then)\b/giu) || []).length;
-    if (welds !== 1) {
-      return welds > 1;
-    }
-    const tail = /\b(?:and|then)\s+\S+\s+(?<next>\S+)/iu.exec(text);
-    return tail !== null && this.determiner(tail.groups.next);
-  }
-  determiner(word) {
-    const clean = word.replace(/[^a-z]/giu, '').toLowerCase();
-    return /^(?:the|a|an|this|that|these|those|its|his|her|their|our|my|your|every|each|all|any|some|no)$/u.test(clean);
   }
   judge(text, line, uri) {
     const clauseCommas = this.clauseCommas(text);

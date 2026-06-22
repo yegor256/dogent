@@ -35,13 +35,3 @@ describe('Grouped', () => {
     );
   });
 });
-
-describe('Grouped prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Grouped().prompt(),
-      '',
-      'the grouped rule stays deterministic and out of the oracle'
-    );
-  });
-});

@@ -44,13 +44,3 @@ describe('Budget reports', () => {
     );
   });
 });
-
-describe('Budget prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Budget(60).prompt(),
-      '',
-      'the budget rule stays deterministic and out of the oracle'
-    );
-  });
-});

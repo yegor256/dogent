@@ -72,8 +72,7 @@ const undefining = (acronym, scope) => !scope.known.has(acronym) &&
  * acronym, as in "Virtual Private Network (VPN)", so a single expansion
  * licenses every later mention. Well-known acronyms sit
  * in a built-in allowlist and pass untouched. Only the first unexpanded
- * occurrence of each acronym is reported. Its prompt hands non-acronym
- * domain jargon, the rare nouns a reader cannot parse, to the AI oracle.
+ * occurrence of each acronym is reported.
  */
 class Jargon {
   constructor() {
@@ -81,9 +80,6 @@ class Jargon {
   }
   hint() {
     return 'Expand each acronym on first use with a parenthetical gloss, and replace rare domain jargon with plain words a fresh reader can parse.';
-  }
-  prompt() {
-    return `${this.id}: flag non-acronym domain jargon, rare nouns a fresh reader cannot parse, and ask for a plain-word definition on first use`;
   }
   violations(document) {
     const uri = document.uri();

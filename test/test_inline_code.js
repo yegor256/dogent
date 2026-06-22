@@ -70,12 +70,3 @@ describe('InlineCode accepts', () => {
     );
   });
 });
-
-describe('InlineCode prompt', () => {
-  it('directs the oracle to judge borderline literals', () => {
-    assert.ok(
-      new InlineCode().prompt().includes('borderline'),
-      'the prompt must ask the oracle to judge borderline literals'
-    );
-  });
-});

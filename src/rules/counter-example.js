@@ -17,9 +17,7 @@ const mask = require('../mask');
  * line that opens a counterexample with an introducer phrase ("bad
  * example", "wrong example", "for example, do not", "instead of
  * writing", "avoid writing") and then carries a quoted or backticked
- * sample of the wrong form. Its prompt hands subtler cases to the AI
- * oracle, which judges whether an example shows the correct or the
- * incorrect behavior.
+ * sample of the wrong form.
  */
 class CounterExample {
   constructor() {
@@ -27,9 +25,6 @@ class CounterExample {
   }
   hint() {
     return 'Remove the demonstration of the wrong form and show only the correct form, since displaying a mistake can teach the agent to repeat it.';
-  }
-  prompt() {
-    return `${this.id}: judge whether each example shows the correct behavior, and flag any example that demonstrates the incorrect form`;
   }
   violations(document) {
     const uri = document.uri();

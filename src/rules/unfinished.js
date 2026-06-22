@@ -17,9 +17,6 @@ const mask = require('../mask');
  * TODO, TBD, FIXME, XXX, and WIP, the placeholder phrase "lorem ipsum",
  * a trailing bare ellipsis, and an unfilled angle-bracket placeholder
  * such as <placeholder>.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Unfinished {
   constructor() {
@@ -27,9 +24,6 @@ class Unfinished {
   }
   hint() {
     return 'Resolve every leftover marker such as TODO, a placeholder, or a trailing ellipsis, since they signal half-finished work.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

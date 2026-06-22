@@ -24,9 +24,6 @@ class TokenCount {
   hint() {
     return 'Cut bloated wording across the file so its total token count fits the cap, keeping every instruction terse.';
   }
-  prompt() {
-    return `${this.id}: flag bloated wording that wastes the context budget`;
-  }
   violations(document) {
     const count = (document.walk({
       header: (text) => [text],

@@ -18,8 +18,7 @@ const mask = require('../mask');
  * whose meaning is an underspecified distribution rather than a number,
  * so a command manifesto should state the exact count or threshold. The
  * list is kept apart from the vague qualifiers so the two rules never
- * double-report. Its prompt hands implicit vagueness, where no listed
- * word appears, to the AI oracle.
+ * double-report.
  */
 class Quantifier {
   constructor() {
@@ -27,9 +26,6 @@ class Quantifier {
   }
   hint() {
     return 'Replace a vague quantity word such as some or several with an exact number or threshold the agent can act on.';
-  }
-  prompt() {
-    return `${this.id}: flag a vague amount that names no exact count even without a listed word, and propose a concrete number or threshold to replace it`;
   }
   violations(document) {
     const uri = document.uri();

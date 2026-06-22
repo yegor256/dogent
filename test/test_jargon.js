@@ -71,12 +71,3 @@ describe('Jargon definitions', () => {
     );
   });
 });
-
-describe('Jargon prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Jargon().prompt().includes('jargon'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

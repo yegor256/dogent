@@ -12,10 +12,8 @@ const Region = require('../region');
  * Done.
  *
  * Demands that a SKILL.md state a verifiable completion check, symmetric
- * to the description trigger requirement. A standalone checker can only
- * approximate: it scans headings and prose for a verification signal. Its
- * prompt hands the deeper judgement to the AI oracle, which weighs whether
- * the stated check is truly pass/fail testable rather than vague.
+ * to the description trigger requirement. It scans headings and prose
+ * for a verification signal.
  */
 class Done {
   constructor() {
@@ -23,9 +21,6 @@ class Done {
   }
   hint() {
     return 'Add a verifiable, pass-or-fail completion check to the SKILL.md so the agent knows exactly how to confirm the work is finished.';
-  }
-  prompt() {
-    return `${this.id}: in a SKILL.md, judge whether the stated completion check is actually pass/fail testable rather than a vague gesture toward being finished`;
   }
   violations(document) {
     const uri = document.uri();

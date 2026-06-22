@@ -46,13 +46,3 @@ describe('Polite accepts', () => {
     );
   });
 });
-
-describe('Polite prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Polite().prompt(),
-      '',
-      'the polite rule stays deterministic and out of the oracle'
-    );
-  });
-});

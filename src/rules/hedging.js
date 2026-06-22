@@ -14,9 +14,7 @@ const mask = require('../mask');
  *
  * Flags soft, non-committal, or hedging wording that weakens an order.
  * Catches words like "should", "just", "usually", and phrases like
- * "try to" or "if possible", each a sign of timid instruction. Its
- * prompt hands subtler hedging to the AI oracle, which catches the
- * conditional escape hatches and vague scope no fixed list can.
+ * "try to" or "if possible", each a sign of timid instruction.
  */
 class Hedging {
   constructor() {
@@ -24,9 +22,6 @@ class Hedging {
   }
   hint() {
     return 'Remove hedging words such as should, just, or usually and state the order firmly, since timid wording weakens the command.';
-  }
-  prompt() {
-    return `${this.id}: flag soft, non-committal, or hedging wording, including conditional escape hatches and vague scope that carry no fixed hedge word`;
   }
   violations(document) {
     const uri = document.uri();

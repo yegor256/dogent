@@ -15,9 +15,6 @@ const Region = require('../region');
  * A heading is empty when it is immediately followed by another
  * heading or by end-of-file — no prose, bullets, or snippet sits
  * between them.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Empty {
   constructor() {
@@ -25,9 +22,6 @@ class Empty {
   }
   hint() {
     return 'Fill the hollow section with at least one instruction, or delete the heading, so no section declares itself without a body.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

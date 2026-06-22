@@ -50,12 +50,3 @@ describe('Stale', () => {
     );
   });
 });
-
-describe('Stale prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Stale().prompt().includes('stale'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

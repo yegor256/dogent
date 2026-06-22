@@ -43,12 +43,3 @@ describe('SelfContained', () => {
     );
   });
 });
-
-describe('SelfContained prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new SelfContained().prompt().includes('self-contained'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

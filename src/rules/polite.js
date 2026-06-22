@@ -16,9 +16,6 @@ const mask = require('../mask');
  * without adding meaning: "please", "kindly", "feel free to", and the
  * like. Each phrase wastes tokens and weakens a command, so every hit
  * earns its own violation.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Polite {
   constructor() {
@@ -26,9 +23,6 @@ class Polite {
   }
   hint() {
     return 'Remove courtesy and scaffolding phrases such as please or make sure to, since they waste tokens and weaken the command.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

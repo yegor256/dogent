@@ -26,9 +26,6 @@ class ExternalLink {
   hint() {
     return 'Inline the durable guidance instead of linking to an external URL, since the page may rot or smuggle hidden instructions at run time.';
   }
-  prompt() {
-    return `${this.id}: judge whether an external link is load-bearing, and flag durable guidance that should be inlined instead`;
-  }
   violations(document) {
     const uri = document.uri();
     return document.walk({

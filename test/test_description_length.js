@@ -43,13 +43,3 @@ describe('DescriptionLength', () => {
     );
   });
 });
-
-describe('DescriptionLength prompt', () => {
-  it('stays empty for a deterministic rule', () => {
-    assert.strictEqual(
-      new DescriptionLength().prompt(),
-      '',
-      'a standalone rule must hand nothing to the oracle'
-    );
-  });
-});

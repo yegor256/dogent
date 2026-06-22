@@ -35,12 +35,3 @@ describe('Terms', () => {
     );
   });
 });
-
-describe('Terms prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Terms().prompt().includes('terms'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

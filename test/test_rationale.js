@@ -54,12 +54,3 @@ describe('Rationale acceptance', () => {
     );
   });
 });
-
-describe('Rationale prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Rationale().prompt().includes('rationale'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

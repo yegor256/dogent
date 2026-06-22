@@ -51,12 +51,3 @@ describe('ExternalLink', () => {
     );
   });
 });
-
-describe('ExternalLink prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new ExternalLink().prompt().includes('external-link'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

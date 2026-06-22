@@ -51,18 +51,3 @@ describe('Referential', () => {
     );
   });
 });
-
-describe('Referential prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Referential().prompt().includes('referential'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to catch mid-line dangling references', () => {
-    assert.ok(
-      new Referential().prompt().includes('mid-line'),
-      'the prompt must hand dangling references to the oracle'
-    );
-  });
-});

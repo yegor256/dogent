@@ -41,11 +41,3 @@ describe('NameMatchesDir', () => {
     );
   });
 });
-
-describe('NameMatchesDir prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new NameMatchesDir().prompt(), '', 'the rule stays deterministic and out of the oracle'
-    );
-  });
-});

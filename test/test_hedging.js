@@ -45,16 +45,4 @@ describe('Hedging', () => {
       'hedge words inside inline code must be skipped like fenced snippets'
     );
   });
-  it('names the rule id in its prompt', () => {
-    assert.ok(
-      new Hedging().prompt().includes('hedging'),
-      'the prompt must name the rule id'
-    );
-  });
-  it('directs the oracle to catch conditional escape hatches', () => {
-    assert.ok(
-      new Hedging().prompt().includes('escape hatches'),
-      'the prompt must hand subtler hedging to the oracle'
-    );
-  });
 });

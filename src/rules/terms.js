@@ -16,8 +16,7 @@ const mask = require('../mask');
  * Where consistent hunts word-for-word duplicates and contradictions,
  * this rule catches the same idea wearing different labels, which makes
  * the agent guess whether two names mean two things. A small built-in
- * map of synonym groups seeds the deterministic check; the broader,
- * fuzzier judgement is handed to the AI oracle through prompt().
+ * map of synonym groups seeds the check.
  */
 class Terms {
   constructor() {
@@ -31,9 +30,6 @@ class Terms {
   }
   hint() {
     return 'Pick one canonical term for each concept and use it everywhere, since naming the same idea two ways makes the agent guess they differ.';
-  }
-  prompt() {
-    return `${this.id}: flag any pair of words used interchangeably for one concept, and demand a single canonical term across the whole file`;
   }
   violations(document) {
     const uri = document.uri();

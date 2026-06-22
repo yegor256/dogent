@@ -46,12 +46,3 @@ describe('PseudoHeading acceptance', () => {
     );
   });
 });
-
-describe('PseudoHeading prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new PseudoHeading().prompt().includes('pseudo-heading'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

@@ -32,13 +32,3 @@ describe('Crowded accepts', () => {
     );
   });
 });
-
-describe('Crowded prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Crowded(10).prompt(),
-      '',
-      'the crowded rule stays deterministic and out of the oracle'
-    );
-  });
-});

@@ -23,9 +23,7 @@ const normalize = (text) => {
  *
  * Flags any instruction that repeats another instruction in the file.
  * It normalizes each prose line, then remembers the first line where
- * each normal form appeared, so a later twin earns one violation. Its
- * prompt hands semantic near-duplicates to the AI oracle, catching
- * same-meaning different-words pairs the normalizer misses.
+ * each normal form appeared, so a later twin earns one violation.
  */
 class Unique {
   constructor() {
@@ -33,9 +31,6 @@ class Unique {
   }
   hint() {
     return 'Remove the repeated instruction and state each rule once, since duplicated guidance wastes context and can drift out of sync.';
-  }
-  prompt() {
-    return `${this.id}: flag any instruction that repeats another instruction in the file, including two lines that carry the same meaning in different words, not only lines matching after normalized case, punctuation, and word order`;
   }
   violations(document) {
     const uri = document.uri();

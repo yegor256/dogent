@@ -7,12 +7,11 @@
 
 const assert = require('assert');
 const Markdown = require('../src/markdown');
-const Command = require('../src/rules/command');
 const Prompt = require('../src/prompt');
 
 const text = (body = '# Doors\nShut gate') => {
   const doc = new Markdown('x.md', body).document();
-  return new Prompt([new Command()], doc).text();
+  return new Prompt(doc).text();
 };
 
 describe('Prompt', () => {
@@ -22,15 +21,9 @@ describe('Prompt', () => {
       'the prompt must carry the manifesto body for the oracle to read'
     );
   });
-  it('carries a fragment from every rule it is given', () => {
-    assert.ok(
-      text().includes('command'),
-      'the prompt must include the command rule fragment'
-    );
-  });
   it('opens its sections with first-level Markdown headers', () => {
     assert.ok(
-      text().includes('# Checks'),
+      text().includes('# Manifesto'),
       'the prompt must split its parts into first-level Markdown sections'
     );
   });
@@ -40,34 +33,22 @@ describe('Prompt', () => {
       'the prompt must fence the numbered manifesto inside a Markdown snippet'
     );
   });
-  it('lists each rule as a bullet', () => {
+  it('asks the oracle to hunt for inconsistencies', () => {
     assert.ok(
-      text().includes('- **command**'),
-      'the prompt must list every rule name as a bullet item'
+      text().includes('contradicts itself'),
+      'the prompt must ask the oracle to find where the file contradicts itself'
     );
   });
-  it('bolds each rule name with double asterisks', () => {
+  it('hands the oracle no Checks section', () => {
     assert.ok(
-      text().includes('**command**:'),
-      'the prompt must wrap every rule name in bold double-asterisks'
+      !text().includes('# Checks'),
+      'the prompt must not hand the oracle a Checks section to apply'
     );
   });
-  it('teaches the oracle the terse imperative house style', () => {
+  it('bullets no rule for the oracle to apply', () => {
     assert.ok(
-      text().includes('imperative verb'),
-      'the prompt must explain that each line is a compressed imperative command'
-    );
-  });
-  it('teaches the oracle how sections own their lines', () => {
-    assert.ok(
-      text().includes('belongs to that section'),
-      'the prompt must explain that a line belongs to the heading above it'
-    );
-  });
-  it('subjects clashes to the same confidence gate as every check', () => {
-    assert.ok(
-      !text().includes('clash is never a false alarm'),
-      'the prompt must not exempt clashes from the shared confidence gate'
+      !text().includes('- **'),
+      'the prompt must not list any rule as a bullet for the oracle'
     );
   });
   it('omits the phantom line a trailing newline would add', () => {
@@ -91,28 +72,10 @@ describe('Prompt reply shape', () => {
       'the prompt must tell the oracle an empty reply is the expected outcome'
     );
   });
-  it('forbids the oracle from echoing the offending line', () => {
-    assert.ok(
-      text().includes('echo the offending line'),
-      'the prompt must keep the warning free of the verbatim line'
-    );
-  });
-  it('asks the oracle to explain why the line breaks the check', () => {
+  it('asks the oracle to explain how the lines clash', () => {
     assert.ok(
       text().includes('explain'),
-      'the prompt must ask the oracle to explain the fault, not just name it'
-    );
-  });
-  it('asks the oracle to suggest how to fix the fault', () => {
-    assert.ok(
-      text().includes('suggest how to fix'),
-      'the prompt must ask the oracle to suggest a concrete fix'
-    );
-  });
-  it('leaves disqualifying low-confidence warnings to the caller', () => {
-    assert.ok(
-      !text().includes('Omit any result'),
-      'the prompt must not ask the model to drop its own low-confidence warnings'
+      'the prompt must ask the oracle to explain the clash, not just name it'
     );
   });
 });

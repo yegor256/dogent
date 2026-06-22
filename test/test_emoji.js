@@ -35,13 +35,3 @@ describe('Emoji', () => {
     );
   });
 });
-
-describe('Emoji prompt', () => {
-  it('returns an empty prompt', () => {
-    assert.strictEqual(
-      new Emoji().prompt(),
-      '',
-      'the prompt must be empty for a deterministic rule'
-    );
-  });
-});

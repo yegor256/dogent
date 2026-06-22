@@ -43,12 +43,3 @@ describe('AmbiguousOr', () => {
     );
   });
 });
-
-describe('AmbiguousOr prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new AmbiguousOr().prompt().includes('ambiguous-or'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

@@ -35,13 +35,3 @@ describe('HiddenChar', () => {
     );
   });
 });
-
-describe('HiddenChar prompt', () => {
-  it('exposes an empty prompt', () => {
-    assert.strictEqual(
-      new HiddenChar().prompt(),
-      '',
-      'the prompt must be empty for a deterministic rule'
-    );
-  });
-});

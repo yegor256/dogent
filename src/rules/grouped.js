@@ -13,9 +13,6 @@ const Region = require('../region');
  *
  * Demands that every instruction live under a section. Any prose that
  * appears before the first heading is loose and therefore a violation.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Grouped {
   constructor() {
@@ -23,9 +20,6 @@ class Grouped {
   }
   hint() {
     return 'Move every loose instruction under a section heading, since prose before the first heading belongs to no section.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

@@ -16,9 +16,6 @@ const Region = require('../region');
  * the budget that the instructions need. Flags a value longer than the
  * ceiling and a value that is empty, leaving the wording itself to
  * sibling rules.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class DescriptionLength {
   constructor() {
@@ -27,9 +24,6 @@ class DescriptionLength {
   }
   hint() {
     return 'Write a SKILL.md description that is neither empty nor bloated, stating the capability concisely so it fits the loader budget.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

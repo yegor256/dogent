@@ -14,11 +14,6 @@ const mask = require('../mask');
  *
  * Demands that instructions carry no articles, the cheapest kind of
  * noise. Flags every standalone "a", "an", and "the".
- *
- * The exhaustive regex catches every article on its own, so the check is
- * standalone and deterministic. prompt() returns an empty string and the
- * AI oracle never re-checks this rule, sparing it the spurious flags it
- * invented on prose lines that carry no article.
  */
 class NoArticles {
   constructor() {
@@ -26,9 +21,6 @@ class NoArticles {
   }
   hint() {
     return 'Remove filler articles such as a, an, and the, since they add noise without changing the instruction.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

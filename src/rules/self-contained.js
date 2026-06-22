@@ -13,13 +13,12 @@ const mask = require('../mask');
  * SelfContained.
  *
  * Demands that every line stand on its own without leaning on its
- * neighbours. A standalone checker flags a relative cross-reference
- * phrase like "see above", "as mentioned below", or "the previous
- * step" that breaks the moment the file is reordered or chunked. A
- * line pointing somewhere concrete through a markdown link stays
- * clean. Distinct from referential, which targets bare pronouns; this
- * one targets positional cross-references. Its prompt hands subtler
- * dangling references to the AI oracle.
+ * neighbours. It flags a relative cross-reference phrase like "see
+ * above", "as mentioned below", or "the previous step" that breaks the
+ * moment the file is reordered or chunked. A line pointing somewhere
+ * concrete through a markdown link stays clean. Distinct from
+ * referential, which targets bare pronouns; this one targets positional
+ * cross-references.
  */
 class SelfContained {
   constructor() {
@@ -34,9 +33,6 @@ class SelfContained {
   }
   hint() {
     return 'Replace a relative cross-reference such as see above with a concrete named target, so the line survives reordering and chunking.';
-  }
-  prompt() {
-    return `${this.id}: flag any line leaning on a relative cross-reference such as "see above" that breaks when the file is reordered or chunked, deferring subtler dangling references to the oracle`;
   }
   violations(document) {
     const uri = document.uri();

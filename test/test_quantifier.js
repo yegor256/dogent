@@ -54,12 +54,3 @@ describe('Quantifier accepts', () => {
     );
   });
 });
-
-describe('Quantifier prompt', () => {
-  it('directs the oracle to propose an exact number', () => {
-    assert.ok(
-      new Quantifier().prompt().includes('threshold'),
-      'the prompt must ask the oracle for a concrete number or threshold'
-    );
-  });
-});

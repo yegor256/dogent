@@ -25,9 +25,6 @@ class Frontmatter {
   hint() {
     return 'Open the file with a YAML frontmatter block that declares every required key with a real value and carries no key outside the allowed set.';
   }
-  prompt() {
-    return `${this.id}: in a ${this.name} file, flag any required key whose value is empty, vague, or a leftover placeholder`;
-  }
   violations(document) {
     const uri = document.uri();
     if (uri.replace(/^.*\//u, '') !== this.name) {

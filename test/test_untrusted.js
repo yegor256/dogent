@@ -70,18 +70,3 @@ describe('Untrusted hyphen boundaries', () => {
     );
   });
 });
-
-describe('Untrusted prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Untrusted().prompt().includes('untrusted'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to judge prompt injection risk', () => {
-    assert.ok(
-      new Untrusted().prompt().includes('prompt injection'),
-      'the prompt must hand injection judgement to the oracle'
-    );
-  });
-});

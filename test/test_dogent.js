@@ -101,7 +101,7 @@ describe('dogent show-prompt', () => {
     assert.ok(
       run(['--show-prompt', file], {
         OPENAI_API_KEY: 'dummy', OPENAI_BASE_URL: 'http://127.0.0.1:1/v1'
-      }).stderr.includes('You are a strict linter'),
+      }).stderr.includes('You are reviewing'),
       'dogent must reveal the AI prompt when asked'
     );
   });
@@ -110,7 +110,7 @@ describe('dogent show-prompt', () => {
     assert.ok(
       !run([file], {
         OPENAI_API_KEY: 'dummy', OPENAI_BASE_URL: 'http://127.0.0.1:1/v1'
-      }).stderr.includes('You are a strict linter'),
+      }).stderr.includes('You are reviewing'),
       'a run without --show-prompt cannot leak the AI prompt'
     );
   });

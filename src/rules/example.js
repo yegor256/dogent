@@ -16,9 +16,7 @@ const Region = require('../region');
  * of correct output, while a single worked example is one of the most
  * reliable levers in prompt engineering. A standalone checker passes the
  * skill that carries at least one fenced code block or an explicit
- * "Example" section heading, and flags the one that has neither. Its
- * prompt hands the deeper judgement to the AI oracle, which weighs
- * whether a present code block is truly illustrative.
+ * "Example" section heading, and flags the one that has neither.
  */
 class Example {
   constructor() {
@@ -26,9 +24,6 @@ class Example {
   }
   hint() {
     return 'Add at least one concrete worked input and output example to the SKILL.md, since a single demonstration guides the agent far better than prose alone.';
-  }
-  prompt() {
-    return `${this.id}: in a SKILL.md, judge whether a present code block is a genuine worked example rather than a stray snippet, and flag a skill that only describes without demonstrating`;
   }
   violations(document) {
     const uri = document.uri();
@@ -53,13 +48,6 @@ class Example {
       bullets: () => [],
       frontmatter: () => []
     });
-  }
-  suppress(violation, document) {
-    if (violation.rule !== this.id) {
-      return false;
-    }
-    const hints = this.hints(document);
-    return hints.includes('snippet') && hints.includes(this.id);
   }
   heading(text) {
     if (/^#{1,6}\s+examples?\b/iu.test(text)) {

@@ -45,13 +45,3 @@ describe('NoArticles', () => {
     );
   });
 });
-
-describe('NoArticles prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new NoArticles().prompt(),
-      '',
-      'the no-articles rule stays deterministic and out of the oracle'
-    );
-  });
-});

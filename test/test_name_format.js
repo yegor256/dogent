@@ -32,11 +32,3 @@ describe('NameFormat', () => {
     );
   });
 });
-
-describe('NameFormat prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new NameFormat().prompt(), '', 'the name-format rule stays deterministic'
-    );
-  });
-});

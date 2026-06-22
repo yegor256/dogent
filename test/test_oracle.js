@@ -33,6 +33,7 @@ describe('Oracle', () => {
           ruleId: 'command',
           level: 'warning',
           message: {text: 'sounds like a question'},
+          confidence: 0.95,
           locations: [
             {
               physicalLocation: {
@@ -46,15 +47,15 @@ describe('Oracle', () => {
     });
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
     assert.strictEqual(
-      (await new Oracle([], new FakeChat(reply)).violations(doc)).found[0].text(),
-      'x.md:2:1 warning [command]: sounds like a question',
+      (await new Oracle(new FakeChat(reply)).violations(doc)).found[0].text(),
+      'x.md:2:1 warning [command]: sounds like a question (confidence 95%)',
       'the oracle must turn the AI reply into violations'
     );
   });
   it('surfaces the token usage the chat reported', async () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
     assert.strictEqual(
-      (await new Oracle([], new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
+      (await new Oracle(new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
       9,
       'the oracle must surface the token usage from the chat'
     );
@@ -62,7 +63,7 @@ describe('Oracle', () => {
   it('logs the full prompt it sends to the chat', async () => {
     const notes = [];
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
-    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+    await new Oracle(new FakeChat('{"results":[]}'), {debug(line) {
       notes.push(line);
     }}).violations(doc);
     assert.ok(
@@ -76,7 +77,7 @@ describe('Oracle prompt log', () => {
   it('announces the prompt size before sending it', async () => {
     const notes = [];
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
-    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+    await new Oracle(new FakeChat('{"results":[]}'), {debug(line) {
       notes.push(line);
     }}).violations(doc);
     assert.match(
@@ -88,41 +89,12 @@ describe('Oracle prompt log', () => {
   it('indents every logged prompt line by two spaces', async () => {
     const notes = [];
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
-    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+    await new Oracle(new FakeChat('{"results":[]}'), {debug(line) {
       notes.push(line);
     }}).violations(doc);
     assert.ok(
-      notes.join('').includes('\n  You are a strict linter'),
+      notes.join('').includes('\n  You are reviewing'),
       'the oracle must indent every logged prompt line by two spaces'
-    );
-  });
-});
-
-describe('Oracle guard', () => {
-  it('drops a flag a rule vetoes through its suppress guard', async () => {
-    const Command = require('../src/rules/command');
-    const reply = JSON.stringify({
-      results: [
-        {
-          ruleId: 'command',
-          level: 'warning',
-          message: {text: 'reads as a plain statement'},
-          locations: [
-            {
-              physicalLocation: {
-                artifactLocation: {uri: 'x.md'},
-                region: {startLine: 2, startColumn: 1}
-              }
-            }
-          ]
-        }
-      ]
-    });
-    const doc = new Markdown('x.md', '# Rules\nThrow exception on failure.').document();
-    assert.strictEqual(
-      (await new Oracle([new Command()], new FakeChat(reply)).violations(doc)).found.length,
-      0,
-      'a flag vetoed by a rule must never reach the report'
     );
   });
 });

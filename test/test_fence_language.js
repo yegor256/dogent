@@ -27,13 +27,3 @@ describe('FenceLanguage', () => {
     );
   });
 });
-
-describe('FenceLanguage prompt', () => {
-  it('returns an empty prompt', () => {
-    assert.strictEqual(
-      new FenceLanguage().prompt(),
-      '',
-      'the deterministic rule must expose an empty prompt'
-    );
-  });
-});

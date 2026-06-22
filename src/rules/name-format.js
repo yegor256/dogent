@@ -15,9 +15,6 @@ const Region = require('../region');
  * letters and digits joined by single hyphens, no leading or trailing
  * hyphen. Ignores every other file and leaves a missing name to the
  * frontmatter rule.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class NameFormat {
   constructor() {
@@ -25,9 +22,6 @@ class NameFormat {
   }
   hint() {
     return 'Write the SKILL.md frontmatter name in kebab-case, using only lowercase letters and digits joined by single hyphens.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

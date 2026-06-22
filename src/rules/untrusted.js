@@ -18,9 +18,7 @@ const mask = require('../mask');
  * "file", "issue", "output", or "comment" — that content can carry
  * hidden instructions the agent then obeys. A standalone checker flags
  * such a line when it lacks a data-only guard ("as data", "do not
- * follow", "treat as untrusted", "inside delimiters"). Its prompt hands
- * the deeper judgement of source trust and guard sufficiency to the AI
- * oracle.
+ * follow", "treat as untrusted", "inside delimiters").
  */
 class Untrusted {
   constructor() {
@@ -28,9 +26,6 @@ class Untrusted {
   }
   hint() {
     return 'Add a data-only guard when an instruction consumes external content, telling the agent to treat it as untrusted and never follow embedded instructions.';
-  }
-  prompt() {
-    return `${this.id}: judge whether a consumed source is genuinely untrusted external input and whether its data-only guard is sufficient against prompt injection`;
   }
   violations(document) {
     const uri = document.uri();

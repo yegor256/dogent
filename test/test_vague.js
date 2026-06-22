@@ -51,18 +51,3 @@ describe('Vague', () => {
     );
   });
 });
-
-describe('Vague prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new Vague().prompt().includes('vague'),
-      'the prompt must mention the rule id'
-    );
-  });
-  it('directs the oracle to propose a checkable threshold', () => {
-    assert.ok(
-      new Vague().prompt().includes('threshold'),
-      'the prompt must ask the oracle for a concrete threshold'
-    );
-  });
-});

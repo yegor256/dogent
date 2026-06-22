@@ -56,13 +56,3 @@ describe('Unfinished accepts', () => {
     );
   });
 });
-
-describe('Unfinished prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Unfinished().prompt(),
-      '',
-      'the unfinished rule stays deterministic and out of the oracle'
-    );
-  });
-});

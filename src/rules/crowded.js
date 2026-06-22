@@ -16,9 +16,6 @@ const Region = require('../region');
  * heading or to end-of-file; its instructions are the prose lines that
  * sit between them. Prose before the first heading is loose and belongs
  * to the grouped rule, so this rule ignores it.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Crowded {
   constructor(limit) {
@@ -27,9 +24,6 @@ class Crowded {
   }
   hint() {
     return 'Split an overcrowded section into smaller sections, each holding only a handful of related instructions under its own short heading.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

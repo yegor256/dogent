@@ -43,13 +43,3 @@ describe('WeakVerb', () => {
     );
   });
 });
-
-describe('WeakVerb prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new WeakVerb().prompt(),
-      '',
-      'the weak-verb rule stays deterministic and out of the oracle'
-    );
-  });
-});

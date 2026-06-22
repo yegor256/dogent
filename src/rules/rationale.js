@@ -12,12 +12,11 @@ const mask = require('../mask');
 /**
  * Rationale.
  *
- * Demands orders, not explanations. A standalone checker flags a line
+ * Demands orders, not explanations. The checker flags a line
  * that opens with a justification marker such as "because", "the
  * reason", "this keeps", "this ensures", "this helps", "so that", or
  * "in order to", since such a line argues a point instead of issuing a
- * command. Justification belongs in commit messages and design docs, so
- * its prompt hands subtler explanation-only lines to the AI oracle.
+ * command. Justification belongs in commit messages and design docs.
  */
 class Rationale {
   constructor() {
@@ -25,9 +24,6 @@ class Rationale {
   }
   hint() {
     return 'Delete the explanation or convert it into a direct order, since a manifesto carries commands, not justifications.';
-  }
-  prompt() {
-    return `${this.id}: flag any line that explains a reason, motivation, or benefit instead of issuing a direct order, even when it carries no fixed marker, and convert each into a command or delete it`;
   }
   violations(document) {
     const uri = document.uri();

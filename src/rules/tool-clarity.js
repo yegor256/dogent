@@ -16,8 +16,7 @@ const mask = require('../mask');
  * noun. An action verb such as "run", "use", or "invoke" pointed at
  * "the script" or "a command" leaves the agent guessing which one. The
  * mask blanks backticked spans first, so "run `npm test`" passes while
- * "run the script" gets flagged. Its prompt defers subtler vague
- * references to the AI oracle.
+ * "run the script" gets flagged.
  */
 class ToolClarity {
   constructor() {
@@ -25,9 +24,6 @@ class ToolClarity {
   }
   hint() {
     return 'Name the exact tool, path, or invocation instead of a generic noun like the script, so the agent never guesses which one to run.';
-  }
-  prompt() {
-    return `${this.id}: flag any vague reference to a tool or command beyond the fixed list, and demand the exact name, path, or invocation instead`;
   }
   violations(document) {
     const uri = document.uri();

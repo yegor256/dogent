@@ -17,8 +17,7 @@ const mask = require('../mask');
  * two-term slashed alternative like "tabs/spaces", each demanding the
  * author pick one branch and state exactly which option applies. Inline
  * code is masked first, so a backticked path such as `src/app` never
- * matches. Subtler ambiguities stay with the oracle; prompt() defers
- * the open-ended either-or judgement to it.
+ * matches.
  */
 class AmbiguousOr {
   constructor() {
@@ -26,9 +25,6 @@ class AmbiguousOr {
   }
   hint() {
     return 'Replace every either-or choice such as and/or or a slashed alternative with one explicit branch, naming exactly which option the agent must take so no guessing remains.';
-  }
-  prompt() {
-    return `${this.id}: flag either-or ambiguity beyond "and/or" and slashed alternatives, and state exactly which option applies`;
   }
   violations(document) {
     const uri = document.uri();

@@ -15,9 +15,6 @@ const Region = require('../region');
  * its opening fence. A bare fence of backticks or tildes with no info
  * string leaves readers and tooling guessing at the snippet's syntax,
  * so it earns a warning. A fence that names a language stays clean.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class FenceLanguage {
   constructor() {
@@ -26,9 +23,6 @@ class FenceLanguage {
   }
   hint() {
     return 'Declare a language right after the opening fence of every code block so readers and tooling know the snippet syntax.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

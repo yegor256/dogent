@@ -9,75 +9,57 @@
  * Prompt.
  *
  * The full request handed to the AI oracle, laid out as a Markdown
- * document: a Task section fixing the role and reply shape, a Checks
- * section bulleting one bold-named rule per line, and a Manifesto
- * section fencing the file under review with every line numbered so
- * the oracle can cite an exact row.
+ * document: a Task section fixing the role and reply shape, and a
+ * Manifesto section fencing the file under review with every line
+ * numbered so the oracle can cite an exact row. The oracle is asked
+ * for one thing only, to read the whole file and name where it
+ * contradicts itself, or to stay silent.
  */
 class Prompt {
-  constructor(rules, document) {
-    this.rules = rules;
+  constructor(document) {
     this.doc = document;
   }
   text() {
-    return [this.task(), this.checks(), this.manifesto()].join('\n\n');
+    return [this.task(), this.manifesto()].join('\n\n');
   }
   task() {
     const uri = this.doc.uri();
     return [
       '# Task',
       '',
-      'You are a strict linter for an AI-agent manifesto.',
+      'You are reviewing an AI-agent manifesto.',
       '',
       `The file under review is "${uri}".`,
-      'The manifesto is written in a terse house style.',
-      'Each line is supposed to be a compressed imperative command.',
-      'Articles and filler words were deliberately stripped.',
+      'It is a list of terse imperative instructions, grouped under headings.',
       '',
-      'Read the first word of every line as an imperative verb.',
-      'So "Tag release before shipping" is the order "tag the release", not a noun phrase about a tag.',
-      'Never flag a line for being short, for dropping articles, or for omitting a subject.',
-      'That compression is the required style.',
+      'Read the whole file and find where it contradicts itself:',
+      'one line demanding the opposite of another, a rule one section',
+      'sets and another breaks, guidance that cannot all hold at once.',
       '',
-      'A heading opens a section, and every line beneath it, until the',
-      'next heading, belongs to that section. Treat a deeper heading as',
-      'a subsection of the one above, never as a misplaced instruction.',
-      '',
-      'Apply only the checks listed in the Checks section below.',
-      'Most manifestos are clean.',
+      'Report only clear, important inconsistencies.',
+      'Most manifestos are consistent.',
       'An empty result list is the normal, expected reply.',
-      'When no line clearly breaks a listed check, report nothing and return {"results": []}.',
-      'Never invent a violation to seem useful, and never flag a line merely for sitting in a plain, on-topic section.',
-      'Report a violation only when you are certain it breaks a check.',
+      'When you find no real contradiction, report nothing and return {"results": []}.',
+      'Never invent an inconsistency to seem useful.',
+      'Report one only when you are certain two lines clash.',
       '',
-      'Give every result a "confidence" number from 0 to 1.',
-      'This is your own probability that the violation is real.',
+      'The results array holds contradictions only.',
+      'Never add a result that states no contradiction exists.',
+      'Absence of a contradiction is an empty array, never a result describing it.',
+      'Every result must name two specific clashing lines.',
+      '',
+      'Every result must carry a "confidence" number from 0 to 1.',
+      'This is your own probability that the inconsistency is real.',
+      'A result without a confidence is discarded, so always include one.',
       'When unsure, lower the confidence, never guess.',
       '',
       'Reply with one JSON object and nothing else, shaped as {"results":[ ... ]}.',
       'Each JSON object item is a SARIF result with keys ruleId, level "warning", message.text, confidence, and locations.',
-      'Set ruleId to the rule name and startLine to the printed line number',
+      'Set ruleId to "inconsistency" and startLine to one of the two clashing line numbers.',
       `The locations[0].physicalLocation must carry artifactLocation.uri "${uri}" and region.startColumn 1.`,
-      'In message.text, explain in a sentence or two why the line breaks the check, then suggest how to fix it.',
-      'Be specific and point to exact offenders, quoting them verbatim (words, not entire sentence).',
-      'Never quote or echo the offending line entirely, the line number already locates it.'
+      'In message.text, explain in a sentence or two how the lines clash, naming the other line number.',
+      'Quote the clashing words verbatim, never echoing either line entirely.'
     ].join('\n');
-  }
-  checks() {
-    return [
-      '# Checks',
-      '',
-      'Apply each of these checks, named in bold, to every line:',
-      '',
-      this.bullets()
-    ].join('\n');
-  }
-  bullets() {
-    return this.rules
-      .map((rule) => rule.prompt())
-      .filter((fragment) => fragment !== '')
-      .map((fragment) => `- ${fragment.replace(/^([\w-]+): /u, '**$1**: ')}`)
-      .join('\n');
   }
   manifesto() {
     return [

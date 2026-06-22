@@ -11,11 +11,9 @@ const Region = require('../region');
 /**
  * Passive.
  *
- * Demands active imperative voice. A standalone checker can only guess:
- * it flags a "be" verb followed, perhaps through an adverb, by a past
- * participle, the surest mark of passive voice. Its prompt hands true
- * grammatical-voice judgement to the AI oracle, which catches the
- * irregular participles the regular expression misses.
+ * Demands active imperative voice. Flags a "be" verb followed, perhaps
+ * through an adverb, by a past participle, the surest mark of passive
+ * voice.
  */
 class Passive {
   constructor() {
@@ -23,9 +21,6 @@ class Passive {
   }
   hint() {
     return 'Rewrite the line in active imperative voice, naming the action to take instead of describing what gets done.';
-  }
-  prompt() {
-    return `${this.id}: flag any instruction written in passive voice, judging true grammatical voice including irregular past participles a fixed pattern misses`;
   }
   violations(document) {
     const uri = document.uri();

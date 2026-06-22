@@ -17,8 +17,6 @@ const mask = require('../mask');
  * run of two or more consecutive all-caps words, and repeated marks like
  * "!!" or "!?". The model gains nothing from volume, so the emphasis is
  * pure noise. A lone short acronym such as "JSON" or "AI" is left alone.
- * Its prompt hands the borderline emphasis and reward framing the
- * patterns miss to the AI oracle.
  */
 class Emphasis {
   constructor() {
@@ -27,9 +25,6 @@ class Emphasis {
   }
   hint() {
     return 'Drop shouting such as all-caps words or repeated exclamation marks and state the instruction plainly, since volume adds no meaning for the model.';
-  }
-  prompt() {
-    return `${this.id}: flag emphatic shouting the patterns miss, including borderline all-caps and reward framing, since emphasis adds no instruction`;
   }
   violations(document) {
     const uri = document.uri();

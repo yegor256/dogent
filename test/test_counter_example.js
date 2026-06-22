@@ -46,12 +46,3 @@ describe('CounterExample acceptance', () => {
     );
   });
 });
-
-describe('CounterExample prompt', () => {
-  it('exposes its id through the prompt', () => {
-    assert.ok(
-      new CounterExample().prompt().includes('counter-example'),
-      'the prompt must mention the rule id'
-    );
-  });
-});

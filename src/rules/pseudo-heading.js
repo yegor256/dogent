@@ -17,9 +17,6 @@ const Region = require('../region');
  * "__" and ending in an optional colon. A line carrying only inline
  * bold inside other words, like "Use **bold** sparingly.", stays free,
  * since the emphasis wraps a fragment, not the whole label.
- *
- * Its prompt hands borderline label-versus-instruction calls to the AI
- * oracle.
  */
 class PseudoHeading {
   constructor() {
@@ -27,9 +24,6 @@ class PseudoHeading {
   }
   hint() {
     return 'Replace a bold line posing as a heading with a real level-2 heading marked by two hashes.';
-  }
-  prompt() {
-    return `${this.id}: flag any bold line posing as a section heading, deferring borderline label-versus-instruction calls to the oracle, and demand a real level-2 "##" heading`;
   }
   violations(document) {
     const uri = document.uri();

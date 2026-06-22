@@ -27,13 +27,3 @@ describe('ShortSections', () => {
     );
   });
 });
-
-describe('ShortSections prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new ShortSections().prompt(),
-      '',
-      'the short-sections rule stays deterministic and out of the oracle'
-    );
-  });
-});

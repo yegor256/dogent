@@ -21,8 +21,7 @@ const normalize = (text) => bare(text).toLowerCase().replace(/\s+/gu, ' ');
  * while leaving the first occurrence clean. Distinct from unique,
  * which targets repeated prose instructions, and from short-sections,
  * which targets heading length; this one targets repeated heading
- * names. Its prompt stays empty since the check is fully
- * deterministic.
+ * names.
  */
 class DuplicateSection {
   constructor() {
@@ -30,9 +29,6 @@ class DuplicateSection {
   }
   hint() {
     return 'Give every section a distinct heading, merging or renaming any two sections that share the same name.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

@@ -88,16 +88,6 @@ describe('Empty edge', () => {
   });
 });
 
-describe('Empty prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new Empty().prompt(),
-      '',
-      'the empty rule stays deterministic and out of the oracle'
-    );
-  });
-});
-
 describe('Empty companion to Grouped', () => {
   it('together cover the section-instruction relationship', () => {
     const doc = new Markdown('x.md', '## A\nDo x.\n## B\n## C\nFix y.').document();

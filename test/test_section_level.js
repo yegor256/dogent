@@ -43,13 +43,3 @@ describe('SectionLevel', () => {
     );
   });
 });
-
-describe('SectionLevel prompt', () => {
-  it('offers no fragment so the oracle never re-checks it', () => {
-    assert.strictEqual(
-      new SectionLevel().prompt(),
-      '',
-      'the section-level rule stays deterministic and out of the oracle'
-    );
-  });
-});

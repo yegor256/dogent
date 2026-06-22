@@ -27,7 +27,6 @@ const Atomic = require('./atomic');
 const Hedging = require('./hedging');
 const Passive = require('./passive');
 const Unique = require('./unique');
-const Consistent = require('./consistent');
 const Simple = require('./simple');
 const SectionLevel = require('./section-level');
 const Format = require('./format');
@@ -63,9 +62,7 @@ const Emoji = require('./emoji');
 const Homoglyph = require('./homoglyph');
 const DuplicateSection = require('./duplicate-section');
 const DescriptionVoice = require('./description-voice');
-const ExampleFormat = require('./example-format');
 const DescriptionLength = require('./description-length');
-const Scope = require('./scope');
 const HiddenChar = require('./hidden-char');
 const Units = require('./units');
 const FenceLanguage = require('./fence-language');
@@ -83,7 +80,6 @@ module.exports = () => [
   new Punctuation(),
   new DeadImport(),
   new Redundant(),
-  new Consistent(),
   new Simple(),
   new Referential(),
   new NameMatchesDir(),
@@ -126,9 +122,7 @@ module.exports = () => [
   new Homoglyph(),
   new DuplicateSection(),
   new DescriptionVoice(),
-  new ExampleFormat(),
   new DescriptionLength(),
-  new Scope(),
   new HiddenChar(),
   new Units(),
   new FenceLanguage(),

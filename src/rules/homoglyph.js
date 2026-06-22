@@ -18,9 +18,6 @@ const mask = require('../mask');
  * foreign codepoint, so it slips past humans while breaking tools. The
  * check flags every such confusable character at its own column. Inline
  * code is masked first, so a deliberately quoted example stays clean.
- *
- * The check is standalone and deterministic, so prompt() returns an
- * empty string and the AI oracle never re-checks this rule.
  */
 class Homoglyph {
   constructor() {
@@ -30,9 +27,6 @@ class Homoglyph {
   }
   hint() {
     return 'Replace the mixed-script look-alike character with its plain ASCII equivalent, since a foreign codepoint hidden inside a word breaks tooling.';
-  }
-  prompt() {
-    return '';
   }
   violations(document) {
     const uri = document.uri();

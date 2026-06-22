@@ -16,9 +16,7 @@ const mask = require('../mask');
  * "properly", "good", "clean", "fast", "robust", and the like. Each
  * leaves the agent to guess a criterion that varies run to run, so a
  * vague qualifier is a non-instruction in disguise. The list is kept
- * apart from the hedging words so the two rules never double-report. Its
- * prompt hands subjective adjectives outside the fixed list to the AI
- * oracle, asking it to suggest a concrete, checkable threshold.
+ * apart from the hedging words so the two rules never double-report.
  */
 class Vague {
   constructor() {
@@ -26,9 +24,6 @@ class Vague {
   }
   hint() {
     return 'Replace a subjective qualifier such as properly or clean with a concrete, checkable threshold the agent can measure.';
-  }
-  prompt() {
-    return `${this.id}: flag any subjective or unmeasurable qualifier beyond the fixed list, and propose a concrete, checkable threshold to replace it`;
   }
   violations(document) {
     const uri = document.uri();

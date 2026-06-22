@@ -103,7 +103,6 @@ const localMillis = Date.now() - started;
 const key = args.token() || process.env.OPENAI_API_KEY;
 const audit = async (docs) => {
   const oracle = new Oracle(
-    checks,
     new Openai(
       key,
       args.model() || process.env.OPENAI_MODEL || 'gpt-4o-mini',

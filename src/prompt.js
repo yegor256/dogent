@@ -51,9 +51,9 @@ class Prompt {
       'locations. Set ruleId to the rule name and startLine to the',
       'printed line number; locations[0].physicalLocation must carry',
       `artifactLocation.uri "${uri}" and region.startColumn 1.`,
-      'Keep message.text to one short warning naming the fault and the',
-      'fix; never quote or echo the offending line, the line number',
-      'already locates it.'
+      'In message.text, explain in a sentence or two why the line',
+      'breaks the check, then suggest how to fix it; never quote or',
+      'echo the offending line, the line number already locates it.'
     ].join('\n');
   }
   fragments() {

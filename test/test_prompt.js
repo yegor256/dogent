@@ -73,4 +73,16 @@ describe('Prompt reply shape', () => {
       'the prompt must keep the warning free of the verbatim line'
     );
   });
+  it('asks the oracle to explain why the line breaks the check', () => {
+    assert.ok(
+      text().includes('explain'),
+      'the prompt must ask the oracle to explain the fault, not just name it'
+    );
+  });
+  it('asks the oracle to suggest how to fix the fault', () => {
+    assert.ok(
+      text().includes('suggest how to fix'),
+      'the prompt must ask the oracle to suggest a concrete fix'
+    );
+  });
 });

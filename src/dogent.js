@@ -132,7 +132,7 @@ const verify = async () => {
     aiMillis: Date.now() - clock
   };
 };
-const consult = Boolean(key) && !args.offline();
+const consult = Boolean(key) && !args.offline() && found.length === 0;
 const show = (report) => {
   if (report.count() > 0) {
     log.info(report.body());

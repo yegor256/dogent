@@ -165,6 +165,19 @@ describe('dogent timing', () => {
   });
 });
 
+describe('dogent local short circuit', () => {
+  it('stays away from the LLM when a local rule already fired', () => {
+    const file = manifesto('# This Section Name Is Far Too Long\nShut the gate');
+    assert.strictEqual(
+      run([file], {
+        OPENAI_API_KEY: 'dummy', OPENAI_BASE_URL: 'http://127.0.0.1:1/v1'
+      }).status,
+      1,
+      'a local violation must stop dogent before it touches the unreachable LLM'
+    );
+  });
+});
+
 describe('dogent suppress', () => {
   it('silences a named rule and exits clean', () => {
     const file = manifesto('# Kitchen\nSharpen the knife.');

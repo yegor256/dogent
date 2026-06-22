@@ -93,7 +93,7 @@ describe('Prompt reply shape', () => {
   });
   it('forbids the oracle from echoing the offending line', () => {
     assert.ok(
-      text().includes('never quote'),
+      text().includes('echo the offending line'),
       'the prompt must keep the warning free of the verbatim line'
     );
   });

@@ -16,7 +16,6 @@ const Sources = require('./sources');
 const Openai = require('./openai');
 const Oracle = require('./oracle');
 const Usage = require('./usage');
-const prettyMs = require('pretty-ms');
 const version = require('./version');
 const rules = require('./rules');
 
@@ -158,9 +157,6 @@ const render = (outcome) => {
     log.info(JSON.stringify(report.sarif(), null, 2));
   } else {
     human(outcome);
-  }
-  if (outcome.usage !== null) {
-    log.debug(`${outcome.usage.text(outcome.extra.length)}, analysed in ${prettyMs(outcome.aiMillis)}`);
   }
   process.exit(all.length > 0 ? 1 : 0);
 };

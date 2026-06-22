@@ -8,6 +8,7 @@
 const Prompt = require('./prompt');
 const Answer = require('./answer');
 const Log = require('./log');
+const prettyMs = require('pretty-ms');
 
 /**
  * Oracle.
@@ -33,15 +34,16 @@ class Oracle {
       `Sending this prompt (${rows.length} lines, ${prompt.length} symbols) ` +
       `to OpenAI:\n${body}`
     );
+    const clock = Date.now();
     const reply = await this.chat.answer(prompt);
-    return {
-      found: new Answer(reply.content).violations().filter(
-        (violation) => !this.rules.some(
-          (rule) => rule.suppress?.(violation, document)
-        )
-      ),
-      usage: reply.usage
-    };
+    const millis = Date.now() - clock;
+    const found = new Answer(reply.content).violations().filter(
+      (violation) => !this.rules.some(
+        (rule) => rule.suppress?.(violation, document)
+      )
+    );
+    this.log.debug(`${reply.usage.text(found.length)}, analysed in ${prettyMs(millis)}`);
+    return {found, usage: reply.usage};
   }
 }
 

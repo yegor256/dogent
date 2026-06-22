@@ -72,6 +72,32 @@ describe('Oracle', () => {
   });
 });
 
+describe('Oracle prompt log', () => {
+  it('announces the prompt size before sending it', async () => {
+    const notes = [];
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+      notes.push(line);
+    }}).violations(doc);
+    assert.match(
+      notes.join(''),
+      /Sending this prompt \([0-9]+ lines, [0-9]+ symbols\) to OpenAI:/u,
+      'the oracle must announce the prompt size before it sends it'
+    );
+  });
+  it('indents every logged prompt line by two spaces', async () => {
+    const notes = [];
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+      notes.push(line);
+    }}).violations(doc);
+    assert.ok(
+      notes.join('').includes('\n  You are a strict linter'),
+      'the oracle must indent every logged prompt line by two spaces'
+    );
+  });
+});
+
 describe('Oracle guard', () => {
   it('drops a flag a rule vetoes through its suppress guard', async () => {
     const Command = require('../src/rules/command');

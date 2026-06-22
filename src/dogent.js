@@ -38,6 +38,7 @@ if (args.help()) {
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
     '  --hints    append a fixing hint for every rule that reported a violation\n' +
     '  --verbose  print diagnostic notes, scanned files and timings, to stderr\n' +
+    '  --show-prompt  print the whole prompt sent to the AI oracle to stderr\n' +
     '  --openai-http-header  add a "Name: Value" header to OpenAI calls\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n\n' +
@@ -111,7 +112,7 @@ const audit = async (docs) => {
         {...options, headers: {...options.headers, ...headers}}
       )
     ),
-    log
+    new Log(args.showPrompt())
   );
   const replies = await Promise.all(docs.map((doc) => oracle.violations(doc)));
   return replies.reduce(

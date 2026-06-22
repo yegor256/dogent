@@ -27,7 +27,12 @@ class Oracle {
   }
   async violations(document) {
     const prompt = new Prompt(this.rules, document).text();
-    this.log.debug(prompt);
+    const rows = prompt.split('\n');
+    const body = rows.map((row) => `  ${row}`).join('\n');
+    this.log.debug(
+      `Sending this prompt (${rows.length} lines, ${prompt.length} symbols) ` +
+      `to OpenAI:\n${body}`
+    );
     const reply = await this.chat.answer(prompt);
     return {
       found: new Answer(reply.content).violations().filter(

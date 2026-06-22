@@ -263,6 +263,30 @@ describe('Args verbose', () => {
   });
 });
 
+describe('Args show-prompt', () => {
+  it('detects the show-prompt flag', () => {
+    assert.strictEqual(
+      new Args(['--show-prompt', 'CLAUDE.md']).showPrompt(),
+      true,
+      'the --show-prompt flag must ask dogent to reveal the AI prompt'
+    );
+  });
+  it('reports no show-prompt flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).showPrompt(),
+      false,
+      'a missing --show-prompt flag must keep the AI prompt hidden'
+    );
+  });
+  it('never counts the show-prompt flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--show-prompt', 'CLAUDE.md']).unknown(),
+      [],
+      'the show-prompt flag must never count as an unrecognized option'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

@@ -95,6 +95,27 @@ describe('dogent file size', () => {
   });
 });
 
+describe('dogent show-prompt', () => {
+  it('reveals the AI prompt under the show-prompt flag', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.ok(
+      run(['--show-prompt', file], {
+        OPENAI_API_KEY: 'dummy', OPENAI_BASE_URL: 'http://127.0.0.1:1/v1'
+      }).stderr.includes('You are a strict linter'),
+      'dogent must reveal the AI prompt when asked'
+    );
+  });
+  it('hides the AI prompt without the show-prompt flag', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.ok(
+      !run([file], {
+        OPENAI_API_KEY: 'dummy', OPENAI_BASE_URL: 'http://127.0.0.1:1/v1'
+      }).stderr.includes('You are a strict linter'),
+      'a run without --show-prompt cannot leak the AI prompt'
+    );
+  });
+});
+
 describe('dogent missing path', () => {
   it('exits with a readable message when a passed path does not exist', () => {
     const absent = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'absent.md');

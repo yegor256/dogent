@@ -20,14 +20,16 @@ const minimist = require('minimist');
  * `--hints` flag appends, for every rule that reported a violation, one
  * English paragraph telling the agent how to fix it. The `--verbose` flag
  * turns on diagnostic notes, the scanned files and timings the run prints to
- * standard error. The `--openai-http-header` option adds one `Name: Value`
+ * standard error. The `--show-prompt` flag prints, to standard error, the
+ * whole prompt the run sends to the AI oracle. The `--openai-http-header`
+ * option adds one `Name: Value`
  * header to every OpenAI call; repeat it to add many. Everything after a `--`
  * separator counts as a path, never as an option.
  */
 class Args {
   constructor(
     argv,
-    flags = ['sarif', 'offline', 'help', 'version', 'hints', 'verbose'],
+    flags = ['sarif', 'offline', 'help', 'version', 'hints', 'verbose', 'show-prompt'],
     options = ['suppress', 'openai-http-header']
   ) {
     this.flags = flags;
@@ -54,6 +56,9 @@ class Args {
   }
   verbose() {
     return this.parsed.verbose === true;
+  }
+  showPrompt() {
+    return this.parsed['show-prompt'] === true;
   }
   suppress() {
     return [].concat(this.parsed.suppress || [])

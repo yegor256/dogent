@@ -206,6 +206,14 @@ Pass `--verbose` to print diagnostic notes, the scanned files and the
 npx @yegor256/dogent --verbose CLAUDE.md
 ```
 
+Pass `--show-prompt` to print, to standard error, the whole prompt that
+  `dogent` sends to the AI oracle, handy for debugging a surprising
+  warning. It works on its own, without `--verbose`:
+
+```bash
+npx @yegor256/dogent --show-prompt CLAUDE.md
+```
+
 ## Defaults file
 
 Tired of repeating the same flags on every run?

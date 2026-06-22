@@ -41,6 +41,12 @@
  * to leave the verdict entirely to the oracle. These deliberately
  * constant bodies reference no instance state, so the rule cannot
  * usefully apply to them.
+ *
+ * One more (max-lines) is switched off for test/*.js. Each test file is
+ * a flat list of behaviours that grows by one it-block per case, the
+ * same additive shape as src/rules/index.js, and the metric cannot
+ * usefully bound it without forcing a split that breaks the one
+ * test file per feature file mapping.
  */
 
 'use strict';
@@ -118,6 +124,9 @@ module.exports = [
   },
   {
     files: ['test/**/*.js'],
-    languageOptions: {globals: {...globals.mocha}}
+    languageOptions: {globals: {...globals.mocha}},
+    rules: {
+      'max-lines': 'off'
+    }
   }
 ];

@@ -9,6 +9,7 @@
 const fs = require('fs');
 const Args = require('./args');
 const Defaults = require('./defaults');
+const Log = require('./log');
 const Markdown = require('./markdown');
 const Report = require('./report');
 const Sources = require('./sources');
@@ -21,7 +22,8 @@ const rules = require('./rules');
 
 const args = new Args(new Defaults().argv().concat(process.argv.slice(2)));
 const sarif = args.sarif();
-const banner = 'Usage: dogent [--sarif] [--offline] [--hints] [--suppress=RULE,...] <file.md|dir>...';
+const log = new Log(args.verbose());
+const banner = 'Usage: dogent [options] <file.md|dir>...';
 if (args.version()) {
   process.stdout.write(`${version}\n`);
   process.exit(0);
@@ -35,6 +37,7 @@ if (args.help()) {
     '  --offline  never call the LLM, even when a token exists\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
     '  --hints    append a fixing hint for every rule that reported a violation\n' +
+    '  --verbose  print diagnostic notes, scanned files and timings, to stderr\n' +
     '  --openai-http-header  add a "Name: Value" header to OpenAI calls\n' +
     '  --version  show the version and exit\n' +
     '  --help     show this help and exit\n\n' +
@@ -78,10 +81,10 @@ scanned.forEach((file) => {
   const body = bodies.get(file);
   const lines = body === '' ? 0 : body.split('\n').length - (body.endsWith('\n') ? 1 : 0);
   const bytes = Buffer.byteLength(body);
-  process.stderr.write(`Scanning ${file} (${lines} lines, ${bytes} bytes)\n`);
+  log.debug(`Scanning ${file} (${lines} lines, ${bytes} bytes)`);
 });
 const checks = rules();
-process.stderr.write(`${scanned.length} files scanned, ${checks.length} rules applied\n`);
+log.debug(`${scanned.length} files scanned, ${checks.length} rules applied`);
 const documents = scanned.map(
   (file) => new Markdown(file, bodies.get(file)).document()
 );
@@ -130,24 +133,24 @@ const verify = async () => {
 const consult = Boolean(key) && !args.offline();
 const human = (outcome) => {
   const all = found.concat(outcome.extra);
-  process.stdout.write(`${new Report('dogent', found, localMillis, 'Locally').text()}\n`);
+  log.info(new Report('dogent', found, localMillis, 'Locally').text());
   if (consult) {
-    process.stdout.write(`${new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI').text()}\n`);
+    log.info(new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI').text());
   }
   if (args.hints() && all.length > 0) {
-    process.stdout.write(`\n${new Report('dogent', all).hints(checks)}\n`);
+    log.info(`\n${new Report('dogent', all).hints(checks)}`);
   }
 };
 const render = (outcome) => {
   const all = found.concat(outcome.extra);
   if (sarif) {
     const report = new Report('dogent', all, localMillis + outcome.aiMillis);
-    process.stdout.write(`${JSON.stringify(report.sarif(), null, 2)}\n`);
+    log.info(JSON.stringify(report.sarif(), null, 2));
   } else {
     human(outcome);
   }
   if (outcome.usage !== null) {
-    process.stderr.write(`${outcome.usage.text(outcome.extra.length)}, analysed in ${prettyMs(outcome.aiMillis)}\n`);
+    log.debug(`${outcome.usage.text(outcome.extra.length)}, analysed in ${prettyMs(outcome.aiMillis)}`);
   }
   process.exit(all.length > 0 ? 1 : 0);
 };

@@ -198,6 +198,14 @@ npx @yegor256/dogent \
 A header value often holds a secret, so keep it out of your shell history
   by listing the option in a `.dogent` file (see below) instead.
 
+Pass `--verbose` to print diagnostic notes, the scanned files and the
+  timings, to standard error in gray; without it `dogent` stays quiet and
+  prints only the report:
+
+```bash
+npx @yegor256/dogent --verbose CLAUDE.md
+```
+
 ## Defaults file
 
 Tired of repeating the same flags on every run?

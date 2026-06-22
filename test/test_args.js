@@ -239,6 +239,30 @@ describe('Args hints', () => {
   });
 });
 
+describe('Args verbose', () => {
+  it('detects the verbose flag', () => {
+    assert.strictEqual(
+      new Args(['--verbose', 'CLAUDE.md']).verbose(),
+      true,
+      'the --verbose flag must ask dogent for diagnostic notes'
+    );
+  });
+  it('reports no verbose flag when absent', () => {
+    assert.strictEqual(
+      new Args(['CLAUDE.md']).verbose(),
+      false,
+      'a missing --verbose flag must keep dogent quiet'
+    );
+  });
+  it('never counts the verbose flag as unknown', () => {
+    assert.deepStrictEqual(
+      new Args(['--verbose', 'CLAUDE.md']).unknown(),
+      [],
+      'the verbose flag must never count as an unrecognized option'
+    );
+  });
+});
+
 describe('Args version', () => {
   it('detects the version flag', () => {
     assert.strictEqual(

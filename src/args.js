@@ -18,15 +18,16 @@ const minimist = require('minimist');
  * asks for the release number. The `--suppress` option names a rule to
  * silence; repeat it or join names with commas to silence many at once. The
  * `--hints` flag appends, for every rule that reported a violation, one
- * English paragraph telling the agent how to fix it. The
- * `--openai-http-header` option adds one `Name: Value` header to every OpenAI
- * call; repeat it to add many. Everything after a `--` separator counts as a
- * path, never as an option.
+ * English paragraph telling the agent how to fix it. The `--verbose` flag
+ * turns on diagnostic notes, the scanned files and timings the run prints to
+ * standard error. The `--openai-http-header` option adds one `Name: Value`
+ * header to every OpenAI call; repeat it to add many. Everything after a `--`
+ * separator counts as a path, never as an option.
  */
 class Args {
   constructor(
     argv,
-    flags = ['sarif', 'offline', 'help', 'version', 'hints'],
+    flags = ['sarif', 'offline', 'help', 'version', 'hints', 'verbose'],
     options = ['suppress', 'openai-http-header']
   ) {
     this.flags = flags;
@@ -50,6 +51,9 @@ class Args {
   }
   hints() {
     return this.parsed.hints === true;
+  }
+  verbose() {
+    return this.parsed.verbose === true;
   }
   suppress() {
     return [].concat(this.parsed.suppress || [])

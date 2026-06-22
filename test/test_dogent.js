@@ -63,11 +63,21 @@ describe('dogent', () => {
       'an unknown option must make dogent exit with code two'
     );
   });
-  it('prints each scanned manifesto path', () => {
+});
+
+describe('dogent verbose', () => {
+  it('prints each scanned manifesto path under the verbose flag', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.ok(
-      run([file], {OPENAI_API_KEY: ''}).stderr.includes(`Scanning ${file}`),
-      'dogent must announce every file it scans'
+      run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr.includes(`Scanning ${file}`),
+      'dogent must announce every file it scans when verbose'
+    );
+  });
+  it('hides the scanning notes without the verbose flag', () => {
+    const file = manifesto('# Kitchen\nSharpen knife.');
+    assert.ok(
+      !run([file], {OPENAI_API_KEY: ''}).stderr.includes('Scanning'),
+      'a quiet run cannot leak diagnostic notes onto the error stream'
     );
   });
 });
@@ -77,7 +87,7 @@ describe('dogent file size', () => {
     const body = '# Kitchen\nSharpen knife.';
     const file = manifesto(body);
     assert.ok(
-      run([file], {OPENAI_API_KEY: ''}).stderr.includes(
+      run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr.includes(
         `Scanning ${file} (2 lines, ${Buffer.byteLength(body)} bytes)`
       ),
       'dogent must announce the size of every file it scans'
@@ -116,7 +126,7 @@ describe('dogent rules count', () => {
   it('reports how many rules it applied', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.match(
-      run([file], {OPENAI_API_KEY: ''}).stderr,
+      run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr,
       /[0-9]+ rules applied/u,
       'dogent must report the count of rules contributed to the study'
     );

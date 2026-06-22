@@ -147,7 +147,7 @@ const render = (outcome) => {
     human(outcome);
   }
   if (outcome.usage !== null) {
-    process.stderr.write(`${outcome.usage.text()}, analysed in ${prettyMs(outcome.aiMillis)}\n`);
+    process.stderr.write(`${outcome.usage.text(outcome.extra.length)}, analysed in ${prettyMs(outcome.aiMillis)}\n`);
   }
   process.exit(all.length > 0 ? 1 : 0);
 };

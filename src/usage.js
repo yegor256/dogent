@@ -25,7 +25,8 @@ const PRICES = {
  *
  * One immutable tally of an OpenAI exchange: the model, the tokens sent,
  * and the tokens received. Sums itself with another tally and renders a
- * single human summary line, complete with an estimated cost in cents.
+ * single human summary line, naming the warnings found and an estimated
+ * cost in cents.
  */
 class Usage {
   constructor(model, sent, received) {
@@ -44,8 +45,8 @@ class Usage {
     const price = PRICES[this.model] || {input: 0, output: 0};
     return this.sent / 1e6 * price.input + this.received / 1e6 * price.output;
   }
-  text() {
-    return `OpenAI: ${this.model}, ${this.sent}+${this.received} tokens, ${(this.cost() * 100).toFixed(2)}¢`;
+  text(warnings) {
+    return `OpenAI: ${this.model}, ${this.sent}+${this.received} tokens, ${warnings} warnings, ${(this.cost() * 100).toFixed(2)}¢`;
   }
 }
 

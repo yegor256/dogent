@@ -4,6 +4,11 @@
     "dogent": "./src/dogent.js"
   },
   "bugs": "https://github.com/yegor256/dogent/issues",
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "picocolors": "^1.1.1",
+    "pretty-ms": "^7.0.1"
+  },
   "description": "A strict, opinionated linter for agentic manifesto files (SKILL.md, CLAUDE.md, AGENTS.md)",
   "devDependencies": {
     "@eslint/js": "^9.28.0",
@@ -40,10 +45,5 @@
     "lint": "eslint .",
     "test": "mocha 'test/**/*.js' --timeout 60000"
   },
-  "version": "0.0.0",
-  "dependencies": {
-    "minimist": "^1.2.8",
-    "picocolors": "^1.1.1",
-    "pretty-ms": "^7.0.1"
-  }
+  "version": "0.0.0"
 }

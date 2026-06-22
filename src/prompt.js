@@ -50,7 +50,10 @@ class Prompt {
       'keys ruleId, level "warning", message.text, confidence, and',
       'locations. Set ruleId to the rule name and startLine to the',
       'printed line number; locations[0].physicalLocation must carry',
-      `artifactLocation.uri "${uri}" and region.startColumn 1.`
+      `artifactLocation.uri "${uri}" and region.startColumn 1.`,
+      'Keep message.text to one short warning naming the fault and the',
+      'fix; never quote or echo the offending line, the line number',
+      'already locates it.'
     ].join('\n');
   }
   fragments() {

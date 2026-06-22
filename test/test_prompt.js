@@ -40,6 +40,21 @@ describe('Prompt', () => {
       'the prompt must explain that a line belongs to the heading above it'
     );
   });
+  it('subjects clashes to the same confidence gate as every check', () => {
+    assert.ok(
+      !text().includes('clash is never a false alarm'),
+      'the prompt must not exempt clashes from the shared confidence gate'
+    );
+  });
+  it('omits the phantom line a trailing newline would add', () => {
+    assert.ok(
+      !text('# Doors\nShut gate\n').includes('3: '),
+      'a trailing newline must not be numbered as a non-existent line'
+    );
+  });
+});
+
+describe('Prompt reply shape', () => {
   it('asks the oracle to score each warning with a confidence', () => {
     assert.ok(
       text().includes('confidence'),
@@ -52,16 +67,10 @@ describe('Prompt', () => {
       'the prompt must tell the oracle an empty reply is the expected outcome'
     );
   });
-  it('subjects clashes to the same confidence gate as every check', () => {
+  it('forbids the oracle from echoing the offending line', () => {
     assert.ok(
-      !text().includes('clash is never a false alarm'),
-      'the prompt must not exempt clashes from the shared confidence gate'
-    );
-  });
-  it('omits the phantom line a trailing newline would add', () => {
-    assert.ok(
-      !text('# Doors\nShut gate\n').includes('3: '),
-      'a trailing newline must not be numbered as a non-existent line'
+      text().includes('never quote'),
+      'the prompt must keep the warning free of the verbatim line'
     );
   });
 });

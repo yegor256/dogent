@@ -110,7 +110,8 @@ const audit = async (docs) => {
         url,
         {...options, headers: {...options.headers, ...headers}}
       )
-    )
+    ),
+    log
   );
   const replies = await Promise.all(docs.map((doc) => oracle.violations(doc)));
   return replies.reduce(

@@ -59,6 +59,17 @@ describe('Oracle', () => {
       'the oracle must surface the token usage from the chat'
     );
   });
+  it('logs the full prompt it sends to the chat', async () => {
+    const notes = [];
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    await new Oracle([], new FakeChat('{"results":[]}'), {debug(line) {
+      notes.push(line);
+    }}).violations(doc);
+    assert.ok(
+      notes.join('').includes('Shut the gate'),
+      'the oracle must log the prompt body it sends to the AI'
+    );
+  });
 });
 
 describe('Oracle guard', () => {

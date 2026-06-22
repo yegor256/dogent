@@ -47,4 +47,11 @@ describe('Answer', () => {
       'a high-confidence warning must be kept'
     );
   });
+  it('shows the model confidence beside a warning it kept', () => {
+    assert.strictEqual(
+      new Answer(reply(result({confidence: 0.82}))).violations()[0].text(),
+      'x.md:4:1 warning [command]: sounds like a question (confidence 82%)',
+      'a kept warning must show the confidence the model reported'
+    );
+  });
 });

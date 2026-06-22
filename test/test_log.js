@@ -62,3 +62,24 @@ describe('Log', () => {
     );
   });
 });
+
+describe('Log error', () => {
+  it('writes an error line to its error stream without verbose', () => {
+    const err = sink();
+    new Log(false, sink(), err).error('boom');
+    assert.deepStrictEqual(
+      err.lines,
+      ['boom\n'],
+      'an error line cannot stay hidden when verbose is off'
+    );
+  });
+  it('keeps error lines off the output stream', () => {
+    const out = sink();
+    new Log(false, out, sink()).error('boom');
+    assert.deepStrictEqual(
+      out.lines,
+      [],
+      'an error line cannot leak into the result stream'
+    );
+  });
+});

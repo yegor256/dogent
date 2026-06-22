@@ -6,6 +6,7 @@
 'use strict';
 
 const Violation = require('./violation');
+const Verdict = require('./verdict');
 const Region = require('./region');
 
 const FLOOR = 0.6;
@@ -18,7 +19,8 @@ const FLOOR = 0.6;
  * native violation, ignoring any result it cannot read. Drops a result
  * whose self-reported confidence sits below the floor, so the model's
  * own doubt filters out its guesses; a result without a confidence is
- * trusted and kept.
+ * trusted and kept. Wraps every kept result that carries a confidence in
+ * a verdict, so the printed warning shows how sure the model was.
  */
 class Answer {
   constructor(raw, floor = FLOOR) {
@@ -36,12 +38,17 @@ class Answer {
       if (typeof result.confidence === 'number' && result.confidence < this.floor) {
         return [];
       }
-      return [new Violation(
+      const violation = new Violation(
         result.ruleId || 'oracle',
         result.level || 'warning',
         text,
         new Region(spot.artifactLocation.uri, line, spot.region.startColumn || 1)
-      )];
+      );
+      return [
+        typeof result.confidence === 'number'
+          ? new Verdict(violation, result.confidence)
+          : violation
+      ];
     });
   }
   results() {

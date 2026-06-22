@@ -13,8 +13,9 @@ const pc = require('picocolors');
  * The diagnostic voice of a run. Holds a verbosity switch, two streams,
  * and a paint that tints a string. Results reach the output stream
  * through info, while debug notes, painted gray, reach the error stream
- * only when verbose is on. Keeps the result stream free of diagnostic
- * noise, so a piped report stays clean.
+ * only when verbose is on. Errors reach the error stream through error,
+ * plain and always, regardless of verbosity. Keeps the result stream
+ * free of diagnostic noise, so a piped report stays clean.
  */
 class Log {
   constructor(verbose, out = process.stdout, err = process.stderr, paint = pc.gray) {
@@ -30,6 +31,9 @@ class Log {
     if (this.verbose) {
       this.err.write(`${this.paint(message)}\n`);
     }
+  }
+  error(message) {
+    this.err.write(`${message}\n`);
   }
 }
 

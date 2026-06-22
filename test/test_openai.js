@@ -18,6 +18,12 @@ const capture = (box) => (url) => {
   return reply('pong', {})();
 };
 
+const reject = (status, body) => () => Promise.resolve({
+  ok: false,
+  status,
+  text: () => Promise.resolve(body)
+});
+
 describe('Openai', () => {
   it('returns the assistant message content from the reply', async () => {
     const chat = new Openai(
@@ -47,14 +53,24 @@ describe('Openai', () => {
   });
   it('fails fast when the endpoint rejects the request', async () => {
     const chat = new Openai(
-      'secret-key',
-      'gpt-4o-mini',
-      'https://api.openai.com/v1',
-      () => Promise.resolve({ok: false, status: 429})
+      'secret-key', 'gpt-4o-mini', 'https://api.openai.com/v1', reject(429, 'slow down')
     );
     await assert.rejects(
       chat.answer('ping'),
       'a non-ok response must reject instead of returning silence'
+    );
+  });
+});
+
+describe('Openai rejection', () => {
+  it('reveals the response body, not just the bare status code', async () => {
+    const chat = new Openai(
+      'secret-key', 'wrong-model', 'https://api.openai.com/v1', reject(400, '{"error":"the model wrong-model does not exist"}')
+    );
+    await assert.rejects(
+      chat.answer('ping'),
+      /the model wrong-model does not exist/u,
+      'a rejection cannot hide the response body behind a bare status code'
     );
   });
 });

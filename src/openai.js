@@ -42,7 +42,9 @@ class Openai {
       }
     );
     if (!response.ok) {
-      throw new Error(`OpenAI request rejected with status ${response.status}`);
+      throw new Error(
+        `OpenAI request rejected with status ${response.status}: ${await response.text()}`
+      );
     }
     const body = await response.json();
     const usage = body.usage || {};

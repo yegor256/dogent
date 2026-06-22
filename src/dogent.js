@@ -170,7 +170,7 @@ const render = (outcome) => {
     try {
       outcome = await verify();
     } catch (error) {
-      process.stderr.write(`AI verification failed: ${error.message}\n`);
+      log.error(`AI verification failed: ${error.message}`);
       process.exit(2);
     }
   }

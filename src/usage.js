@@ -17,7 +17,9 @@ const PRICES = {
   'gpt-4o': {input: 2.5, output: 10},
   'gpt-4.1-nano': {input: 0.1, output: 0.4},
   'gpt-4.1-mini': {input: 0.4, output: 1.6},
-  'gpt-4.1': {input: 2, output: 8}
+  'gpt-4.1': {input: 2, output: 8},
+  'gpt-5.4-mini': {input: 0.75, output: 4.5},
+  'gpt-5.4': {input: 2.5, output: 15}
 };
 
 /**
@@ -25,8 +27,8 @@ const PRICES = {
  *
  * One immutable tally of an OpenAI exchange: the model, the tokens sent,
  * and the tokens received. Sums itself with another tally and renders a
- * single human summary line, naming the warnings found and an estimated
- * cost in cents.
+ * single human summary line, naming the warnings the model reported, the
+ * warnings kept after filtering, and an estimated cost in cents.
  */
 class Usage {
   constructor(model, sent, received) {
@@ -45,8 +47,8 @@ class Usage {
     const price = PRICES[this.model] || {input: 0, output: 0};
     return this.sent / 1e6 * price.input + this.received / 1e6 * price.output;
   }
-  text(warnings) {
-    return `OpenAI: ${this.model}, ${this.sent}+${this.received} tokens, ${warnings} warnings, ${(this.cost() * 100).toFixed(2)}¢`;
+  text(reported, kept) {
+    return `OpenAI: ${this.model}, ${this.sent}+${this.received} tokens, ${reported} warnings, ${kept} kept, ${(this.cost() * 100).toFixed(2)}¢`;
   }
 }
 

@@ -9,7 +9,7 @@ const Violation = require('./violation');
 const Verdict = require('./verdict');
 const Region = require('./region');
 
-const FLOOR = 0.6;
+const FLOOR = 0.8;
 
 /**
  * Answer.

@@ -30,6 +30,13 @@ describe('Usage', () => {
       'cost must follow the per-model input and output prices'
     );
   });
+  it('prices a million tokens of gpt-5.4 from its table entry', () => {
+    assert.strictEqual(
+      new Usage('gpt-5.4', 1000000, 1000000).cost(),
+      17.5,
+      'gpt-5.4 must cost its input plus output price per million tokens'
+    );
+  });
   it('charges nothing for a model absent from the price table', () => {
     assert.strictEqual(
       new Usage('mystery-model', 1000000, 1000000).cost(),
@@ -39,9 +46,9 @@ describe('Usage', () => {
   });
   it('renders a one-line summary of the exchange', () => {
     assert.strictEqual(
-      new Usage('gpt-4o-mini', 1234, 567).text(7),
-      'OpenAI: gpt-4o-mini, 1234+567 tokens, 7 warnings, 0.05¢',
-      'the summary must name the model, the tokens, the warnings, and the cost'
+      new Usage('gpt-4o-mini', 1234, 567).text(7, 3),
+      'OpenAI: gpt-4o-mini, 1234+567 tokens, 7 warnings, 3 kept, 0.05¢',
+      'the summary must name the model, the tokens, the warnings reported and kept, and the cost'
     );
   });
 });

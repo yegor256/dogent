@@ -52,8 +52,6 @@ class Prompt {
       '',
       'Give every result a "confidence" number from 0 to 1.',
       'This is your own probability that the violation is real.',
-      'Omit any result you score below 0.6.',
-      'Report only results you score above 0.8.',
       'When unsure, lower the confidence, never guess.',
       '',
       'Reply with one JSON object and nothing else, shaped as {"results":[ ... ]}.',

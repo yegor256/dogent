@@ -109,4 +109,10 @@ describe('Prompt reply shape', () => {
       'the prompt must ask the oracle to suggest a concrete fix'
     );
   });
+  it('leaves disqualifying low-confidence warnings to the caller', () => {
+    assert.ok(
+      !text().includes('Omit any result'),
+      'the prompt must not ask the model to drop its own low-confidence warnings'
+    );
+  });
 });

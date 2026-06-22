@@ -40,6 +40,13 @@ describe('Answer', () => {
       'a low-confidence warning must be filtered out'
     );
   });
+  it('drops a warning that misses the confidence floor', () => {
+    assert.strictEqual(
+      new Answer(reply(result({confidence: 0.7}))).violations().length,
+      0,
+      'a warning below the confidence floor must be filtered out'
+    );
+  });
   it('keeps a warning the model is sure about', () => {
     assert.strictEqual(
       new Answer(reply(result({confidence: 0.95}))).violations().length,

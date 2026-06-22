@@ -29,20 +29,23 @@ class Oracle {
   async violations(document) {
     const prompt = new Prompt(this.rules, document).text();
     const rows = prompt.split('\n');
-    const body = rows.map((row) => `  ${row}`).join('\n');
     this.log.debug(
       `Sending this prompt (${rows.length} lines, ${prompt.length} symbols) ` +
-      `to OpenAI:\n${body}`
+      `to OpenAI:\n${rows.map((row) => `  ${row}`).join('\n')}`
     );
     const clock = Date.now();
     const reply = await this.chat.answer(prompt);
     const millis = Date.now() - clock;
-    const found = new Answer(reply.content).violations().filter(
+    const answer = new Answer(reply.content);
+    const found = answer.violations().filter(
       (violation) => !this.rules.some(
         (rule) => rule.suppress?.(violation, document)
       )
     );
-    this.log.debug(`${reply.usage.text(found.length)}, analysed in ${prettyMs(millis)}`);
+    this.log.debug(
+      `${reply.usage.text(answer.results().length, found.length)}, ` +
+      `analysed in ${prettyMs(millis)}`
+    );
     return {found, usage: reply.usage};
   }
 }

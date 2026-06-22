@@ -35,7 +35,7 @@ describe('dogent', () => {
   it('reports zero problems for a clean manifesto', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.ok(
-      /0 problems found/u.test(run([file], {OPENAI_API_KEY: ''}).stdout),
+      /0 problems found/u.test(run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr),
       'a clean manifesto must report zero problems'
     );
   });
@@ -51,7 +51,7 @@ describe('dogent', () => {
   it('skips the LLM when handed the offline flag', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.ok(
-      /0 problems found/u.test(run(['--offline', file], {OPENAI_API_KEY: 'sk-broken-token'}).stdout),
+      /0 problems found/u.test(run(['--offline', '--verbose', file], {OPENAI_API_KEY: 'sk-broken-token'}).stderr),
       'the --offline flag must keep dogent away from the LLM even with a token'
     );
   });
@@ -115,7 +115,7 @@ describe('dogent local summary', () => {
   it('labels the local summary line on its own', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.match(
-      run([file], {OPENAI_API_KEY: ''}).stdout,
+      run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr,
       /Locally: 0 problems found/u,
       'dogent must report the locally found problems under their own summary line'
     );
@@ -137,7 +137,7 @@ describe('dogent timing', () => {
   it('prints the analysis duration beside the problem count', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');
     assert.match(
-      run([file], {OPENAI_API_KEY: ''}).stdout,
+      run(['--verbose', file], {OPENAI_API_KEY: ''}).stderr,
       /problems found in /u,
       'dogent must report how long the analysis took'
     );
@@ -149,7 +149,7 @@ describe('dogent suppress', () => {
     const file = manifesto('# Kitchen\nSharpen the knife.');
     assert.ok(
       /0 problems found/u.test(
-        run(['--suppress=no-articles', file], {OPENAI_API_KEY: ''}).stdout
+        run(['--suppress=no-articles', '--verbose', file], {OPENAI_API_KEY: ''}).stderr
       ),
       'a suppressed rule must vanish from the report'
     );

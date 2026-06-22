@@ -11,9 +11,10 @@ const prettyMs = require('pretty-ms');
  * Report.
  *
  * The whole verdict of a run: the tool that produced it and every
- * violation it gathered. Renders itself for humans or as a SARIF log.
- * When handed the analysis duration in milliseconds, the human text
- * closes with a friendly "in 340ms" rendered through pretty-ms.
+ * violation it gathered. Renders the violations as a human body, the
+ * count and the beta notice as a separate summary, or the whole verdict
+ * as a SARIF log. When handed the analysis duration in milliseconds, the
+ * summary closes with a friendly "in 340ms" rendered through pretty-ms.
  * A label tags the summary line, telling local checks from AI ones.
  * Given the rules that ran, it can also render one fixing hint per rule
  * that reported a violation, in first-appearance order.
@@ -28,12 +29,13 @@ class Report {
   count() {
     return this.bag.length;
   }
-  text() {
+  body() {
+    return this.bag.map((violation) => violation.text()).join('\n');
+  }
+  summary() {
     const suffix = this.millis === null ? '' : ` in ${prettyMs(this.millis)}`;
     const prefix = this.label === '' ? '' : `${this.label}: `;
-    const lines = this.bag
-      .map((violation) => violation.text())
-      .concat(`${prefix}${this.bag.length} problems found${suffix}`);
+    const lines = [`${prefix}${this.bag.length} problems found${suffix}`];
     if (this.bag.length > 0) {
       lines.push(
         'Spotted a false positive? dogent is in beta, please report it at ' +

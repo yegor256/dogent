@@ -131,11 +131,17 @@ const verify = async () => {
   };
 };
 const consult = Boolean(key) && !args.offline();
+const show = (report) => {
+  if (report.count() > 0) {
+    log.info(report.body());
+  }
+  log.debug(report.summary());
+};
 const human = (outcome) => {
   const all = found.concat(outcome.extra);
-  log.info(new Report('dogent', found, localMillis, 'Locally').text());
+  show(new Report('dogent', found, localMillis, 'Locally'));
   if (consult) {
-    log.info(new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI').text());
+    show(new Report('dogent', outcome.extra, outcome.aiMillis, 'OpenAI'));
   }
   if (args.hints() && all.length > 0) {
     log.info(`\n${new Report('dogent', all).hints(checks)}`);

@@ -18,27 +18,48 @@ describe('Report', () => {
     ]);
     assert.strictEqual(report.count(), 2, 'the report must count every violation it holds');
   });
-  it('summarises the total inside its text', () => {
+  it('renders each violation inside its body', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 7, 1))]
+    );
+    assert.ok(
+      report.body().includes('a.md:7:1'),
+      'the body must render the location of every violation it holds'
+    );
+  });
+  it('keeps the problem count out of its body', () => {
     const report = new Report(
       'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
     );
     assert.ok(
-      /1 problems found/u.test(report.text()),
-      'the text must summarise the number of problems found'
+      !/problems found/u.test(report.body()),
+      'the body must carry violations alone, never the summary line'
+    );
+  });
+});
+
+describe('Report summary', () => {
+  it('summarises the total inside its summary', () => {
+    const report = new Report(
+      'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
+    );
+    assert.ok(
+      /1 problems found/u.test(report.summary()),
+      'the summary must report the number of problems found'
     );
   });
   it('appends the analysis duration when handed one', () => {
     const report = new Report('dogent', [], 340);
     assert.ok(
-      /0 problems found in 340ms/u.test(report.text()),
-      'the text must close with a friendly elapsed time'
+      /0 problems found in 340ms/u.test(report.summary()),
+      'the summary must close with a friendly elapsed time'
     );
   });
   it('omits the duration when none is given', () => {
     const report = new Report('dogent', []);
     assert.ok(
-      !/ in /u.test(report.text()),
-      'a report with no timing must not invent an elapsed clause'
+      !/ in /u.test(report.summary()),
+      'a summary with no timing must not invent an elapsed clause'
     );
   });
   it('invites a false-positive report when problems exist', () => {
@@ -46,15 +67,15 @@ describe('Report', () => {
       'dogent', [new Violation('r', 'error', 'm', new Region('a.md', 1, 1))]
     );
     assert.ok(
-      /github\.com\/yegor256\/dogent\/issues/u.test(report.text()),
-      'the text must point at the issue tracker when problems exist'
+      /github\.com\/yegor256\/dogent\/issues/u.test(report.summary()),
+      'the summary must point at the issue tracker when problems exist'
     );
   });
   it('stays silent about false positives when clean', () => {
     const report = new Report('dogent', []);
     assert.ok(
-      !/issues/u.test(report.text()),
-      'a clean report must not nag about false positives'
+      !/issues/u.test(report.summary()),
+      'a clean summary must not nag about false positives'
     );
   });
 });

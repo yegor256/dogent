@@ -61,6 +61,22 @@ describe('Units exemptions', () => {
       'a decimal version must pass'
     );
   });
+  it('ignores digits welded to an identifier', () => {
+    const doc = new Markdown('x.md', '# H\nAsk yegor256 for help.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a digit run that is part of an identifier must not be flagged'
+    );
+  });
+  it('accepts the lower bound of a range whose unit trails the upper bound', () => {
+    const doc = new Markdown('x.md', '# H\nWrite between 40 and 200 words.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a range whose unit follows the upper bound must pass on both numbers'
+    );
+  });
   it('ignores a number inside a code span', () => {
     const doc = new Markdown('x.md', '# H\nPass the `8` value.').document();
     assert.strictEqual(

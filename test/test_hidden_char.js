@@ -26,6 +26,22 @@ describe('HiddenChar', () => {
       'a right-to-left override must be flagged'
     );
   });
+  it('accepts a U+FE0F that completes an emoji variation sequence', () => {
+    const doc = new Markdown('x.md', '# H\nPick ❤️ to react.').document();
+    assert.strictEqual(
+      new HiddenChar().violations(doc).length,
+      0,
+      'a U+FE0F bound to an emoji base must pass as a presentation sequence'
+    );
+  });
+  it('flags a lone U+FE0F not bound to an emoji base', () => {
+    const doc = new Markdown('x.md', '# H\nTrim️file.').document();
+    assert.strictEqual(
+      new HiddenChar().violations(doc).length,
+      1,
+      'a U+FE0F following plain text is still a hidden character'
+    );
+  });
   it('accepts clean ASCII prose', () => {
     const doc = new Markdown('x.md', '# H\nTrim the file now.').document();
     assert.strictEqual(

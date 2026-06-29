@@ -18,7 +18,7 @@ const FLOOR = 0.8;
  * @return {boolean} True when the text denies any contradiction
  */
 const denies = function denies(text) {
-  return /\bno (?:contradiction|inconsistency|conflict|clash|clear clash)\b|\bnot a (?:contradiction|conflict|clash)\b/iu.test(text);
+  return /\bno (?:\w+\s+)?(?:contradiction|inconsistency|conflict|clash)\b|\bnot a (?:contradiction|conflict|clash)\b/iu.test(text);
 };
 
 /**

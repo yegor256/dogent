@@ -25,6 +25,43 @@ class FakeChat {
   }
 }
 
+/**
+ * A stub that answers each call with the next reply in a fixed list, so
+ * a test can hand the oracle a different sample per run and check how it
+ * reconciles them.
+ * @param {Array} replies One canned reply per successive call
+ * @return {Object} A chat whose answer cycles through the replies
+ */
+const scripted = (replies) => {
+  let calls = 0;
+  return {
+    answer() {
+      const content = replies[calls];
+      calls += 1;
+      return Promise.resolve({content, usage: new Usage('m', 9, 4)});
+    }
+  };
+};
+
+const flagged = (line) => JSON.stringify({
+  results: [
+    {
+      ruleId: 'inconsistency',
+      level: 'warning',
+      message: {text: `line ${line} clashes with line 9`},
+      confidence: 0.95,
+      locations: [
+        {
+          physicalLocation: {
+            artifactLocation: {uri: 'x.md'},
+            region: {startLine: line, startColumn: 1}
+          }
+        }
+      ]
+    }
+  ]
+});
+
 describe('Oracle', () => {
   it('turns the AI reply into rendered violations', async () => {
     const reply = JSON.stringify({
@@ -52,12 +89,12 @@ describe('Oracle', () => {
       'the oracle must turn the AI reply into violations'
     );
   });
-  it('surfaces the token usage the chat reported', async () => {
+  it('sums the token usage across every sample', async () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
     assert.strictEqual(
       (await new Oracle(new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
-      9,
-      'the oracle must surface the token usage from the chat'
+      27,
+      'the oracle must sum the token usage across its three samples'
     );
   });
   it('logs the full prompt it sends to the chat', async () => {
@@ -82,7 +119,7 @@ describe('Oracle prompt log', () => {
     }}).violations(doc);
     assert.match(
       notes.join(''),
-      /Sending this prompt \([0-9]+ lines, [0-9]+ symbols\) to OpenAI:/u,
+      /Sending this prompt \([0-9]+ lines, [0-9]+ symbols\) to OpenAI [0-9]+ times:/u,
       'the oracle must announce the prompt size before it sends it'
     );
   });
@@ -95,6 +132,27 @@ describe('Oracle prompt log', () => {
     assert.ok(
       notes.join('').includes('\n  You are reviewing'),
       'the oracle must indent every logged prompt line by two spaces'
+    );
+  });
+});
+
+describe('Oracle self-consistency', () => {
+  it('keeps a contradiction that recurs in a majority of samples', async () => {
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    const chat = scripted([flagged(3), flagged(3), '{"results":[]}']);
+    assert.strictEqual(
+      (await new Oracle(chat).violations(doc)).found.length,
+      1,
+      'a finding present in two of three samples must survive'
+    );
+  });
+  it('drops a contradiction that appears in only a minority of samples', async () => {
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    const chat = scripted([flagged(3), '{"results":[]}', '{"results":[]}']);
+    assert.strictEqual(
+      (await new Oracle(chat).violations(doc)).found.length,
+      0,
+      'a finding present in only one of three samples must be discarded'
     );
   });
 });

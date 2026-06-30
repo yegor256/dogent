@@ -167,6 +167,13 @@ Pass `--offline` to keep `dogent` away from the LLM,
 npx @yegor256/dogent --offline CLAUDE.md
 ```
 
+The deterministic rules are the gate: they give the same verdict on the
+  same file every run, so a zero-warning CI check should run `--offline`.
+The AI oracle is advisory. Even at temperature zero a model answers
+  differently run to run, so `dogent` samples it several times and keeps
+  only a contradiction that recurs in a majority of the samples; treat a
+  single sweep as a hint, not a gate.
+
 Pass `--sarif` to print the report as SARIF instead of plain text.
 
 Pass `--hints` to append, for every rule that reported a violation, one
@@ -315,7 +322,9 @@ A user, or an AI agent, runs `dogent` from the console against a manifesto
 `dogent` parses the file into a document, applies every deterministic rule,
   and renders the violations as text or SARIF.
 Only after the rules find nothing, and only when a token is present,
-  it asks an OpenAI-compatible LLM for a second, deeper opinion.
+  it asks an OpenAI-compatible LLM for a second, deeper opinion, sampling
+  it several times and keeping only a contradiction a majority of the
+  samples agree on, so the advisory verdict stays stable run to run.
 
 ## How to Contribute
 

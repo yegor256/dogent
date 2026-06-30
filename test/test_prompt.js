@@ -105,4 +105,16 @@ describe('Prompt reasoning caveats', () => {
       'the prompt must tell the oracle to scan for a resolving line before flagging'
     );
   });
+  it('tells the oracle a draft-only result is no send conflict', () => {
+    assert.ok(
+      text().includes('draft-only result is the finished deliverable'),
+      'the prompt must tell the oracle an intentionally unsent draft is no contradiction'
+    );
+  });
+  it('tells the oracle that fixing errors is not rewording', () => {
+    assert.ok(
+      text().includes('fix typos or transcription errors'),
+      'the prompt must tell the oracle that repairing errors preserves wording'
+    );
+  });
 });

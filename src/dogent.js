@@ -33,7 +33,7 @@ if (args.help()) {
     'Lint agentic manifesto files like SKILL.md and CLAUDE.md.\n\n' +
     'Options:\n' +
     '  --sarif    render the report as SARIF JSON\n' +
-    '  --offline  never call the LLM, even when a token exists\n' +
+    '  --offline  never call the LLM, the deterministic gate for CI\n' +
     '  --suppress silence a rule by id; repeat or comma-join to silence many\n' +
     '  --model    name the LLM to consult, overriding OPENAI_MODEL\n' +
     '  --token    carry the API key, overriding OPENAI_API_KEY\n' +

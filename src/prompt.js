@@ -15,6 +15,10 @@ const caveats = () => [
   'is the fallback to "always do X", not its opposite.',
   'Never assume an intent the file forbids, and never conflate two objects',
   'as one when each line names a different thing.',
+  'A deliberately unsent or draft-only result is the finished deliverable,',
+  'not a contradiction with any instruction that merely mentions sending.',
+  '"Preserve the wording" and "fix typos or transcription errors" are compatible:',
+  'repairing a mistake or following a spelling convention is not rewording.',
   'Scan the whole file for a line that resolves the tension before flagging;',
   'when such a line exists, stay silent.'
 ].join('\n');
@@ -38,7 +42,8 @@ const shape = (uri) => [
  * for one thing only, to read the whole file and name where it
  * contradicts itself, or to stay silent. A caveats block teaches it to
  * rule out the common false clashes — explicit branch words, A-then-B
- * sequencing, try-then-fallback, an invented intent, and a tension a
+ * sequencing, try-then-fallback, an invented intent, a draft-only
+ * completion, error repair that preserves wording, and a tension a
  * later line already resolves — before reporting anything.
  */
 class Prompt {

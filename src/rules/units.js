@@ -18,8 +18,10 @@ const mask = require('../mask');
  * inline code first, then scans each run of digits and flags one that
  * names no unit, skipping percentages, units already present, decimals
  * and versions, leading list ordinals, a digit run welded to a letter
- * (part of an identifier like "yegor256"), and the lower bound of a range
- * whose unit trails the upper bound ("between 40 and 200 words"). Distinct
+ * (part of an identifier like "yegor256"), the lower bound of a range
+ * whose unit trails the upper bound ("between 40 and 200 words"), and a
+ * status code whose preceding word is "code", "status", or "HTTP" ("exit
+ * code 0"), which names an identifier rather than a magnitude. Distinct
  * from quantifier,
  * which targets vague amount words like "several"; here the number is
  * exact but its unit is missing.
@@ -32,7 +34,8 @@ class Units {
       'h|hr|hrs|hour|hours|d|day|days|week|weeks|month|months|' +
       'year|years|b|kb|mb|gb|tb|byte|bytes|bit|bits|char|chars|' +
       'character|characters|symbol|symbols|line|lines|word|words|' +
-      'token|tokens|px|em|rem|pt|time|times|x)\\b',
+      'token|tokens|file|files|thought|thoughts|guest|guests|' +
+      'repo|repos|issue|issues|px|em|rem|pt|time|times|x)\\b',
       'u'
     );
   }
@@ -74,6 +77,9 @@ class Units {
     }
     const before = clean.charAt(hit.index - 1);
     if (/[.v@A-Za-z\d]/u.test(before) || /^\.\d/u.test(after)) {
+      return true;
+    }
+    if (/\b(?:code|status|http)\s*$/iu.test(clean.slice(0, hit.index))) {
       return true;
     }
     const lead = /^\s*(?<num>\d+)\.\s/u.exec(clean);

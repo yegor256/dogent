@@ -86,3 +86,22 @@ describe('Units exemptions', () => {
     );
   });
 });
+
+describe('Units identifiers', () => {
+  it('accepts a count noun added to the whitelist', () => {
+    const doc = new Markdown('x.md', '# H\nList 10 thoughts here.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a whitelisted count noun such as "thoughts" must satisfy the unit'
+    );
+  });
+  it('ignores a status code after "code"', () => {
+    const doc = new Markdown('x.md', '# H\nReturn exit code 0 now.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a status code is an identifier, not a magnitude needing a unit'
+    );
+  });
+});

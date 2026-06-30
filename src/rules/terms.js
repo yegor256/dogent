@@ -16,13 +16,16 @@ const mask = require('../mask');
  * Where consistent hunts word-for-word duplicates and contradictions,
  * this rule catches the same idea wearing different labels, which makes
  * the agent guess whether two names mean two things. A small built-in
- * map of synonym groups seeds the check.
+ * map of synonym groups seeds the check. A platform/sender noun like
+ * "bot" stays out of the agent group: it names a distinct thing (the
+ * Telegram sender, the "Telegram Bot API"), not the AI actor, so the two
+ * are not interchangeable.
  */
 class Terms {
   constructor() {
     this.id = 'terms';
     this.groups = [
-      ['agent', 'assistant', 'bot'],
+      ['agent', 'assistant'],
       ['directory', 'folder'],
       ['parameter', 'argument', 'param', 'arg'],
       ['function', 'method', 'routine']

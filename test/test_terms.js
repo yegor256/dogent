@@ -26,6 +26,14 @@ describe('Terms', () => {
       'a single consistent term must pass'
     );
   });
+  it('accepts "bot" beside "agent" as domain-distinct nouns', () => {
+    const doc = new Markdown('x.md', '# H\nThe agent posts a reaction.\nThe Telegram bot sends it.').document();
+    assert.strictEqual(
+      new Terms().violations(doc).length,
+      0,
+      '"bot" names the sender, not the actor, so it must not pair with "agent"'
+    );
+  });
   it('ignores synonyms inside code spans', () => {
     const doc = new Markdown('x.md', '# H\nScan the `directory`.\nList the `folder`.').document();
     assert.strictEqual(

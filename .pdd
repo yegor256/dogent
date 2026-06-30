@@ -3,6 +3,7 @@
 --exclude node_modules/**/*
 --exclude src/rules/unfinished.js
 --exclude test/test_unfinished.js
+--exclude src/rules/jargon.js
 --rule min-words:20
 --rule min-estimate:15
 --rule max-estimate:90

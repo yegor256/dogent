@@ -17,7 +17,10 @@ const mask = require('../mask');
  * scale implicit; "under 80 symbols" states it. The checker masks
  * inline code first, then scans each run of digits and flags one that
  * names no unit, skipping percentages, units already present, decimals
- * and versions, and leading list ordinals. Distinct from quantifier,
+ * and versions, leading list ordinals, a digit run welded to a letter
+ * (part of an identifier like "yegor256"), and the lower bound of a range
+ * whose unit trails the upper bound ("between 40 and 200 words"). Distinct
+ * from quantifier,
  * which targets vague amount words like "several"; here the number is
  * exact but its unit is missing.
  */
@@ -66,15 +69,19 @@ class Units {
   }
   skip(clean, hit) {
     const after = clean.slice(hit.index + hit[0].length);
-    if (after.startsWith('%') || this.unit.test(after)) {
+    if (after.startsWith('%') || this.unit.test(after) || this.range(after)) {
       return true;
     }
     const before = clean.charAt(hit.index - 1);
-    if (/[.v@\d]/u.test(before) || /^\.\d/u.test(after)) {
+    if (/[.v@A-Za-z\d]/u.test(before) || /^\.\d/u.test(after)) {
       return true;
     }
     const lead = /^\s*(?<num>\d+)\.\s/u.exec(clean);
     return lead !== null && lead.index + lead[0].indexOf(lead.groups.num) === hit.index;
+  }
+  range(after) {
+    const tail = /^\s*(?:to|and|or|through|[-–—])\s*\d+/u.exec(after);
+    return tail !== null && this.unit.test(after.slice(tail[0].length));
   }
 }
 

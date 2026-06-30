@@ -105,3 +105,46 @@ describe('Units identifiers', () => {
     );
   });
 });
+
+describe('Units follow-up', () => {
+  it('accepts a four-digit calendar year', () => {
+    const doc = new Markdown('x.md', '# H\nHold the event in year 2026.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a calendar year names no magnitude and must pass'
+    );
+  });
+  it('accepts an edition suffix after an apostrophe', () => {
+    const doc = new Markdown('x.md', '# H\nSubmit the paper to ICCQ\'26 now.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'an edition label welded to a letter must pass'
+    );
+  });
+  it('ignores digits inside a bare URL', () => {
+    const doc = new Markdown('x.md', '# H\nLink to https://www.iccq.ru/2026.html here.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'digits inside a bare URL must not be flagged'
+    );
+  });
+  it('accepts a method-count unit noun', () => {
+    const doc = new Markdown('x.md', '# H\nSplit classes holding over 5 methods.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a count of methods names its own unit and must pass'
+    );
+  });
+  it('accepts a unit word past a masked code span', () => {
+    const doc = new Markdown('x.md', '# H\nConfirm 10 `thought-NNN.txt` files exist.').document();
+    assert.strictEqual(
+      new Units().violations(doc).length,
+      0,
+      'a unit trailing a masked span must still license the number'
+    );
+  });
+});

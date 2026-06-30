@@ -15,7 +15,10 @@ const Region = require('../region');
  *
  * Demands that a SKILL.md frontmatter "name" equal the name of the
  * directory that holds the file. The check applies only to SKILL.md
- * and stays silent when the file carries no "name" key.
+ * and stays silent when the file carries no "name" key. A dot-prefixed
+ * parent directory is exempt, since such a directory is conventionally a
+ * generated, hidden copy whose frontmatter "name" must stay the original
+ * so the runtime still invokes the skill under its real name.
  */
 class NameMatchesDir {
   constructor() {
@@ -43,7 +46,7 @@ class NameMatchesDir {
   }
   mismatch(uri, name) {
     const parent = path.basename(path.dirname(path.resolve(uri)));
-    if (!name || name.value === parent) {
+    if (!name || name.value === parent || parent.startsWith('.')) {
       return [];
     }
     return [new Violation(

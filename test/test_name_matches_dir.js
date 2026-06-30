@@ -33,6 +33,13 @@ describe('NameMatchesDir', () => {
       new NameMatchesDir().violations(doc).length, 0, 'a bare filename must resolve its real parent'
     );
   });
+  it('ignores a name inside a dot-prefixed generated directory', () => {
+    const text = '---\nname: summarize\ndescription: Summarize chats\n---\n# Doors\nShut gate';
+    const doc = new Markdown('cowork/conferences/.witness-summarize/SKILL.md', text).document();
+    assert.strictEqual(
+      new NameMatchesDir().violations(doc).length, 0, 'a dot-prefixed parent directory must escape the check'
+    );
+  });
   it('ignores a file that is not a skill', () => {
     const text = '---\nname: something-else\ndescription: Review code\n---\n# Doors\nShut gate';
     const doc = new Markdown('skills/code-review/CLAUDE.md', text).document();

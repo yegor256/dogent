@@ -45,5 +45,5 @@
     "lint": "eslint .",
     "test": "mocha 'test/**/*.js' --timeout 60000"
   },
-  "version": "0.0.0"
+  "version": "0.13.3"
 }

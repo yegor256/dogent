@@ -51,3 +51,14 @@ describe('Vague', () => {
     );
   });
 });
+
+describe('Vague described positions', () => {
+  it('ignores a qualifier quoted inside a described thesis', () => {
+    const doc = new Markdown('x.md', '# H\nArgue that many small repositories beat monorepos.').document();
+    assert.strictEqual(
+      new Vague().violations(doc).length,
+      0,
+      'a qualifier inside an "argue that ..." thesis is subject matter'
+    );
+  });
+});

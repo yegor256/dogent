@@ -53,4 +53,12 @@ describe('Quantifier accepts', () => {
       'a quantity word inside inline code must not be flagged'
     );
   });
+  it('ignores a quantity quoted inside a described thesis', () => {
+    const doc = new Markdown('x.md', '# H\nArgue that many small repositories beat monorepos.').document();
+    assert.strictEqual(
+      new Quantifier().violations(doc).length,
+      0,
+      'a quantity inside an "argue that ..." thesis is subject matter'
+    );
+  });
 });

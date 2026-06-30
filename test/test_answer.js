@@ -48,6 +48,13 @@ describe('Answer', () => {
       'a result that narrates a non-finding must be discarded'
     );
   });
+  it('drops a result whose denial carries an adjective before the noun', () => {
+    assert.strictEqual(
+      new Answer(reply(result({message: {text: 'No clear contradiction found, the lines are compatible'}}))).violations().length,
+      0,
+      'a non-finding phrased with an adjective must still be discarded'
+    );
+  });
 });
 
 describe('Answer confidence', () => {

@@ -34,14 +34,29 @@ const ALLOWLIST = new Set([
   'MIT',
   'SARIF',
   'SKILL',
-  'CLAUDE'
+  'CLAUDE',
+  'README',
+  'NULL',
+  'TODO',
+  'SOLID'
 ]);
 
 const initials = (gloss) => (gloss.match(/[A-Za-z]+/gu) || [])
   .map((word) => word[0].toUpperCase())
   .join('');
 
-const defined = (masked) => {
+const inlined = (masked) => {
+  const found = new Set();
+  const regex = /\b(?<before>[A-Z]{2,})\s+(?:stands for|is short for)\b|\bRead\s+(?<after>[A-Z]{2,})\s+as\b/gu;
+  let hit = regex.exec(masked);
+  while (hit !== null) {
+    found.add(hit.groups.before || hit.groups.after);
+    hit = regex.exec(masked);
+  }
+  return found;
+};
+
+const parenthetical = (masked) => {
   const found = new Set();
   const regex = /\b(?<acronym>[A-Z]{2,})\s*\(|\((?<gloss>[^)]+)\)/gu;
   let hit = regex.exec(masked);
@@ -58,6 +73,12 @@ const defined = (masked) => {
   return found;
 };
 
+const defined = (masked) => {
+  const found = parenthetical(masked);
+  inlined(masked).forEach((acronym) => found.add(acronym));
+  return found;
+};
+
 const undefining = (acronym, scope) => !scope.known.has(acronym) &&
   !ALLOWLIST.has(acronym);
 
@@ -69,10 +90,13 @@ const undefining = (acronym, scope) => !scope.known.has(acronym) &&
  * a parenthetical gloss, as in "RBAC (role-based access control)", when
  * a parenthetical's word initials spell it, as in "AAA pattern
  * (Arrange-Act-Assert)", or when the expansion precedes a parenthetical
- * acronym, as in "Virtual Private Network (VPN)", so a single expansion
- * licenses every later mention. Well-known acronyms sit
- * in a built-in allowlist and pass untouched. Only the first unexpanded
- * occurrence of each acronym is reported.
+ * acronym, as in "Virtual Private Network (VPN)", or when an explicit
+ * inline form names it, as in "ICCQ stands for ...", "ICCQ is short for
+ * ...", or the house convention "Read ICCQ as ...", so a single
+ * expansion licenses every later mention. A following noun ("commit
+ * SHA") is not a gloss, since that only qualifies the token. Well-known
+ * acronyms sit in a built-in allowlist and pass untouched. Only the
+ * first unexpanded occurrence of each acronym is reported.
  */
 class Jargon {
   constructor() {

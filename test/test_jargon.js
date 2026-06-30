@@ -70,4 +70,39 @@ describe('Jargon definitions', () => {
       'an "Expansion (ACRONYM)" definition must license later mentions'
     );
   });
+  it('accepts an acronym defined with "stands for"', () => {
+    const doc = new Markdown('x.md', '# H\nICCQ stands for the code quality conference.\nVisit ICCQ.').document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      0,
+      'an "ACRONYM stands for ..." form must license later mentions'
+    );
+  });
+  it('accepts an acronym defined with "Read X as"', () => {
+    const doc = new Markdown('x.md', '# H\nRead IEEE as the engineering institute here.').document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      0,
+      'the "Read ACRONYM as ..." house convention must license it'
+    );
+  });
+});
+
+describe('Jargon allowlist', () => {
+  it('accepts a filename on the allowlist', () => {
+    const doc = new Markdown('x.md', '# H\nEdit the README now.').document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      0,
+      'a non-acronym token such as README needs no expansion'
+    );
+  });
+  it('still flags a token merely qualified by a following noun', () => {
+    const doc = new Markdown('x.md', '# H\nPush the commit SHA upstream.').document();
+    assert.strictEqual(
+      new Jargon().violations(doc).length,
+      1,
+      'a following noun qualifies, it does not gloss, so SHA still flags'
+    );
+  });
 });

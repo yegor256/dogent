@@ -53,7 +53,7 @@ Most rewrite prompts for you or score a file, while we enforce
 Run it on any manifesto file, no installation required:
 
 ```bash
-npx @yegor256/dogent@0.12.11 SKILL.md
+npx @yegor256/dogent@0.13.0 SKILL.md
 ```
 
 Point it at a directory to lint the default manifestos it holds
@@ -282,7 +282,7 @@ Reference `dogent` as a remote hook in `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/yegor256/dogent
-    rev: 0.12.11
+    rev: 0.13.0
     hooks:
       - id: dogent
 ```

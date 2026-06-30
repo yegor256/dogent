@@ -16,8 +16,12 @@ const mask = require('../mask');
  * the page behind it may rot or inject hidden instructions. Durable
  * guidance belongs inlined, not fetched at run time. A URL inside
  * inline code or a fenced snippet is exempt, since those are examples.
- * Distinct from dead-import, which targets local @path imports; this
- * one complements untrusted and stale.
+ * A data-only guard ("as data", "treat as untrusted", "do not follow",
+ * "inside delimiters") declared once anywhere in the file exempts every
+ * URL, since the author has acknowledged the fetch and addressed the
+ * injection concern the rule backs; this matches how untrusted scopes
+ * its guard. Distinct from dead-import, which targets local @path
+ * imports; this one complements untrusted and stale.
  */
 class ExternalLink {
   constructor() {
@@ -28,6 +32,10 @@ class ExternalLink {
   }
   violations(document) {
     const uri = document.uri();
+    const guard = /\b(?:as data|do not follow|treat as untrusted|inside delimiters|untrusted)\b/iu;
+    if (guard.test(mask(document.text()))) {
+      return [];
+    }
     return document.walk({
       header: () => [],
       prose: (text, line) => this.scan(text, line, uri),

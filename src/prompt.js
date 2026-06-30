@@ -5,6 +5,29 @@
 
 'use strict';
 
+const caveats = () => [
+  'Before you flag a pair, rule out these false clashes.',
+  'Honor explicit branch words: "otherwise", "else", "instead", or',
+  '"when X ... otherwise" mark mutually exclusive branches, not a conflict.',
+  'Treat A-then-B sequencing as compatible: a filter that drops some items',
+  'and a later step that records the rest never touch the same item.',
+  'Treat try-then-fallback as compatible: "report it when you cannot X"',
+  'is the fallback to "always do X", not its opposite.',
+  'Never assume an intent the file forbids, and never conflate two objects',
+  'as one when each line names a different thing.',
+  'Scan the whole file for a line that resolves the tension before flagging;',
+  'when such a line exists, stay silent.'
+].join('\n');
+
+const shape = (uri) => [
+  'Reply with one JSON object and nothing else, shaped as {"results":[ ... ]}.',
+  'Each JSON object item is a SARIF result with keys ruleId, level "warning", message.text, confidence, and locations.',
+  'Set ruleId to "inconsistency" and startLine to one of the two clashing line numbers.',
+  `The locations[0].physicalLocation must carry artifactLocation.uri "${uri}" and region.startColumn 1.`,
+  'In message.text, explain in a sentence or two how the lines clash, naming the other line number.',
+  'Quote the clashing words verbatim, never echoing either line entirely.'
+].join('\n');
+
 /**
  * Prompt.
  *
@@ -13,7 +36,10 @@
  * Manifesto section fencing the file under review with every line
  * numbered so the oracle can cite an exact row. The oracle is asked
  * for one thing only, to read the whole file and name where it
- * contradicts itself, or to stay silent.
+ * contradicts itself, or to stay silent. A caveats block teaches it to
+ * rule out the common false clashes — explicit branch words, A-then-B
+ * sequencing, try-then-fallback, an invented intent, and a tension a
+ * later line already resolves — before reporting anything.
  */
 class Prompt {
   constructor(document) {
@@ -43,6 +69,8 @@ class Prompt {
       'Never invent an inconsistency to seem useful.',
       'Report one only when you are certain two lines clash.',
       '',
+      caveats(),
+      '',
       'The results array holds contradictions only.',
       'Never add a result that states no contradiction exists.',
       'Absence of a contradiction is an empty array, never a result describing it.',
@@ -53,12 +81,7 @@ class Prompt {
       'A result without a confidence is discarded, so always include one.',
       'When unsure, lower the confidence, never guess.',
       '',
-      'Reply with one JSON object and nothing else, shaped as {"results":[ ... ]}.',
-      'Each JSON object item is a SARIF result with keys ruleId, level "warning", message.text, confidence, and locations.',
-      'Set ruleId to "inconsistency" and startLine to one of the two clashing line numbers.',
-      `The locations[0].physicalLocation must carry artifactLocation.uri "${uri}" and region.startColumn 1.`,
-      'In message.text, explain in a sentence or two how the lines clash, naming the other line number.',
-      'Quote the clashing words verbatim, never echoing either line entirely.'
+      shape(uri)
     ].join('\n');
   }
   manifesto() {

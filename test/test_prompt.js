@@ -79,3 +79,30 @@ describe('Prompt reply shape', () => {
     );
   });
 });
+
+describe('Prompt reasoning caveats', () => {
+  it('tells the oracle to honor explicit branch words', () => {
+    assert.ok(
+      text().includes('Honor explicit branch words'),
+      'the prompt must tell the oracle that "otherwise" marks branches, not a clash'
+    );
+  });
+  it('tells the oracle that sequencing is compatible', () => {
+    assert.ok(
+      text().includes('A-then-B sequencing as compatible'),
+      'the prompt must tell the oracle a filter-then-record pipeline is no conflict'
+    );
+  });
+  it('tells the oracle that try-then-fallback is compatible', () => {
+    assert.ok(
+      text().includes('try-then-fallback as compatible'),
+      'the prompt must tell the oracle a "when you cannot X" fallback is no clash'
+    );
+  });
+  it('tells the oracle to look for a resolving line first', () => {
+    assert.ok(
+      text().includes('resolves the tension'),
+      'the prompt must tell the oracle to scan for a resolving line before flagging'
+    );
+  });
+});

@@ -11,7 +11,8 @@ const Usage = require('./usage');
 const Log = require('./log');
 const prettyMs = require('pretty-ms');
 
-const SAMPLES = 3;
+const SAMPLES = 5;
+const AGREEMENT = 4;
 
 const absorb = (tally, run) => {
   const seen = new Set();
@@ -33,17 +34,20 @@ const absorb = (tally, run) => {
  * prompt from a document, logs that prompt through debug, and asks the
  * endpoint not once but several times, since the same model at
  * temperature zero still answers differently run to run. Keeps only a
- * contradiction that recurs in a majority of the samples, so a finding
- * that flaps in and out across runs is discarded and the verdict is
- * stable. Pairs the kept findings with the summed token usage the model
- * reported. Reads the whole manifesto and names where it contradicts
- * itself, knowing nothing of the deterministic rules.
+ * contradiction that recurs in a super-majority of the samples — by
+ * default four of five — so a finding that flaps in and out across runs,
+ * or whose per-sample odds hover near half, falls below the bar and is
+ * discarded, biasing an uncertain claim toward silence. Pairs the kept
+ * findings with the summed token usage the model reported. Reads the
+ * whole manifesto and names where it contradicts itself, knowing nothing
+ * of the deterministic rules.
  */
 class Oracle {
-  constructor(chat, log = new Log(false), samples = SAMPLES) {
+  constructor(chat, log = new Log(false), samples = SAMPLES, agreement = AGREEMENT) {
     this.chat = chat;
     this.log = log;
     this.samples = samples;
+    this.agreement = agreement;
   }
   async violations(document) {
     const prompt = new Prompt(document).text();
@@ -59,11 +63,11 @@ class Oracle {
     return {found, usage};
   }
   agree(runs) {
-    const majority = Math.floor(this.samples / 2) + 1;
+    const bar = Math.min(this.agreement, this.samples);
     const tally = new Map();
     runs.forEach((run) => absorb(tally, run));
     return [...tally.values()]
-      .filter((cell) => cell.count >= majority)
+      .filter((cell) => cell.count >= bar)
       .map((cell) => cell.best);
   }
   announce(prompt) {

@@ -8,6 +8,7 @@
 const Violation = require('../violation');
 const Region = require('../region');
 const mask = require('../mask');
+const quoted = require('../quoted');
 
 /**
  * Vague.
@@ -15,8 +16,11 @@ const mask = require('../mask');
  * Flags subjective, unmeasurable qualifiers that pretend to be precise:
  * "properly", "good", "clean", "fast", "robust", and the like. Each
  * leaves the agent to guess a criterion that varies run to run, so a
- * vague qualifier is a non-instruction in disguise. The list is kept
- * apart from the hedging words so the two rules never double-report.
+ * vague qualifier is a non-instruction in disguise. A qualifier quoted
+ * inside a described position — "argue that many small repositories
+ * win" — names the subject matter, not the agent's deliverable, so it
+ * passes. The list is kept apart from the hedging words so the two rules
+ * never double-report.
  */
 class Vague {
   constructor() {
@@ -46,12 +50,14 @@ class Vague {
     const masked = mask(text);
     let hit = regex.exec(masked);
     while (hit !== null) {
-      found.push(new Violation(
-        this.id,
-        'warning',
-        `vague qualifier "${hit[0]}" carries no measurable criterion`,
-        new Region(uri, line, hit.index + 1)
-      ));
+      if (!quoted(masked, hit.index)) {
+        found.push(new Violation(
+          this.id,
+          'warning',
+          `vague qualifier "${hit[0]}" carries no measurable criterion`,
+          new Region(uri, line, hit.index + 1)
+        ));
+      }
       hit = regex.exec(masked);
     }
     return found;

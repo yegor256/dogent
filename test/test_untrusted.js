@@ -97,3 +97,14 @@ describe('Untrusted hyphen boundaries', () => {
     );
   });
 });
+
+describe('Untrusted environment variables', () => {
+  it('accepts a url read from a host-injected environment variable', () => {
+    const doc = new Markdown('x.md', '# H\nRead URL from environment variable host injects.').document();
+    assert.strictEqual(
+      new Untrusted().violations(doc).length,
+      0,
+      'a value from a host-injected environment variable is trusted'
+    );
+  });
+});

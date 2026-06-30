@@ -18,7 +18,10 @@ const mask = require('../mask');
  * "file", "issue", or "comment" — that content can carry hidden
  * instructions the agent then obeys. A bare "output" is not a source,
  * since a skill usually reads its own output; only "command output" or
- * "external output" counts. A data-only guard ("as data", "do not
+ * "external output" counts. A value attributed to an environment variable
+ * ("environment variable", "env var", "$NAME", "from ... environment") is
+ * host-supplied launch context, not fetched external content, so its line
+ * is left alone. A data-only guard ("as data", "do not
  * follow", "treat as untrusted", "inside delimiters") declared once
  * anywhere in the file clears every consuming line, since these
  * manifestos are short and a Safety section is conventionally global, so
@@ -49,7 +52,8 @@ class Untrusted {
     const masked = mask(text);
     const verb = /(?<!-)\b(?:read|fetch|open|follow|execute)\b(?!-)/iu;
     const source = /\b(?:page|url|link|email|file|issue|comment)\b|\b(?:command|external) output\b/iu;
-    if (!verb.test(masked) || !source.test(masked)) {
+    const env = /\benvironment variable\b|\benv var\b|\$[A-Za-z_]\w*|\bfrom\b[^.]*\benvironment\b/iu;
+    if (!verb.test(masked) || !source.test(masked) || env.test(masked)) {
       return [];
     }
     return [new Violation(

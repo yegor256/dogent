@@ -15,9 +15,11 @@ const mask = require('../mask');
  * Demands that branching never collapse onto one line. A line carrying
  * more than one condition keyword (if, unless, when, else, otherwise)
  * spells out a whole branch tree at once, so each case must split into
- * its own command. Distinct from simple, which weighs clause depth, and
- * from atomic, which counts instructions; this one targets branching
- * alone. A lone guard keeps just one keyword and stays clean.
+ * its own command. An adverbial "otherwise" or "else" after a modal
+ * ("would otherwise praise") heads no branch and is not counted.
+ * Distinct from simple, which weighs clause depth, and from atomic,
+ * which counts instructions; this one targets branching alone. A lone
+ * guard keeps just one keyword and stays clean.
  */
 class Conditional {
   constructor() {
@@ -38,17 +40,22 @@ class Conditional {
   }
   judge(text, line, uri) {
     const clean = mask(text);
-    const hits = clean.match(/\b(?:if|unless|when|else|otherwise)\b/giu);
-    if (hits === null || hits.length < 2) {
+    const hits = this.keywords(clean);
+    if (hits.length < 2) {
       return [];
     }
-    const column = clean.search(/\b(?:if|unless|when|else|otherwise)\b/iu);
     return [new Violation(
       this.id,
       'warning',
       'multi-branch conditional, split each case into its own command',
-      new Region(uri, line, column + 1)
+      new Region(uri, line, hits[1].index + 1)
     )];
+  }
+  keywords(clean) {
+    const modal = /\b(?:would|could|should|might|will|can|may|must)\s+$/iu;
+    return [...clean.matchAll(/\b(?:if|unless|when|else|otherwise)\b/giu)]
+      .filter((hit) => !(/^(?:else|otherwise)$/iu.test(hit[0]) &&
+        modal.test(clean.slice(0, hit.index))));
   }
 }
 

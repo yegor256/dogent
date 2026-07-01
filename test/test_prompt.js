@@ -117,4 +117,16 @@ describe('Prompt reasoning caveats', () => {
       'the prompt must tell the oracle that repairing errors preserves wording'
     );
   });
+  it('tells the oracle an explicit exception broadens a rule', () => {
+    assert.ok(
+      text().includes('broadens that rule'),
+      'the prompt must tell the oracle that a rule plus an exception is no clash'
+    );
+  });
+  it('tells the oracle a single offered alternative is a fallback', () => {
+    assert.ok(
+      text().includes('Offering one better-fitting alternative is a fallback'),
+      'the prompt must tell the oracle that one alternative is not two choices at once'
+    );
+  });
 });

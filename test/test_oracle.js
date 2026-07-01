@@ -93,8 +93,8 @@ describe('Oracle', () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
     assert.strictEqual(
       (await new Oracle(new FakeChat('{"results":[]}')).violations(doc)).usage.sent,
-      27,
-      'the oracle must sum the token usage across its three samples'
+      45,
+      'the oracle must sum the token usage across its five samples'
     );
   });
   it('logs the full prompt it sends to the chat', async () => {
@@ -137,22 +137,24 @@ describe('Oracle prompt log', () => {
 });
 
 describe('Oracle self-consistency', () => {
-  it('keeps a contradiction that recurs in a majority of samples', async () => {
+  it('keeps a contradiction agreed by a super-majority of samples', async () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
-    const chat = scripted([flagged(3), flagged(3), '{"results":[]}']);
+    const empty = '{"results":[]}';
+    const chat = scripted([flagged(3), flagged(3), flagged(3), flagged(3), empty]);
     assert.strictEqual(
       (await new Oracle(chat).violations(doc)).found.length,
       1,
-      'a finding present in two of three samples must survive'
+      'a finding present in four of five samples must survive'
     );
   });
-  it('drops a contradiction that appears in only a minority of samples', async () => {
+  it('drops a borderline contradiction below the super-majority bar', async () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
-    const chat = scripted([flagged(3), '{"results":[]}', '{"results":[]}']);
+    const empty = '{"results":[]}';
+    const chat = scripted([flagged(3), flagged(3), flagged(3), empty, empty]);
     assert.strictEqual(
       (await new Oracle(chat).violations(doc)).found.length,
       0,
-      'a finding present in only one of three samples must be discarded'
+      'a finding in only three of five samples must be discarded'
     );
   });
 });

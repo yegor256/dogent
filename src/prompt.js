@@ -19,6 +19,10 @@ const caveats = () => [
   'not a contradiction with any instruction that merely mentions sending.',
   '"Preserve the wording" and "fix typos or transcription errors" are compatible:',
   'repairing a mistake or following a spelling convention is not rewording.',
+  'A general rule paired with an explicit exception ("except", "occasionally",',
+  '"sometimes", a named special case) broadens that rule, it does not clash.',
+  'Offering one better-fitting alternative is a fallback, not a demand to hold',
+  'two choices at once.',
   'Scan the whole file for a line that resolves the tension before flagging;',
   'when such a line exists, stay silent.'
 ].join('\n');
@@ -43,7 +47,8 @@ const shape = (uri) => [
  * contradicts itself, or to stay silent. A caveats block teaches it to
  * rule out the common false clashes — explicit branch words, A-then-B
  * sequencing, try-then-fallback, an invented intent, a draft-only
- * completion, error repair that preserves wording, and a tension a
+ * completion, error repair that preserves wording, a rule broadened by
+ * an explicit exception, a single offered alternative, and a tension a
  * later line already resolves — before reporting anything.
  */
 class Prompt {

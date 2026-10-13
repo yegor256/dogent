@@ -7,7 +7,7 @@
   "dependencies": {
     "minimist": "^1.2.8",
     "picocolors": "^1.1.1",
-    "pretty-ms": "^7.0.1"
+    "pretty-ms": "^9.0.0"
   },
   "description": "A strict, opinionated linter for agentic manifesto files (SKILL.md, CLAUDE.md, AGENTS.md)",
   "devDependencies": {

@@ -43,3 +43,22 @@ describe('Conditional', () => {
     );
   });
 });
+
+describe('Conditional adverbial keywords', () => {
+  it('accepts an adverbial otherwise after a modal', () => {
+    const doc = new Markdown('x.md', '# H\nReact when agent would otherwise praise the issue.').document();
+    assert.strictEqual(
+      new Conditional().violations(doc).length,
+      0,
+      'an adverbial "otherwise" after a modal heads no branch'
+    );
+  });
+  it('points at the keyword that crosses the branch threshold', () => {
+    const doc = new Markdown('x.md', '# H\nWhen ready, deploy, otherwise hold.').document();
+    assert.strictEqual(
+      new Conditional().violations(doc)[0].spot.column(),
+      21,
+      'the column must mark the second keyword, not the lone guard'
+    );
+  });
+});

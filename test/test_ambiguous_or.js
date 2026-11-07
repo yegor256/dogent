@@ -42,6 +42,9 @@ describe('AmbiguousOr', () => {
       'a plain command must pass'
     );
   });
+});
+
+describe('AmbiguousOr choices', () => {
   [
     ['Reply y/n.', 7, 'y/n'],
     ['- Reply Y/N.', 9, 'Y/N'],
@@ -59,6 +62,9 @@ describe('AmbiguousOr', () => {
       );
     });
   });
+});
+
+describe('AmbiguousOr exclusions', () => {
   [
     'Reply `y/n`.',
     'Reply `Y/N`.',

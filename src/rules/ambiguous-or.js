@@ -38,7 +38,7 @@ class AmbiguousOr {
   }
   scan(text, line, uri) {
     const masked = mask(text);
-    const pattern = /\band\/or\b|(?<![\w./])[A-Za-z]{2,}\/[A-Za-z]{2,}(?![\w/]|\.\w)/giu;
+    const pattern = /(?<![\w./])[A-Za-z]{2,}\/[A-Za-z]{2,}(?![\w/]|\.\w)/giu;
     const found = [];
     let hit = pattern.exec(masked);
     while (hit !== null) {

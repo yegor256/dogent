@@ -65,6 +65,44 @@ describe('dogent', () => {
   });
 });
 
+describe('dogent numeric directories', () => {
+  const scan = (operand, separator, sibling) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-'));
+    try {
+      fs.writeFileSync(path.join(dir, '.dogent'), '');
+      [operand, ...sibling ? [String(Number(operand))] : []].forEach((name) => {
+        fs.mkdirSync(path.join(dir, name));
+        fs.writeFileSync(path.join(dir, name, 'AGENTS.md'), '');
+      });
+      const result = spawnSync(
+        'node',
+        [path.join(__dirname, '../src/dogent.js'), '--offline', '--verbose', ...separator, operand],
+        {encoding: 'utf8', cwd: dir, env: {...process.env, OPENAI_API_KEY: ''}}
+      );
+      return {
+        status: result.status,
+        stdout: result.stdout,
+        scanned: result.stderr.split('\n').filter((line) => line.startsWith('Scanning '))
+      };
+    } finally {
+      fs.rmSync(dir, {recursive: true, force: true});
+    }
+  };
+  ['001', '1e3', '0x10'].forEach((operand) => {
+    [false, true].forEach((sibling) => {
+      [[], ['--']].forEach((separator) => {
+        it(`scans ${operand} with separator ${separator.length} and sibling ${sibling}`, () => {
+          assert.deepStrictEqual(
+            scan(operand, separator, sibling),
+            {status: 0, stdout: '', scanned: [`Scanning ${operand}/AGENTS.md (0 lines, 0 bytes)`]},
+            'dogent must scan only the directory whose original spelling was supplied'
+          );
+        });
+      });
+    });
+  });
+});
+
 describe('dogent verbose', () => {
   it('prints each scanned manifesto path under the verbose flag', () => {
     const file = manifesto('# Kitchen\nSharpen knife.');

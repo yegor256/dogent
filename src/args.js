@@ -38,7 +38,7 @@ class Args {
     this.options = options;
     this.parsed = minimist(
       argv,
-      {boolean: flags, string: options, alias: {help: 'h'}, '--': true}
+      {boolean: flags, string: options.concat('_'), alias: {help: 'h'}, '--': true}
     );
   }
   sarif() {

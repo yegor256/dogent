@@ -5,6 +5,7 @@
 
 'use strict';
 
+const path = require('node:path');
 const Violation = require('../violation');
 const Region = require('../region');
 
@@ -25,7 +26,7 @@ class NameFormat {
   }
   violations(document) {
     const uri = document.uri();
-    if (uri.replace(/^.*\//u, '') !== 'SKILL.md') {
+    if (path.basename(uri) !== 'SKILL.md') {
       return [];
     }
     const blocks = document.walk({

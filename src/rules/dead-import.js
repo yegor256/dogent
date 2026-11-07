@@ -63,14 +63,15 @@ class DeadImport {
   violations(document) {
     const uri = document.uri();
     const base = path.dirname(uri);
+    const scan = (line, row) => imports(line).map(
+      (item) => ({...item, target: path.resolve(base, item.file), row})
+    );
     const links = document.walk({
-      header: () => [],
+      header: scan,
       snippet: () => [],
       bullets: () => [],
       frontmatter: () => [],
-      prose: (line, row) => imports(line).map(
-        (item) => ({...item, target: path.resolve(base, item.file), row})
-      )
+      prose: scan
     });
     return this.missing(uri, links).concat(this.chains(uri, links));
   }

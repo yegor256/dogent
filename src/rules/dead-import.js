@@ -14,11 +14,11 @@ const Markdown = require('../markdown');
 
 const imports = (line) => {
   const found = [];
-  const pattern = /(?<lead>^|\s)@(?<file>\S+)/gu;
+  const pattern = /(?<lead>^|\s)@(?<file>(?:\\\s|\S)+)/gu;
   let match = pattern.exec(line);
   while (match !== null) {
     found.push({
-      file: match.groups.file.replace(/[.,:;!?]+$/u, ''),
+      file: match.groups.file.replace(/[.,:;!?]+$/u, '').replace(/\\(?<space>\s)/gu, '$<space>'),
       column: match.index + match.groups.lead.length + 1
     });
     match = pattern.exec(line);

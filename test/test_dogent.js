@@ -10,6 +10,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const {spawnSync} = require('child_process');
+const {stripVTControlCharacters} = require('util');
 
 const manifesto = (body) => {
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dogent-')), 'CLAUDE.md');
@@ -82,7 +83,7 @@ describe('dogent numeric directories', () => {
       return {
         status: result.status,
         stdout: result.stdout,
-        scanned: result.stderr.split('\n').filter((line) => line.startsWith('Scanning '))
+        scanned: stripVTControlCharacters(result.stderr).split('\n').filter((line) => line.startsWith('Scanning '))
       };
     } finally {
       fs.rmSync(dir, {recursive: true, force: true});

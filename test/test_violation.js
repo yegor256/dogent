@@ -24,4 +24,29 @@ describe('Violation', () => {
       'the human line must place the location before the message'
     );
   });
+  [
+    ['placeholder', 'Use {0} literally.', 'Use {{0}} literally.'],
+    ['empty braces', 'Use {} literally.', 'Use {{}} literally.'],
+    ['doubled braces', 'Use {{0}} and {{}}.', 'Use {{{{0}}}} and {{{{}}}}.'],
+    ['unmatched braces', 'Use } then {.', 'Use }} then {{.'],
+    ['mixed text', 'Use {0} and {} literally.', 'Use {{0}} and {{}} literally.']
+  ].forEach(([name, message, escaped]) => {
+    it(`escapes literal ${name} in every SARIF serialization`, () => {
+      const violation = new Violation('example', 'warning', message, new Region('a.md', 1, 1));
+      assert.deepStrictEqual(
+        [violation.sarif().message, violation.sarif().message],
+        [{text: escaped}, {text: escaped}],
+        'each SARIF message must double every literal brace exactly once'
+      );
+    });
+    it(`preserves literal ${name} in human output after SARIF serialization`, () => {
+      const violation = new Violation('example', 'warning', message, new Region('a.md', 1, 1));
+      violation.sarif();
+      assert.strictEqual(
+        violation.text(),
+        `a.md:1:1 warning [example]: ${message}`,
+        'SARIF serialization must leave the human message unchanged'
+      );
+    });
+  });
 });

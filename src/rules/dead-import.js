@@ -11,17 +11,19 @@ const path = require('path');
 const Violation = require('../violation');
 const Region = require('../region');
 const Markdown = require('../markdown');
+const mask = require('../mask');
 
 const imports = (line) => {
   const found = [];
   const pattern = /(?<lead>^|\s)@(?<file>\S+)/gu;
-  let match = pattern.exec(line);
+  const prose = mask(line);
+  let match = pattern.exec(prose);
   while (match !== null) {
     found.push({
       file: match.groups.file.replace(/[.,:;!?]+$/u, ''),
       column: match.index + match.groups.lead.length + 1
     });
-    match = pattern.exec(line);
+    match = pattern.exec(prose);
   }
   return found;
 };

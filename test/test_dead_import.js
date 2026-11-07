@@ -58,6 +58,32 @@ describe('DeadImport', () => {
   });
 });
 
+describe('DeadImport inline code', () => {
+  [
+    'Example: `Load @absent.md`.\n',
+    '`@absent.md`',
+    'Examples: `Load @first.md` and `Load @second.md`.'
+  ].forEach((body) => {
+    it(`ignores imports in ${body.trim()}`, () => {
+      const doc = document(temp(), body);
+      assert.deepStrictEqual(new DeadImport().violations(doc), []);
+    });
+  });
+  [
+    'Example: `Load @absent.md`. Load @missing.md.',
+    'Load @missing.md. Example: `Load @absent.md`.',
+    '`Load @first.md` and `Load @second.md`. Load @missing.md.'
+  ].forEach((body) => {
+    it(`preserves the real import in ${body}`, () => {
+      const doc = document(temp(), `# Gates\n${body}`);
+      assert.deepStrictEqual(
+        new DeadImport().violations(doc).map((bad) => bad.text()),
+        [`${doc.uri()}:2:${body.indexOf('@missing.md') + 1} error [dead-import]: @-import target not found: missing.md`]
+      );
+    });
+  });
+});
+
 describe('DeadImport chains', () => {
   it('flags an import chain that loops back', () => {
     const dir = temp();

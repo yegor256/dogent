@@ -5,7 +5,7 @@
 
 'use strict';
 
-const prettyMs = require('pretty-ms');
+const prettyMs = require('pretty-ms').default;
 
 /**
  * Report.

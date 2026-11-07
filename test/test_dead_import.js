@@ -87,3 +87,45 @@ describe('DeadImport chains', () => {
     assert.strictEqual(count, 0, 'a chain within five levels must pass');
   });
 });
+
+describe('DeadImport headings', () => {
+  [1, 2, 3, 4, 5, 6].forEach((level) => {
+    it(`flags a missing import in a level ${level} heading at its source position`, () => {
+      const dir = temp();
+      const doc = document(dir, `Intro.\n\n${'#'.repeat(level)} Load @absent.md.\n`);
+      assert.deepStrictEqual(
+        new DeadImport().violations(doc).map((bad) => bad.text()),
+        [`${path.join(dir, 'CLAUDE.md')}:3:${level + 7} error [dead-import]: @-import target not found: absent.md`]
+      );
+    });
+  });
+  it('reports multiple heading imports in source order', () => {
+    const dir = temp();
+    const doc = document(dir, '# Load @first.md @second.md\n');
+    assert.deepStrictEqual(
+      new DeadImport().violations(doc).map((bad) => bad.text()),
+      [
+        `${path.join(dir, 'CLAUDE.md')}:1:8 error [dead-import]: @-import target not found: first.md`,
+        `${path.join(dir, 'CLAUDE.md')}:1:18 error [dead-import]: @-import target not found: second.md`
+      ]
+    );
+  });
+  it('resolves heading imports relative to the manifesto', () => {
+    const dir = temp();
+    const nested = path.join(dir, 'nested');
+    fs.mkdirSync(nested);
+    write(dir, 'extra.md', 'Sharpen knife.');
+    const doc = document(nested, '## Load @../extra.md\n');
+    assert.deepStrictEqual(new DeadImport().violations(doc), []);
+  });
+  it('ignores heading examples inside fenced code', () => {
+    const dir = temp();
+    const doc = document(dir, '```markdown\n# Load @absent.md\n```\n');
+    assert.deepStrictEqual(new DeadImport().violations(doc), []);
+  });
+  it('accepts headings without imports', () => {
+    const dir = temp();
+    const doc = document(dir, '# Gates\n## Rules\n');
+    assert.deepStrictEqual(new DeadImport().violations(doc), []);
+  });
+});

@@ -18,7 +18,7 @@ permissions:
   pull-requests: read
 jobs:
   issues-first:
-    if: ${{ !endsWith(github.actor, '[bot]') }}
+    if: ${{ !endsWith(github.event.pull_request.user.login, '[bot]') }}
     timeout-minutes: 5
     runs-on: ubuntu-26.04
     steps:

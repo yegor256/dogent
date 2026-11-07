@@ -9,7 +9,7 @@ const Prompt = require('./prompt');
 const Answer = require('./answer');
 const Usage = require('./usage');
 const Log = require('./log');
-const prettyMs = require('pretty-ms');
+const prettyMs = require('pretty-ms').default;
 
 const SAMPLES = 5;
 const AGREEMENT = 4;

@@ -26,6 +26,48 @@ describe('AmbiguousOr', () => {
       'a slashed word alternative must be flagged'
     );
   });
+});
+
+describe('AmbiguousOr path boundaries', () => {
+  [
+    'docs/and/or/guide.md',
+    'docs/and/or.txt',
+    'docs/alpha/beta/guide.md',
+    'and/or/guide.md',
+    'and/or.txt',
+    '/and/or',
+    './and/or',
+    'docs/AND/OR.txt'
+  ].forEach((path) => {
+    it(`accepts the unambiguous path ${path}`, () => {
+      const doc = new Markdown('x.md', `# H\nRead ${path}.`).document();
+      assert.deepStrictEqual(new AmbiguousOr().violations(doc), []);
+    });
+  });
+  [
+    ['Lint and/or format.', 6, 'and/or'],
+    ['Choose (and/or).', 9, 'and/or'],
+    ['Choose AND/OR.', 8, 'AND/OR'],
+    ['Use tabs/spaces.', 5, 'tabs/spaces']
+  ].forEach(([text, column, choice]) => {
+    it(`preserves the diagnostic for ${text}`, () => {
+      const doc = new Markdown('x.md', `# H\n${text}`).document();
+      assert.deepStrictEqual(
+        new AmbiguousOr().violations(doc).map((violation) => violation.text()),
+        [`x.md:2:${column} warning [ambiguous-or]: ambiguous "${choice}", state exactly which option applies`]
+      );
+    });
+  });
+  it('flags a choice following an unambiguous path', () => {
+    const doc = new Markdown('x.md', '# H\nRead docs/and/or.txt and/or format.').document();
+    assert.deepStrictEqual(
+      new AmbiguousOr().violations(doc).map((violation) => violation.text()),
+      ['x.md:2:22 warning [ambiguous-or]: ambiguous "and/or", state exactly which option applies']
+    );
+  });
+});
+
+describe('AmbiguousOr masked text', () => {
   it('accepts a backticked path', () => {
     const doc = new Markdown('x.md', '# H\nEdit the `src/app` folder.').document();
     assert.strictEqual(

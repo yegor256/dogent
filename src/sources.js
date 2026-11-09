@@ -35,7 +35,13 @@ class Sources {
         found.push(entry);
       }
     });
-    return found;
+    const seen = new Set();
+    return found.filter((file) => {
+      const identity = fs.realpathSync(file);
+      const fresh = !seen.has(identity);
+      seen.add(identity);
+      return fresh;
+    });
   }
   scan(dir, found) {
     this.defaults.forEach((name) => {

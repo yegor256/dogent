@@ -47,7 +47,7 @@ const initials = (gloss) => (gloss.match(/[A-Za-z]+/gu) || [])
 
 const inlined = (masked) => {
   const found = new Set();
-  const regex = /(?:\b(?<before>[A-Z]{2,})\s+(?:stands for|is short for)\b|\bRead\s+(?<after>[A-Z]{2,})\s+as\b)(?=[ \t]+[^\r\n.!?]*[\p{L}\p{N}])/gu;
+  const regex = /(?:\b(?<before>[A-Z]{2,})\s+(?:stands[ \t]+for|is[ \t]+short[ \t]+for)\b|\bRead\s+(?<after>[A-Z]{2,})\s+as\b)(?=[ \t]+[^\r\n.!?]*[\p{L}\p{N}])/gu;
   let hit = regex.exec(masked);
   while (hit !== null) {
     found.add(hit.groups.before || hit.groups.after);

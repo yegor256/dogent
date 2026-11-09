@@ -53,6 +53,23 @@ describe('Args paths', () => {
   });
 });
 
+describe('Args numeric paths', () => {
+  it('preserves numeric path spellings among options', () => {
+    assert.deepStrictEqual(
+      new Args(['001', '--offline', '1e3', '--model', '123', '0x10']).paths(),
+      ['001', '1e3', '0x10'],
+      'numeric operands must keep their spelling without consuming option values'
+    );
+  });
+  it('preserves numeric and dashed paths across the separator', () => {
+    assert.deepStrictEqual(
+      new Args(['001', '--', '1e3', '0x10', '-001', '--offline']).paths(),
+      ['001', '1e3', '0x10', '-001', '--offline'],
+      'the separator must preserve path order and literal option-like operands'
+    );
+  });
+});
+
 describe('Args flags', () => {
   it('detects the sarif flag', () => {
     assert.strictEqual(

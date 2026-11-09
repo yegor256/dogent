@@ -51,3 +51,64 @@ describe('MetaReference', () => {
     );
   });
 });
+
+describe('MetaReference phrase spacing', () => {
+  const phrases = [
+    'As an AI',
+    'As a language model',
+    'You are an AI',
+    'You are a model',
+    'This prompt',
+    'These instructions',
+    'This manifesto',
+    'The system prompt'
+  ];
+  for (const phrase of phrases) {
+    for (const separator of [' ', '  ', '\t', ' \t  ']) {
+      const spelling = phrase.replace(/ /gu, separator);
+      for (const prefix of ['', '- ', '  - ']) {
+        it(`preserves ${JSON.stringify(spelling)} after ${JSON.stringify(prefix)}`, () => {
+          const doc = new Markdown('x.md', `# H\n${prefix}${spelling} is final.`).document();
+          assert.deepStrictEqual(
+            new MetaReference().violations(doc).map((violation) => violation.text()),
+            [`x.md:2:${prefix.length + 1} warning [meta-reference]: meta self-reference "${spelling}" issues no command, delete it`]
+          );
+        });
+      }
+      it(`ignores inline code containing ${JSON.stringify(spelling)}`, () => {
+        const doc = new Markdown('x.md', `# H\nExample: \`${spelling}\`.`).document();
+        assert.deepStrictEqual(new MetaReference().violations(doc), []);
+      });
+    }
+  }
+});
+
+describe('MetaReference boundaries', () => {
+  it('preserves multiple matches and columns after inline code', () => {
+    const text = '`As  an AI` These\tinstructions; AS \t A  LANGUAGE\tMODEL.';
+    const doc = new Markdown('x.md', `# H\n${text}`).document();
+    assert.deepStrictEqual(
+      new MetaReference().violations(doc).map((violation) => violation.text()),
+      [
+        'x.md:2:13 warning [meta-reference]: meta self-reference "These\tinstructions" issues no command, delete it',
+        'x.md:2:33 warning [meta-reference]: meta self-reference "AS \t A  LANGUAGE\tMODEL" issues no command, delete it'
+      ]
+    );
+  });
+  for (const text of [
+    'These `sample` instructions are final.',
+    'As `sample` an AI, respond.',
+    'This\nprompt is final.',
+    'These\vinstructions are final.',
+    'These\finstructions are final.',
+    'Theseinstructions are final.',
+    'These  instructionsExtra are final.',
+    'NotThese  instructions are final.',
+    '```text\nThese  instructions are final.\n```'
+  ]) {
+    it(`ignores unsupported framing ${JSON.stringify(text)}`, () => {
+      const doc = new Markdown('x.md', `# H\n${text}`).document();
+      assert.deepStrictEqual(new MetaReference().violations(doc), []);
+    });
+  }
+});

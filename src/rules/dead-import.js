@@ -14,11 +14,11 @@ const Markdown = require('../markdown');
 
 const imports = (line) => {
   const found = [];
-  const pattern = /(?<lead>^|\s)@(?<file>\S+)/gu;
+  const pattern = /(?<lead>^|\s)@(?<file>(?:\\\s|\S)+)/gu;
   let match = pattern.exec(line);
   while (match !== null) {
     found.push({
-      file: match.groups.file.replace(/[.,:;!?]+$/u, ''),
+      file: match.groups.file.replace(/[.,:;!?]+$/u, '').replace(/\\(?<space>\s)/gu, '$<space>'),
       column: match.index + match.groups.lead.length + 1
     });
     match = pattern.exec(line);
@@ -63,14 +63,15 @@ class DeadImport {
   violations(document) {
     const uri = document.uri();
     const base = path.dirname(uri);
+    const scan = (line, row) => imports(line).map(
+      (item) => ({...item, target: path.resolve(base, item.file), row})
+    );
     const links = document.walk({
-      header: () => [],
+      header: scan,
       snippet: () => [],
       bullets: () => [],
       frontmatter: () => [],
-      prose: (line, row) => imports(line).map(
-        (item) => ({...item, target: path.resolve(base, item.file), row})
-      )
+      prose: scan
     });
     return this.missing(uri, links).concat(this.chains(uri, links));
   }

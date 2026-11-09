@@ -10,7 +10,8 @@ const Region = require('../region');
 const mask = require('../mask');
 
 const PATTERNS = [
-  /\b(?:npm|npx|node|git|eslint|mocha|yarn|pnpm|cd|rm|mkdir|chmod|cat|sed|grep|curl|docker)\s+[\w./-]+/gu,
+  /\b(?:npm|npx|git|eslint|mocha|yarn|pnpm|rm|mkdir|chmod|sed|grep|curl|docker)\s+[\w./-]+/gu,
+  /\b(?:node|cd|cat)\s+(?=[\w./-]*[/-]|[\w-]*\.\w|\.\.?(?=\s|$))[\w./-]+/gu,
   /(?<![\w/.@])[\w-]+(?:\/[\w.-]+)+/gu,
   /(?<![\w/.@])[\w-]+\.(?:js|ts|jsx|tsx|json|md|ya?ml|sh|py|rb|go|rs|toml|cfg|lock|txt|xml|html|css)\b/gu,
   /(?<![\w-])(?:--[A-Za-z][\w-]*|-[A-Za-z])(?![\w])/gu
@@ -27,6 +28,8 @@ const PATTERNS = [
  * slashed path, a filename carrying a known extension, a CLI flag, or a
  * known shell command followed by an argument — once its inline-code
  * spans are masked away, so an already-backticked literal passes. It
+ * requires a path, filename, flag, or version after ambiguous words
+ * node, cd, and cat, leaving their ordinary prose uses alone. It
  * leaves @-imports to the dead-import rule.
  */
 class InlineCode {

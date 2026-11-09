@@ -70,3 +70,49 @@ describe('InlineCode accepts', () => {
     );
   });
 });
+
+describe('InlineCode command ambiguity', () => {
+  [
+    'Login to each node from list below over SSH.',
+    'Confirm each node runs the image before finishing.',
+    'Check each node runs.',
+    'Read the cd booklet.',
+    'Watch the cat sleep.'
+  ].forEach((text) => {
+    it(`accepts prose: ${text}`, () => {
+      const doc = new Markdown('x.md', `# H\n${text}`).document();
+      assert.deepStrictEqual(new InlineCode().violations(doc), []);
+    });
+  });
+  [
+    'node app.js',
+    'node ./script',
+    'node --version',
+    'node -v',
+    'node 18.17.0',
+    'cd ../build',
+    'cd .',
+    'cd ..',
+    'cd /',
+    'cd build-dir',
+    'cat .env',
+    'cat notes.txt',
+    'cat /etc/hosts',
+    'npm test',
+    'npx eslint',
+    'git status',
+    'docker ps'
+  ].forEach((command) => {
+    it(`flags the complete command: ${command}`, () => {
+      const doc = new Markdown('x.md', `# H\nRun ${command} before continuing.`).document();
+      assert.deepStrictEqual(
+        new InlineCode().violations(doc).map((item) => item.message),
+        [`literal "${command}" must be wrapped in backticks`]
+      );
+    });
+  });
+  it('ignores a backticked ambiguous command', () => {
+    const doc = new Markdown('x.md', '# H\nRun `node app.js` before continuing.').document();
+    assert.deepStrictEqual(new InlineCode().violations(doc), []);
+  });
+});

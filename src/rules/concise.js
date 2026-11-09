@@ -29,7 +29,7 @@ class Concise {
   }
   violations(document) {
     const lines = document.text().split('\n');
-    while (lines.length > 0 && lines[lines.length - 1] === '') {
+    if (lines[lines.length - 1] === '') {
       lines.pop();
     }
     if (lines.length <= this.max) {

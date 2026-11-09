@@ -35,3 +35,35 @@ describe('Concise', () => {
     );
   });
 });
+
+describe('Concise physical lines', () => {
+  for (const [name, max, input, expected] of [
+    ['empty file', 0, '', []],
+    ['unterminated line', 1, 'Do work.', []],
+    ['single terminator', 1, 'Do work.\n', []],
+    ['blank second line', 1, 'Do work.\n\n', [
+      'x.md:2:1 warning [concise]: file too long (2 lines), split detail into referenced files'
+    ]],
+    ['whitespace second line', 1, 'Do work.\n \n', [
+      'x.md:2:1 warning [concise]: file too long (2 lines), split detail into referenced files'
+    ]],
+    ['blank-only line', 0, '\n', [
+      'x.md:1:1 warning [concise]: file too long (1 lines), split detail into referenced files'
+    ]],
+    ['trailing blanks at the default budget', 200, `Do work.\n${'\n'.repeat(200)}`, [
+      'x.md:201:1 warning [concise]: file too long (201 lines), split detail into referenced files'
+    ]],
+    ['full count beyond the budget', 1, 'Do work.\nDo more.\n\n', [
+      'x.md:2:1 warning [concise]: file too long (3 lines), split detail into referenced files'
+    ]]
+  ]) {
+    it(`counts physical lines for ${name}`, () => {
+      const doc = new Markdown('x.md', input).document();
+      assert.deepStrictEqual(
+        new Concise(max).violations(doc).map((violation) => violation.text()),
+        expected,
+        'only the final split sentinel must be excluded from the line count'
+      );
+    });
+  }
+});

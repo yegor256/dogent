@@ -30,7 +30,7 @@ class Violation {
     return {
       ruleId: this.rule,
       level: this.level,
-      message: {text: this.message},
+      message: {text: this.message.replace(/[{}]/gu, (brace) => brace + brace)},
       locations: [{physicalLocation: this.spot.sarif()}]
     };
   }

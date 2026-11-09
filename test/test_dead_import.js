@@ -58,6 +58,68 @@ describe('DeadImport', () => {
   });
 });
 
+describe('DeadImport escaped whitespace', () => {
+  [
+    ['directory space', 'Design Docs/guide.md', 'Design\\ Docs/guide.md'],
+    ['filename space', 'guide notes.md', 'guide\\ notes.md'],
+    ['multiple spaces', 'Design  Docs/guide notes.md', 'Design\\ \\ Docs/guide\\ notes.md'],
+    ['tab', 'Design\tDocs/guide.md', 'Design\\\tDocs/guide.md'],
+    ['literal backslash', 'Design\\Docs.md', 'Design\\Docs.md']
+  ].forEach(([name, file, token]) => {
+    it(`resolves an import containing ${name}`, () => {
+      const dir = temp();
+      try {
+        fs.mkdirSync(path.dirname(path.join(dir, file)), {recursive: true});
+        write(dir, file, 'Sharpen knife.');
+        const doc = document(dir, `# Gates\nLoad @${token}.`);
+        assert.deepStrictEqual(new DeadImport().violations(doc), []);
+      } finally {
+        fs.rmSync(dir, {recursive: true, force: true});
+      }
+    });
+  });
+});
+
+describe('DeadImport token boundaries', () => {
+  it('reports decoded missing paths at their original columns', () => {
+    const dir = temp();
+    try {
+      const line = 'Load @Design\\ Docs/guide.md and @Other\\ Docs/missing.md.';
+      const doc = document(dir, `# Gates\n${line}`);
+      assert.deepStrictEqual(
+        new DeadImport().violations(doc).map((bad) => bad.text()),
+        [
+          `${path.join(dir, 'CLAUDE.md')}:2:6 error [dead-import]: @-import target not found: Design Docs/guide.md`,
+          `${path.join(dir, 'CLAUDE.md')}:2:${line.indexOf('@Other') + 1} error [dead-import]: @-import target not found: Other Docs/missing.md`
+        ]
+      );
+    } finally {
+      fs.rmSync(dir, {recursive: true, force: true});
+    }
+  });
+  it('stops at unescaped whitespace after an escaped space', () => {
+    const dir = temp();
+    try {
+      write(dir, 'guide notes.md', 'Sharpen knife.');
+      write(dir, 'extra.md', 'Sharpen knife.');
+      const doc = document(dir, 'Load @guide\\ notes.md and @extra.md.');
+      assert.deepStrictEqual(new DeadImport().violations(doc), []);
+    } finally {
+      fs.rmSync(dir, {recursive: true, force: true});
+    }
+  });
+  it('keeps unescaped spaces as import delimiters', () => {
+    const dir = temp();
+    try {
+      write(dir, 'guide', 'Sharpen knife.');
+      const doc = document(dir, 'Load @guide notes.md.');
+      assert.deepStrictEqual(new DeadImport().violations(doc), []);
+    } finally {
+      fs.rmSync(dir, {recursive: true, force: true});
+    }
+  });
+});
+
 describe('DeadImport chains', () => {
   it('flags an import chain that loops back', () => {
     const dir = temp();

@@ -106,3 +106,38 @@ describe('Jargon allowlist', () => {
     );
   });
 });
+
+describe('Jargon inline expansion content', () => {
+  const forms = ['ICCQ stands for', 'ICCQ is short for', 'Read ICCQ as'];
+  forms.forEach((form) => {
+    ['', '.', '   ', ' \t.', ' ...', ' :', ' `conference`.', '\nVisit again.'].forEach((ending) => {
+      it(`flags an empty expansion in ${JSON.stringify(form + ending)}`, () => {
+        const doc = new Markdown('x.md', `# H\n${form}${ending}\nVisit ICCQ.`).document();
+        const column = form.startsWith('Read') ? 6 : 1;
+        assert.deepStrictEqual(
+          new Jargon().violations(doc).map((violation) => violation.text()),
+          [`x.md:2:${column} warning [jargon]: acronym "ICCQ" never expanded, define it on first use`],
+          'an empty definition must report only the first acronym occurrence'
+        );
+      });
+    });
+    ['International Conference on Code Quality.', 'the conference.', '*the conference*.', '"the conference".', 'конференция.'].forEach((expansion) => {
+      it(`accepts expansion ${JSON.stringify(expansion)} after ${form}`, () => {
+        const doc = new Markdown('x.md', `# H\nVisit ICCQ.\n${form} ${expansion}\nVisit ICCQ.`).document();
+        assert.deepStrictEqual(
+          new Jargon().violations(doc),
+          [],
+          'a real expansion must license mentions throughout the document'
+        );
+      });
+    });
+    it(`ignores a backticked ${form} definition`, () => {
+      const doc = new Markdown('x.md', `# H\n\`${form} the conference.\`\nVisit ICCQ.`).document();
+      assert.deepStrictEqual(
+        new Jargon().violations(doc).map((violation) => violation.text()),
+        ['x.md:3:7 warning [jargon]: acronym "ICCQ" never expanded, define it on first use'],
+        'code must neither define an acronym nor report its occurrences'
+      );
+    });
+  });
+});

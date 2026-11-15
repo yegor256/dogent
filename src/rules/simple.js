@@ -7,6 +7,7 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
 
 const conj = 'if|when|unless|because|although|while';
 
@@ -38,9 +39,11 @@ const listCommas = function listCommas(text) {
  * Simple.
  *
  * Demands simple grammar over ambiguity. It counts commas and
- * conjunctions to flag lines that pile up clauses. Commas inside a
- * coordinated `A, B, or C` list are discounted first, so a lone
- * enumeration sitting in one clause does not read as tangled.
+ * conjunctions to flag lines that pile up clauses. Inline-code spans
+ * are blanked out first, so quoted tokens never read as sentence
+ * grammar. Commas inside a coordinated `A, B, or C` list are
+ * discounted next, so a lone enumeration sitting in one clause does
+ * not read as tangled.
  */
 class Simple {
   constructor() {
@@ -66,8 +69,9 @@ class Simple {
     return count - listCommas(text);
   }
   judge(text, line, uri) {
-    const clauseCommas = this.clauseCommas(text);
-    const hasConjunction = this.conjunction.test(text);
+    const masked = mask(text);
+    const clauseCommas = this.clauseCommas(masked);
+    const hasConjunction = this.conjunction.test(masked);
     const tangled = hasConjunction && clauseCommas >= 2;
     if (!tangled) {
       return [];

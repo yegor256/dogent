@@ -34,6 +34,17 @@ describe('SelfContained', () => {
       'a line pointing through a markdown link must pass'
     );
   });
+  it('flags a reference beside an unrelated link', () => {
+    const doc = new Markdown(
+      'x.md',
+      '# H\nFollow the rule mentioned above. Log to [tracker](https://example.com/issues).'
+    ).document();
+    assert.strictEqual(new SelfContained().violations(doc).length, 1, 'an unrelated link must not silence the scan');
+  });
+  it('accepts a reference resolved by its own link', () => {
+    const doc = new Markdown('x.md', '# H\nFollow [the rule mentioned above](#setup).').document();
+    assert.strictEqual(new SelfContained().violations(doc).length, 0, 'a linked reference must pass');
+  });
   it('ignores a reference inside a code span', () => {
     const doc = new Markdown('x.md', '# H\n`see below` is a token.').document();
     assert.strictEqual(

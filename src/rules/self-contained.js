@@ -15,8 +15,9 @@ const mask = require('../mask');
  * Demands that every line stand on its own without leaning on its
  * neighbours. It flags a relative cross-reference phrase like "see
  * above", "as mentioned below", or "the previous step" that breaks the
- * moment the file is reordered or chunked. A line pointing somewhere
- * concrete through a markdown link stays clean. Distinct from
+ * moment the file is reordered or chunked. A phrase carried inside a
+ * markdown link counts as resolved and stays clean, while an unrelated
+ * link elsewhere in the line does not silence the scan. Distinct from
  * referential, which targets bare pronouns; this one targets positional
  * cross-references.
  */
@@ -45,10 +46,7 @@ class SelfContained {
     });
   }
   scan(text, line, uri) {
-    const clean = mask(text);
-    if (clean.includes('](')) {
-      return [];
-    }
+    const clean = this.plain(text);
     const hit = this.phrase.exec(clean);
     if (hit === null) {
       return [];
@@ -59,6 +57,12 @@ class SelfContained {
       `relative reference "${hit[0]}" breaks when reordered, name the target`,
       new Region(uri, line, hit.index + 1)
     )];
+  }
+  plain(text) {
+    return mask(text).replace(
+      /\[[^\]\n]*\]\([^)\n]*\)/gu,
+      (link) => ' '.repeat(link.length)
+    );
   }
 }
 

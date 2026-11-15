@@ -33,13 +33,14 @@ class LineLength {
     });
   }
   over(text, line, uri) {
-    if (text.length <= this.max) {
+    const width = [...text].length;
+    if (width <= this.max) {
       return [];
     }
     return [new Violation(
       this.id,
       'error',
-      `line exceeds ${this.max} symbols, has ${text.length}`,
+      `line exceeds ${this.max} symbols, has ${width}`,
       new Region(uri, line, this.max + 1)
     )];
   }

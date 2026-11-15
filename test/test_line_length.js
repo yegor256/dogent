@@ -36,3 +36,51 @@ describe('LineLength', () => {
     );
   });
 });
+describe('LineLength with non-BMP symbols', () => {
+  it('accepts a line at the cap that ends with a non-BMP symbol', () => {
+    const doc = new Markdown(
+      'x.md', `${'a'.repeat(79)}\u{10400}`
+    ).document();
+    assert.strictEqual(
+      new LineLength(80).violations(doc).length,
+      0,
+      'a surrogate pair must count as one symbol, not two'
+    );
+  });
+  it('accepts a heading at the cap with a non-BMP symbol', () => {
+    const doc = new Markdown(
+      'x.md', `# ${'a'.repeat(77)}\u{10400}`
+    ).document();
+    assert.strictEqual(
+      new LineLength(80).violations(doc).length,
+      0,
+      'a heading of 80 symbols with a surrogate pair must stay within the limit'
+    );
+  });
+  it('accepts a bullet at the cap with a non-BMP symbol', () => {
+    const doc = new Markdown(
+      'x.md', `- ${'a'.repeat(77)}\u{10400}`
+    ).document();
+    assert.strictEqual(
+      new LineLength(80).violations(doc).length,
+      0,
+      'a bullet of 80 symbols with a surrogate pair must stay within the limit'
+    );
+  });
+  it('still flags a non-BMP line that goes over the cap', () => {
+    const doc = new Markdown(
+      'x.md', `${'a'.repeat(80)}\u{10400}`
+    ).document();
+    const found = new LineLength(80).violations(doc);
+    assert.strictEqual(
+      found.length,
+      1,
+      'an 81-symbol line with a surrogate pair must raise one violation'
+    );
+    assert.match(
+      found[0].text(),
+      /has 81$/u,
+      'the message must count each symbol once, surrogate pairs included'
+    );
+  });
+});

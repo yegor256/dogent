@@ -15,7 +15,10 @@ const mask = require('../mask');
  * Flags volatile time and version references that rot over time:
  * words like "currently", "now", "today", "recently", and hardcoded
  * version literals such as "18.17.0". Each pins an instruction to a
- * moment or release that drifts, so the manifesto silently ages. The
+ * moment or release that drifts, so the manifesto silently ages. A
+ * bare two-component number like "1.5" is ambiguous and may be a plain
+ * quantity, so only explicit pin forms are flagged: three-component
+ * versions, "v"-prefixed numbers, and "@1.2.3" style pins. The
  * rule scans only prose, never fenced snippets, so version pins inside
  * code blocks survive untouched.
  */
@@ -40,7 +43,10 @@ class Stale {
     const found = [];
     const regex = new RegExp(
       '\\b(?:currently|now|today|recently|lately|at present|as of|' +
-      'the latest)\\b|\\bv?\\d+\\.\\d+(?:\\.\\d+)?\\b',
+      'the latest)\\b|' +
+      '\\bv?\\d+\\.\\d+\\.\\d+\\b|' +
+      '\\bv\\d+\\.\\d+\\b|' +
+      '@\\d+\\.\\d+(?:\\.\\d+)?\\b',
       'giu'
     );
     const masked = mask(text);

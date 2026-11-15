@@ -20,7 +20,9 @@ const Region = require('../region');
  * A lone U+FE0F is exempt when it immediately follows an Extended_Pictographic
  * base, since that pair is a legitimate emoji presentation sequence (the
  * selector that makes a glyph such as the heart render as an emoji) rather
- * than a standalone hidden character.
+ * than a standalone hidden character. Every hit is reported at its own row
+ * and column, so a character buried deep inside a multiline snippet points
+ * at the line it hides on, not at the opening fence.
  */
 class HiddenChar {
   constructor() {
@@ -42,21 +44,23 @@ class HiddenChar {
   }
   scan(text, line, uri) {
     const found = [];
-    this.hidden.lastIndex = 0;
-    let hit = this.hidden.exec(text);
-    while (hit !== null) {
-      if (!this.variation(text, hit)) {
-        const hex = hit[0].codePointAt(0).toString(16).toUpperCase();
-        const code = hex.padStart(4, '0');
-        found.push(new Violation(
-          this.id,
-          'error',
-          `invisible character U+${code} found, delete it`,
-          new Region(uri, line, hit.index + 1)
-        ));
+    text.split('\n').forEach((row, offset) => {
+      this.hidden.lastIndex = 0;
+      let hit = this.hidden.exec(row);
+      while (hit !== null) {
+        if (!this.variation(row, hit)) {
+          const hex = hit[0].codePointAt(0).toString(16).toUpperCase();
+          const code = hex.padStart(4, '0');
+          found.push(new Violation(
+            this.id,
+            'error',
+            `invisible character U+${code} found, delete it`,
+            new Region(uri, line + offset, hit.index + 1)
+          ));
+        }
+        hit = this.hidden.exec(row);
       }
-      hit = this.hidden.exec(text);
-    }
+    });
     return found;
   }
   variation(text, hit) {

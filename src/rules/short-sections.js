@@ -33,7 +33,8 @@ class ShortSections {
   }
   named(text, line, uri) {
     const words = text
-      .replace(/^#{1,6}\s+/u, '')
+      .replace(/[ \t]+#+[ \t]*$/u, '')
+      .replace(/^#{1,6}[ \t]*/u, '')
       .trim()
       .split(/\s+/u)
       .filter((word) => word !== '');

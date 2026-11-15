@@ -8,7 +8,10 @@
 const Violation = require('../violation');
 const Region = require('../region');
 
-const bare = (text) => text.replace(/^#{1,6}\s*/u, '').trim();
+const bare = (text) => text
+  .replace(/[ \t]+#+[ \t]*$/u, '')
+  .replace(/^#{1,6}[ \t]*/u, '')
+  .trim();
 
 const normalize = (text) => bare(text).toLowerCase().replace(/\s+/gu, ' ');
 

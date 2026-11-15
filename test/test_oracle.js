@@ -136,6 +136,29 @@ describe('Oracle prompt log', () => {
   });
 });
 
+describe('Oracle unreadable samples', () => {
+  it('finishes when one sample returns a results object', async () => {
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    const empty = '{"results":[]}';
+    const chat = scripted([empty, empty, empty, empty, '{"results":{}}']);
+    assert.strictEqual(
+      (await new Oracle(chat).violations(doc)).found.length,
+      0,
+      'one unreadable sample must not abort the other four'
+    );
+  });
+  it('sums token usage when one sample returns a results object', async () => {
+    const doc = new Markdown('x.md', '# Doors\nShut the gate').document();
+    const empty = '{"results":[]}';
+    const chat = scripted([empty, empty, empty, empty, '{"results":{}}']);
+    assert.strictEqual(
+      (await new Oracle(chat).violations(doc)).usage.sent,
+      45,
+      'token usage must still be summed when one sample is unreadable'
+    );
+  });
+});
+
 describe('Oracle self-consistency', () => {
   it('keeps a contradiction agreed by a super-majority of samples', async () => {
     const doc = new Markdown('x.md', '# Doors\nShut the gate').document();

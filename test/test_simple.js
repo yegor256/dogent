@@ -41,4 +41,16 @@ describe('Simple', () => {
     const doc = new Markdown('x.md', '# H\nStop when text is missing, empty, or only whitespace.').document();
     assert.strictEqual(new Simple().violations(doc).length, 0, 'a list inside one clause must not count as tangled');
   });
+  it('flags nested clauses even when a later clause starts with and', () => {
+    const doc = new Markdown('x.md', '# H\nIf validation fails, stop, unless retry is enabled, and then retry.').document();
+    assert.strictEqual(new Simple().violations(doc).length, 1, 'a trailing and clause must not swallow the clause commas');
+  });
+  it('flags nested clauses that end without a coordination', () => {
+    const doc = new Markdown('x.md', '# H\nIf validation fails, stop, unless retry is enabled, then retry.').document();
+    assert.strictEqual(new Simple().violations(doc).length, 1, 'nested if and unless clauses must be flagged');
+  });
+  it('accepts a coordinated list joined by and', () => {
+    const doc = new Markdown('x.md', '# H\nDo not run build, tests, and linters in one pass.').document();
+    assert.strictEqual(new Simple().violations(doc).length, 0, 'a plain list joined by and must not count as multi-clause');
+  });
 });

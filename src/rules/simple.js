@@ -8,14 +8,23 @@
 const Violation = require('../violation');
 const Region = require('../region');
 
+const conj = 'if|when|unless|because|although|while';
+
 /**
  * Counts the commas that sit inside a coordinated `A, B, or C` list run,
  * so an enumeration can be discounted before clause commas are weighed.
+ * A chunk between two commas may only serve as a list item when it
+ * carries no clause conjunction; a chunk like `unless retry is enabled`
+ * is a clause of its own, and its comma stays counted.
  * @param {string} text The line to scan
  * @return {number} The number of commas belonging to coordinated lists
  */
 const listCommas = function listCommas(text) {
-  const runs = text.match(/(?:[^,]+,\s*)+(?:or|and)\b/giu);
+  const pattern = new RegExp(
+    `(?:(?![^,]*\\b(?:${conj})\\b)[^,]+,\\s*)+(?:or|and)\\b`,
+    'giu'
+  );
+  const runs = text.match(pattern);
   if (runs === null) {
     return 0;
   }
@@ -36,7 +45,7 @@ const listCommas = function listCommas(text) {
 class Simple {
   constructor() {
     this.id = 'simple';
-    this.conjunction = /\b(?:if|when|unless|because|although|while)\b/iu;
+    this.conjunction = new RegExp(`\\b(?:${conj})\\b`, 'iu');
   }
   hint() {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';

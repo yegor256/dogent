@@ -16,7 +16,9 @@ const mask = require('../mask');
  * Where consistent hunts word-for-word duplicates and contradictions,
  * this rule catches the same idea wearing different labels, which makes
  * the agent guess whether two names mean two things. A small built-in
- * map of synonym groups seeds the check. A platform/sender noun like
+ * map of synonym groups seeds the check. Plural forms of the seed
+ * nouns name the same term: "directories" drifts against "folders"
+ * just as "directory" does against "folder". A platform/sender noun like
  * "bot" stays out of the agent group: it names a distinct thing (the
  * Telegram sender, the "Telegram Bot API"), not the AI actor, so the two
  * are not interchangeable.
@@ -50,13 +52,22 @@ class Terms {
     const masked = mask(text);
     this.groups.forEach((group, index) => {
       group.forEach((word) => {
-        const regex = new RegExp(`\\b${word}\\b`, 'iu');
+        const regex = new RegExp(`\\b(?:${word}|${this.plural(word)})\\b`, 'iu');
         if (regex.test(masked) && !seen[index].has(word)) {
           seen[index].set(word, line);
         }
       });
     });
     return [];
+  }
+  plural(word) {
+    if (/[bcdfghjklmnpqrstvwxz]y$/iu.test(word)) {
+      return `${word.slice(0, -1)}ies`;
+    }
+    if (/(?:[sxz]|ch|sh)$/iu.test(word)) {
+      return `${word}es`;
+    }
+    return `${word}s`;
   }
   report(seen, uri) {
     const found = [];

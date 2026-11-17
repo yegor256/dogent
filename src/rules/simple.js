@@ -7,15 +7,25 @@
 
 const Violation = require('../violation');
 const Region = require('../region');
+const mask = require('../mask');
+
+const conj = 'if|when|unless|because|although|while';
 
 /**
  * Counts the commas that sit inside a coordinated `A, B, or C` list run,
  * so an enumeration can be discounted before clause commas are weighed.
+ * A chunk between two commas may only serve as a list item when it
+ * carries no clause conjunction; a chunk like `unless retry is enabled`
+ * is a clause of its own, and its comma stays counted.
  * @param {string} text The line to scan
  * @return {number} The number of commas belonging to coordinated lists
  */
 const listCommas = function listCommas(text) {
-  const runs = text.match(/(?:[^,]+,\s*)+(?:or|and)\b/giu);
+  const pattern = new RegExp(
+    `(?:(?![^,]*\\b(?:${conj})\\b)[^,]+,\\s*)+(?:or|and)\\b`,
+    'giu'
+  );
+  const runs = text.match(pattern);
   if (runs === null) {
     return 0;
   }
@@ -29,14 +39,16 @@ const listCommas = function listCommas(text) {
  * Simple.
  *
  * Demands simple grammar over ambiguity. It counts commas and
- * conjunctions to flag lines that pile up clauses. Commas inside a
- * coordinated `A, B, or C` list are discounted first, so a lone
- * enumeration sitting in one clause does not read as tangled.
+ * conjunctions to flag lines that pile up clauses. Inline-code spans
+ * are blanked out first, so quoted tokens never read as sentence
+ * grammar. Commas inside a coordinated `A, B, or C` list are
+ * discounted next, so a lone enumeration sitting in one clause does
+ * not read as tangled.
  */
 class Simple {
   constructor() {
     this.id = 'simple';
-    this.conjunction = /\b(?:if|when|unless|because|although|while)\b/iu;
+    this.conjunction = new RegExp(`\\b(?:${conj})\\b`, 'iu');
   }
   hint() {
     return 'Split a tangled multi-clause sentence into several short, simple lines so the grammar leaves no room for ambiguity.';
@@ -57,8 +69,9 @@ class Simple {
     return count - listCommas(text);
   }
   judge(text, line, uri) {
-    const clauseCommas = this.clauseCommas(text);
-    const hasConjunction = this.conjunction.test(text);
+    const masked = mask(text);
+    const clauseCommas = this.clauseCommas(masked);
+    const hasConjunction = this.conjunction.test(masked);
     const tangled = hasConjunction && clauseCommas >= 2;
     if (!tangled) {
       return [];

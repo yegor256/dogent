@@ -87,3 +87,27 @@ describe('Answer confidence', () => {
     );
   });
 });
+
+describe('Answer results list', () => {
+  it('ignores a results object instead of crashing', () => {
+    assert.strictEqual(
+      new Answer('{"results":{}}').violations().length,
+      0,
+      'a results object must be treated as no results'
+    );
+  });
+  it('ignores a results string instead of crashing', () => {
+    assert.strictEqual(
+      new Answer('{"results":"oops"}').violations().length,
+      0,
+      'a results string must be treated as no results'
+    );
+  });
+  it('still rejects a reply that is not JSON', () => {
+    assert.throws(
+      () => new Answer('{').violations(),
+      (error) => error.message.startsWith('oracle returned malformed JSON:'),
+      'a reply that is not JSON must stay an explicit error'
+    );
+  });
+});

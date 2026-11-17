@@ -26,7 +26,9 @@ const denies = function denies(text) {
  *
  * The oracle's raw reply, treated as untrusted input. Parses the JSON
  * object it carries and turns every well-formed SARIF result back into a
- * native violation, ignoring any result it cannot read. Demands a
+ * native violation, ignoring any result it cannot read. A results value
+ * that is not an array counts as no results, so one bad sample cannot
+ * abort the oracle. Demands a
  * confidence on every result and drops one that omits it or sits below
  * the floor, so the model's own doubt filters out its guesses. Drops a
  * result whose text denies any contradiction, since the model sometimes
@@ -65,7 +67,8 @@ class Answer {
   }
   results() {
     try {
-      return JSON.parse(this.raw).results || [];
+      const results = JSON.parse(this.raw)?.results;
+      return Array.isArray(results) ? results : [];
     } catch (error) {
       throw new Error(`oracle returned malformed JSON: ${error.message}`, {cause: error});
     }

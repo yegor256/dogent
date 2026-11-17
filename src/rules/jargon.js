@@ -58,7 +58,7 @@ const inlined = (masked) => {
 
 const parenthetical = (masked) => {
   const found = new Set();
-  const regex = /\b(?<acronym>[A-Z]{2,})\s*\(|\((?<gloss>[^)]+)\)/gu;
+  const regex = /\b(?<acronym>[A-Z]{2,})\s*\([^()]*[\p{L}\p{N}][^()]*\)|\((?<gloss>[^)]+)\)/gu;
   let hit = regex.exec(masked);
   while (hit !== null) {
     if (hit.groups.acronym) {

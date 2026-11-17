@@ -26,6 +26,14 @@ describe('DuplicateSection', () => {
       'a heading differing only by case and spacing must be flagged'
     );
   });
+  it('flags a heading repeated with closing hashes', () => {
+    const doc = new Markdown('x.md', '# T\n## Rules\nDo a.\n## Rules ##\nDo b.').document();
+    assert.strictEqual(
+      new DuplicateSection().violations(doc).length,
+      1,
+      'closing hashes must not hide a repeated heading'
+    );
+  });
 });
 
 describe('DuplicateSection acceptance', () => {
@@ -35,6 +43,14 @@ describe('DuplicateSection acceptance', () => {
       new DuplicateSection().violations(doc).length,
       0,
       'distinct headings must not be flagged'
+    );
+  });
+  it('keeps an attached hash distinct', () => {
+    const doc = new Markdown('x.md', '# T\n## Rules\nDo a.\n## Rules#\nDo b.').document();
+    assert.strictEqual(
+      new DuplicateSection().violations(doc).length,
+      0,
+      'an attached hash is literal content, so the names differ'
     );
   });
 });

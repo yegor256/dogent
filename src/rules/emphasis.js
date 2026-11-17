@@ -52,7 +52,7 @@ class Emphasis {
   }
   shouting(masked, line, uri) {
     const found = [];
-    const regex = /[A-Z]{2,}(?:\s+[A-Z]{2,})*/gu;
+    const regex = /(?<![A-Za-z])[A-Z]{2,}(?:\s+[A-Z]{2,})*(?![A-Za-z])/gu;
     let hit = regex.exec(masked);
     while (hit !== null) {
       const tokens = hit[0].split(/\s+/u);

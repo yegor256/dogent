@@ -59,10 +59,12 @@ class Markdown {
         return;
       }
       const row = index + 1;
-      const mark = line.match(/^\s*(?<fence>```|~~~)/u);
+      const mark = line.match(/^\s*(?<fence>`{3,}|~{3,})/u);
       if (fence !== '') {
         block.push(line);
-        if (mark && line.trim().indexOf(fence) === 0) {
+        if (mark && mark.groups.fence[0] === fence[0] &&
+          mark.groups.fence.length >= fence.length &&
+          line.trim().slice(mark.groups.fence.length).trim() === '') {
           pieces.push(new Snippet(block.join('\n'), opened));
           fence = '';
           block = [];

@@ -45,4 +45,14 @@ describe('Polite accepts', () => {
       'inline-code literals must be skipped like fenced snippets'
     );
   });
+  it('ignores a courtesy phrase inside a longer fenced block', () => {
+    const doc = new Markdown(
+      'x.md', '# H\n````markdown\n```\nPlease save result.\n```\n````'
+    ).document();
+    assert.strictEqual(
+      new Polite().violations(doc).length,
+      0,
+      'a shorter inner fence must not turn snippet lines into prose'
+    );
+  });
 });

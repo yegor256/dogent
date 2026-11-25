@@ -25,6 +25,20 @@ describe('NameFormat', () => {
       new NameFormat().violations(doc).length, 0, 'a kebab-case name must pass'
     );
   });
+  it('accepts a skill whose name is double-quoted kebab-case', () => {
+    const text = '---\nname: "code-review"\ndescription: Review code\n---\n# Doors\nShut gate';
+    const doc = new Markdown('SKILL.md', text).document();
+    assert.strictEqual(
+      new NameFormat().violations(doc).length, 0, 'a double-quoted kebab name must pass'
+    );
+  });
+  it('accepts a skill whose name is single-quoted kebab-case', () => {
+    const text = "---\nname: 'code-review'\ndescription: Review code\n---\n# Doors\nShut gate";
+    const doc = new Markdown('SKILL.md', text).document();
+    assert.strictEqual(
+      new NameFormat().violations(doc).length, 0, 'a single-quoted kebab name must pass'
+    );
+  });
   it('ignores a name on a file that is not a skill', () => {
     const text = '---\nname: Review-Code\ndescription: Review code\n---\n# Doors\nShut gate';
     const doc = new Markdown('CLAUDE.md', text).document();

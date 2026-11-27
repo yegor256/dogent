@@ -48,3 +48,20 @@ describe('NameMatchesDir', () => {
     );
   });
 });
+
+describe('NameMatchesDir quoted names', () => {
+  it('accepts a double-quoted name that equals its parent directory', () => {
+    const text = '---\nname: "code-review"\ndescription: Review code\n---\n# Doors\nShut gate';
+    const doc = new Markdown('skills/code-review/SKILL.md', text).document();
+    assert.strictEqual(
+      new NameMatchesDir().violations(doc).length, 0, 'a matching double-quoted name must pass'
+    );
+  });
+  it('accepts a single-quoted name that equals its parent directory', () => {
+    const text = "---\nname: 'code-review'\ndescription: Review code\n---\n# Doors\nShut gate";
+    const doc = new Markdown('skills/code-review/SKILL.md', text).document();
+    assert.strictEqual(
+      new NameMatchesDir().violations(doc).length, 0, 'a matching single-quoted name must pass'
+    );
+  });
+});

@@ -42,3 +42,46 @@ describe('Yaml', () => {
     assert.strictEqual(pairs[1].key, 'name', 'a top-level key must end the block scalar');
   });
 });
+
+describe('Yaml quoted values', () => {
+  it('reads a double-quoted value without its quotes', () => {
+    const pairs = new Yaml('name: "shut-gate"', 2).pairs();
+    assert.deepStrictEqual(
+      pairs[0],
+      {key: 'name', value: 'shut-gate', row: 2},
+      'a double-quoted scalar must yield its decoded value'
+    );
+  });
+  it('reads a single-quoted value without its quotes', () => {
+    const pairs = new Yaml("name: 'shut-gate'", 2).pairs();
+    assert.deepStrictEqual(
+      pairs[0],
+      {key: 'name', value: 'shut-gate', row: 2},
+      'a single-quoted scalar must yield its decoded value'
+    );
+  });
+  it('unwinds doubled quotes inside a single-quoted value', () => {
+    const pairs = new Yaml("title: 'it''s shut'", 2).pairs();
+    assert.strictEqual(
+      pairs[0].value, "it's shut", 'a doubled quote inside a single-quoted scalar must become one quote'
+    );
+  });
+  it('decodes escapes inside a double-quoted value', () => {
+    const pairs = new Yaml('title: "say \\"stop\\" a\\tb\\nnow"', 2).pairs();
+    assert.strictEqual(
+      pairs[0].value, 'say "stop" a\tb\nnow', 'a double-quoted scalar must decode its escapes'
+    );
+  });
+  it('decodes a hex escape inside a double-quoted value', () => {
+    const pairs = new Yaml('title: "shut-gate\\x21"', 2).pairs();
+    assert.strictEqual(
+      pairs[0].value, 'shut-gate!', 'a hex escape inside a double-quoted scalar must become its code point'
+    );
+  });
+  it('keeps a quoted pipe a plain value', () => {
+    const pairs = new Yaml('title: "|"', 2).pairs();
+    assert.strictEqual(
+      pairs[0].value, '|', 'a quoted pipe must stay a plain value, not fold a block'
+    );
+  });
+});

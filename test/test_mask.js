@@ -30,4 +30,25 @@ describe('mask', () => {
       'a line free of inline code must pass through unchanged'
     );
   });
+  it('masks a whole double-backtick span', () => {
+    assert.strictEqual(
+      mask('Print ``please `x` kindly``.'),
+      `Print ${' '.repeat(21)}.`,
+      'a double-backtick span must hide its inner words entirely'
+    );
+  });
+  it('masks a double-backtick span with no inner code', () => {
+    assert.strictEqual(
+      mask('Print ``please``.'),
+      `Print ${' '.repeat(10)}.`,
+      'a double-backtick span must become one masked block'
+    );
+  });
+  it('leaves unmatched backtick runs untouched', () => {
+    assert.strictEqual(
+      mask('One ` tick here.'),
+      'One ` tick here.',
+      'a backtick run without an equal-length partner must stay visible'
+    );
+  });
 });

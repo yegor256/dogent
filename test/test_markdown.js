@@ -59,6 +59,19 @@ describe('Markdown', () => {
   });
 });
 
+describe('Markdown long fences', () => {
+  it('keeps one snippet open across shorter inner fences', () => {
+    const pieces = new Markdown(
+      'x.md', '````markdown\n```\nPlease save result.\n```\n````'
+    ).document().walk({
+      header: () => [], prose: () => ['prose'], snippet: () => ['snippet'], bullets: () => []
+    });
+    assert.deepStrictEqual(
+      pieces, ['snippet'], 'a shorter inner fence must not close a longer opening fence'
+    );
+  });
+});
+
 describe('Markdown bullet continuations', () => {
   it('keeps the list open across a wrapped continuation line', () => {
     const pieces = new Markdown(
